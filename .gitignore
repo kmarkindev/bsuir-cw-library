@@ -1,0 +1,7 @@
+/*
+!ConanPackages/
+!.gitignore
+!.gitmodules
+!conanfile.py
+!install_local_packages.ps1
+!README.md
