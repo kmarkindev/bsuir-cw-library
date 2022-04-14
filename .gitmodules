@@ -1,6 +1,0 @@
-[submodule "ConanPackages/drogon"]
-	path = ConanPackages/drogon
-	url = https://github.com/guosuying2012/drogon-conan.git
-[submodule "ConanPackages/trantor"]
-	path = ConanPackages/trantor
-	url = https://github.com/guosuying2012/trantor-conan.git
