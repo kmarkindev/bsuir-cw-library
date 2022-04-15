@@ -1,0 +1,3 @@
+[submodule "Packages/drogon"]
+	path = Packages/drogon
+	url = https://github.com/drogonframework/drogon.git
