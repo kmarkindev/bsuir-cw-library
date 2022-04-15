@@ -13,18 +13,18 @@ set_target_properties(ApiServer PROPERTIES
 	ARCHIVE_OUTPUT_DIRECTORY ${APISERVER_BINARY_DIR}
 )
 
-aux_source_directory(controllers CTL_SRC)
-aux_source_directory(filters FILTER_SRC)
-aux_source_directory(plugins PLUGIN_SRC)
-aux_source_directory(models MODEL_SRC)
+aux_source_directory(Controllers CTL_SRC)
+aux_source_directory(Filters FILTER_SRC)
+aux_source_directory(Plugins PLUGIN_SRC)
+aux_source_directory(Models MODEL_SRC)
 
 drogon_create_views(ApiServer
-    ${CMAKE_CURRENT_SOURCE_DIR}/views
+    ${CMAKE_CURRENT_SOURCE_DIR}/Views
     ${APISERVER_BINARY_DIR}
 )
 target_include_directories(ApiServer PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/models
+    ${CMAKE_CURRENT_SOURCE_DIR}/Models
 )
 target_sources(ApiServer PRIVATE
    ${SRC_DIR}
