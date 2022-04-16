@@ -111,7 +111,6 @@ class BookHistory
     const std::shared_ptr<uint64_t> &getBookInstanceId() const noexcept;
     ///Set the value of the column book_instance_id
     void setBookInstanceId(const uint64_t &pBookInstanceId) noexcept;
-    void setBookInstanceIdToNull() noexcept;
 
     /**  For column message  */
     ///Get the value of the column message, returns the default value if the column is null
@@ -121,7 +120,6 @@ class BookHistory
     ///Set the value of the column message
     void setMessage(const std::string &pMessage) noexcept;
     void setMessage(std::string &&pMessage) noexcept;
-    void setMessageToNull() noexcept;
 
 
     static size_t getColumnNumber() noexcept {  return 3;  }

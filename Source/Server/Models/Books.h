@@ -115,7 +115,6 @@ class Books
     ///Set the value of the column name
     void setName(const std::string &pName) noexcept;
     void setName(std::string &&pName) noexcept;
-    void setNameToNull() noexcept;
 
     /**  For column author_id  */
     ///Get the value of the column author_id, returns the default value if the column is null
@@ -124,7 +123,6 @@ class Books
     const std::shared_ptr<uint64_t> &getAuthorId() const noexcept;
     ///Set the value of the column author_id
     void setAuthorId(const uint64_t &pAuthorId) noexcept;
-    void setAuthorIdToNull() noexcept;
 
     /**  For column publisher_id  */
     ///Get the value of the column publisher_id, returns the default value if the column is null
@@ -133,7 +131,6 @@ class Books
     const std::shared_ptr<uint64_t> &getPublisherId() const noexcept;
     ///Set the value of the column publisher_id
     void setPublisherId(const uint64_t &pPublisherId) noexcept;
-    void setPublisherIdToNull() noexcept;
 
     /**  For column published_at  */
     ///Get the value of the column published_at, returns the default value if the column is null
@@ -142,7 +139,6 @@ class Books
     const std::shared_ptr<::trantor::Date> &getPublishedAt() const noexcept;
     ///Set the value of the column published_at
     void setPublishedAt(const ::trantor::Date &pPublishedAt) noexcept;
-    void setPublishedAtToNull() noexcept;
 
     /**  For column file_storage_path  */
     ///Get the value of the column file_storage_path, returns the default value if the column is null

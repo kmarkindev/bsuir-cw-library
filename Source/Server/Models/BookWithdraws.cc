@@ -24,10 +24,10 @@ const std::string BookWithdraws::tableName = "book_withdraws";
 
 const std::vector<typename BookWithdraws::MetaData> BookWithdraws::metaData_={
 {"id","uint64_t","bigint unsigned",8,1,1,1},
-{"book_instance_id","uint64_t","bigint unsigned",8,0,0,0},
-{"reader_id","uint64_t","bigint unsigned",8,0,0,0},
-{"withdrawn_at","::trantor::Date","date",0,0,0,0},
-{"return_at","::trantor::Date","date",0,0,0,0}
+{"book_instance_id","uint64_t","bigint unsigned",8,0,0,1},
+{"reader_id","uint64_t","bigint unsigned",8,0,0,1},
+{"withdrawn_at","::trantor::Date","date",0,0,0,1},
+{"return_at","::trantor::Date","date",0,0,0,1}
 };
 const std::string &BookWithdraws::getColumnName(size_t index) noexcept(false)
 {
@@ -380,11 +380,6 @@ void BookWithdraws::setBookInstanceId(const uint64_t &pBookInstanceId) noexcept
     bookInstanceId_ = std::make_shared<uint64_t>(pBookInstanceId);
     dirtyFlag_[1] = true;
 }
-void BookWithdraws::setBookInstanceIdToNull() noexcept
-{
-    bookInstanceId_.reset();
-    dirtyFlag_[1] = true;
-}
 
 const uint64_t &BookWithdraws::getValueOfReaderId() const noexcept
 {
@@ -400,11 +395,6 @@ const std::shared_ptr<uint64_t> &BookWithdraws::getReaderId() const noexcept
 void BookWithdraws::setReaderId(const uint64_t &pReaderId) noexcept
 {
     readerId_ = std::make_shared<uint64_t>(pReaderId);
-    dirtyFlag_[2] = true;
-}
-void BookWithdraws::setReaderIdToNull() noexcept
-{
-    readerId_.reset();
     dirtyFlag_[2] = true;
 }
 
@@ -424,11 +414,6 @@ void BookWithdraws::setWithdrawnAt(const ::trantor::Date &pWithdrawnAt) noexcept
     withdrawnAt_ = std::make_shared<::trantor::Date>(pWithdrawnAt.roundDay());
     dirtyFlag_[3] = true;
 }
-void BookWithdraws::setWithdrawnAtToNull() noexcept
-{
-    withdrawnAt_.reset();
-    dirtyFlag_[3] = true;
-}
 
 const ::trantor::Date &BookWithdraws::getValueOfReturnAt() const noexcept
 {
@@ -444,11 +429,6 @@ const std::shared_ptr<::trantor::Date> &BookWithdraws::getReturnAt() const noexc
 void BookWithdraws::setReturnAt(const ::trantor::Date &pReturnAt) noexcept
 {
     returnAt_ = std::make_shared<::trantor::Date>(pReturnAt.roundDay());
-    dirtyFlag_[4] = true;
-}
-void BookWithdraws::setReturnAtToNull() noexcept
-{
-    returnAt_.reset();
     dirtyFlag_[4] = true;
 }
 
@@ -750,20 +730,40 @@ bool BookWithdraws::validateJsonForCreation(const Json::Value &pJson, std::strin
         if(!validJsonOfField(1, "book_instance_id", pJson["book_instance_id"], err, true))
             return false;
     }
+    else
+    {
+        err="The book_instance_id column cannot be null";
+        return false;
+    }
     if(pJson.isMember("reader_id"))
     {
         if(!validJsonOfField(2, "reader_id", pJson["reader_id"], err, true))
             return false;
+    }
+    else
+    {
+        err="The reader_id column cannot be null";
+        return false;
     }
     if(pJson.isMember("withdrawn_at"))
     {
         if(!validJsonOfField(3, "withdrawn_at", pJson["withdrawn_at"], err, true))
             return false;
     }
+    else
+    {
+        err="The withdrawn_at column cannot be null";
+        return false;
+    }
     if(pJson.isMember("return_at"))
     {
         if(!validJsonOfField(4, "return_at", pJson["return_at"], err, true))
             return false;
+    }
+    else
+    {
+        err="The return_at column cannot be null";
+        return false;
     }
     return true;
 }
@@ -792,6 +792,11 @@ bool BookWithdraws::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[1] + " column cannot be null";
+            return false;
+        }
       }
       if(!pMasqueradingVector[2].empty())
       {
@@ -800,6 +805,11 @@ bool BookWithdraws::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[2] + " column cannot be null";
+            return false;
+        }
       }
       if(!pMasqueradingVector[3].empty())
       {
@@ -808,6 +818,11 @@ bool BookWithdraws::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[3] + " column cannot be null";
+            return false;
+        }
       }
       if(!pMasqueradingVector[4].empty())
       {
@@ -816,6 +831,11 @@ bool BookWithdraws::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[4] + " column cannot be null";
+            return false;
+        }
       }
     }
     catch(const Json::LogicError &e)
@@ -935,7 +955,8 @@ bool BookWithdraws::validJsonOfField(size_t index,
         case 1:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isUInt64())
             {
@@ -946,7 +967,8 @@ bool BookWithdraws::validJsonOfField(size_t index,
         case 2:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isUInt64())
             {
@@ -957,7 +979,8 @@ bool BookWithdraws::validJsonOfField(size_t index,
         case 3:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isString())
             {
@@ -968,7 +991,8 @@ bool BookWithdraws::validJsonOfField(size_t index,
         case 4:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isString())
             {

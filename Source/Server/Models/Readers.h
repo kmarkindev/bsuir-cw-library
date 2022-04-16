@@ -116,7 +116,6 @@ class Readers
     ///Set the value of the column name
     void setName(const std::string &pName) noexcept;
     void setName(std::string &&pName) noexcept;
-    void setNameToNull() noexcept;
 
     /**  For column address  */
     ///Get the value of the column address, returns the default value if the column is null
@@ -126,7 +125,6 @@ class Readers
     ///Set the value of the column address
     void setAddress(const std::string &pAddress) noexcept;
     void setAddress(std::string &&pAddress) noexcept;
-    void setAddressToNull() noexcept;
 
     /**  For column birthday  */
     ///Get the value of the column birthday, returns the default value if the column is null
@@ -135,7 +133,6 @@ class Readers
     const std::shared_ptr<::trantor::Date> &getBirthday() const noexcept;
     ///Set the value of the column birthday
     void setBirthday(const ::trantor::Date &pBirthday) noexcept;
-    void setBirthdayToNull() noexcept;
 
     /**  For column sex  */
     ///Get the value of the column sex, returns the default value if the column is null
@@ -144,7 +141,6 @@ class Readers
     const std::shared_ptr<int8_t> &getSex() const noexcept;
     ///Set the value of the column sex
     void setSex(const int8_t &pSex) noexcept;
-    void setSexToNull() noexcept;
 
     /**  For column phone  */
     ///Get the value of the column phone, returns the default value if the column is null

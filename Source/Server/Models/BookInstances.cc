@@ -21,7 +21,7 @@ const std::string BookInstances::tableName = "book_instances";
 
 const std::vector<typename BookInstances::MetaData> BookInstances::metaData_={
 {"id","uint64_t","bigint unsigned",8,1,1,1},
-{"book_id","uint64_t","bigint unsigned",8,0,0,0}
+{"book_id","uint64_t","bigint unsigned",8,0,0,1}
 };
 const std::string &BookInstances::getColumnName(size_t index) noexcept(false)
 {
@@ -191,11 +191,6 @@ void BookInstances::setBookId(const uint64_t &pBookId) noexcept
     bookId_ = std::make_shared<uint64_t>(pBookId);
     dirtyFlag_[1] = true;
 }
-void BookInstances::setBookIdToNull() noexcept
-{
-    bookId_.reset();
-    dirtyFlag_[1] = true;
-}
 
 void BookInstances::updateId(const uint64_t id)
 {
@@ -333,6 +328,11 @@ bool BookInstances::validateJsonForCreation(const Json::Value &pJson, std::strin
         if(!validJsonOfField(1, "book_id", pJson["book_id"], err, true))
             return false;
     }
+    else
+    {
+        err="The book_id column cannot be null";
+        return false;
+    }
     return true;
 }
 bool BookInstances::validateMasqueradedJsonForCreation(const Json::Value &pJson,
@@ -360,6 +360,11 @@ bool BookInstances::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[1] + " column cannot be null";
+            return false;
+        }
       }
     }
     catch(const Json::LogicError &e)
@@ -449,7 +454,8 @@ bool BookInstances::validJsonOfField(size_t index,
         case 1:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isUInt64())
             {

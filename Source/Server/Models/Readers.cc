@@ -26,10 +26,10 @@ const std::string Readers::tableName = "readers";
 
 const std::vector<typename Readers::MetaData> Readers::metaData_={
 {"id","uint64_t","bigint unsigned",8,1,1,1},
-{"name","std::string","varchar(64)",64,0,0,0},
-{"address","std::string","varchar(64)",64,0,0,0},
-{"birthday","::trantor::Date","date",0,0,0,0},
-{"sex","int8_t","tinyint(1)",1,0,0,0},
+{"name","std::string","varchar(64)",64,0,0,1},
+{"address","std::string","varchar(64)",64,0,0,1},
+{"birthday","::trantor::Date","date",0,0,0,1},
+{"sex","int8_t","tinyint(1)",1,0,0,1},
 {"phone","std::string","varchar(32)",32,0,0,0},
 {"email","std::string","varchar(32)",32,0,0,0}
 };
@@ -441,11 +441,6 @@ void Readers::setName(std::string &&pName) noexcept
     name_ = std::make_shared<std::string>(std::move(pName));
     dirtyFlag_[1] = true;
 }
-void Readers::setNameToNull() noexcept
-{
-    name_.reset();
-    dirtyFlag_[1] = true;
-}
 
 const std::string &Readers::getValueOfAddress() const noexcept
 {
@@ -468,11 +463,6 @@ void Readers::setAddress(std::string &&pAddress) noexcept
     address_ = std::make_shared<std::string>(std::move(pAddress));
     dirtyFlag_[2] = true;
 }
-void Readers::setAddressToNull() noexcept
-{
-    address_.reset();
-    dirtyFlag_[2] = true;
-}
 
 const ::trantor::Date &Readers::getValueOfBirthday() const noexcept
 {
@@ -490,11 +480,6 @@ void Readers::setBirthday(const ::trantor::Date &pBirthday) noexcept
     birthday_ = std::make_shared<::trantor::Date>(pBirthday.roundDay());
     dirtyFlag_[3] = true;
 }
-void Readers::setBirthdayToNull() noexcept
-{
-    birthday_.reset();
-    dirtyFlag_[3] = true;
-}
 
 const int8_t &Readers::getValueOfSex() const noexcept
 {
@@ -510,11 +495,6 @@ const std::shared_ptr<int8_t> &Readers::getSex() const noexcept
 void Readers::setSex(const int8_t &pSex) noexcept
 {
     sex_ = std::make_shared<int8_t>(pSex);
-    dirtyFlag_[4] = true;
-}
-void Readers::setSexToNull() noexcept
-{
-    sex_.reset();
     dirtyFlag_[4] = true;
 }
 
@@ -978,20 +958,40 @@ bool Readers::validateJsonForCreation(const Json::Value &pJson, std::string &err
         if(!validJsonOfField(1, "name", pJson["name"], err, true))
             return false;
     }
+    else
+    {
+        err="The name column cannot be null";
+        return false;
+    }
     if(pJson.isMember("address"))
     {
         if(!validJsonOfField(2, "address", pJson["address"], err, true))
             return false;
+    }
+    else
+    {
+        err="The address column cannot be null";
+        return false;
     }
     if(pJson.isMember("birthday"))
     {
         if(!validJsonOfField(3, "birthday", pJson["birthday"], err, true))
             return false;
     }
+    else
+    {
+        err="The birthday column cannot be null";
+        return false;
+    }
     if(pJson.isMember("sex"))
     {
         if(!validJsonOfField(4, "sex", pJson["sex"], err, true))
             return false;
+    }
+    else
+    {
+        err="The sex column cannot be null";
+        return false;
     }
     if(pJson.isMember("phone"))
     {
@@ -1030,6 +1030,11 @@ bool Readers::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[1] + " column cannot be null";
+            return false;
+        }
       }
       if(!pMasqueradingVector[2].empty())
       {
@@ -1038,6 +1043,11 @@ bool Readers::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[2] + " column cannot be null";
+            return false;
+        }
       }
       if(!pMasqueradingVector[3].empty())
       {
@@ -1046,6 +1056,11 @@ bool Readers::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[3] + " column cannot be null";
+            return false;
+        }
       }
       if(!pMasqueradingVector[4].empty())
       {
@@ -1054,6 +1069,11 @@ bool Readers::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[4] + " column cannot be null";
+            return false;
+        }
       }
       if(!pMasqueradingVector[5].empty())
       {
@@ -1209,7 +1229,8 @@ bool Readers::validJsonOfField(size_t index,
         case 1:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isString())
             {
@@ -1229,7 +1250,8 @@ bool Readers::validJsonOfField(size_t index,
         case 2:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isString())
             {
@@ -1249,7 +1271,8 @@ bool Readers::validJsonOfField(size_t index,
         case 3:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isString())
             {
@@ -1260,7 +1283,8 @@ bool Readers::validJsonOfField(size_t index,
         case 4:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isInt())
             {

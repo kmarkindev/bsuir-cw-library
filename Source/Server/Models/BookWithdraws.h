@@ -113,7 +113,6 @@ class BookWithdraws
     const std::shared_ptr<uint64_t> &getBookInstanceId() const noexcept;
     ///Set the value of the column book_instance_id
     void setBookInstanceId(const uint64_t &pBookInstanceId) noexcept;
-    void setBookInstanceIdToNull() noexcept;
 
     /**  For column reader_id  */
     ///Get the value of the column reader_id, returns the default value if the column is null
@@ -122,7 +121,6 @@ class BookWithdraws
     const std::shared_ptr<uint64_t> &getReaderId() const noexcept;
     ///Set the value of the column reader_id
     void setReaderId(const uint64_t &pReaderId) noexcept;
-    void setReaderIdToNull() noexcept;
 
     /**  For column withdrawn_at  */
     ///Get the value of the column withdrawn_at, returns the default value if the column is null
@@ -131,7 +129,6 @@ class BookWithdraws
     const std::shared_ptr<::trantor::Date> &getWithdrawnAt() const noexcept;
     ///Set the value of the column withdrawn_at
     void setWithdrawnAt(const ::trantor::Date &pWithdrawnAt) noexcept;
-    void setWithdrawnAtToNull() noexcept;
 
     /**  For column return_at  */
     ///Get the value of the column return_at, returns the default value if the column is null
@@ -140,7 +137,6 @@ class BookWithdraws
     const std::shared_ptr<::trantor::Date> &getReturnAt() const noexcept;
     ///Set the value of the column return_at
     void setReturnAt(const ::trantor::Date &pReturnAt) noexcept;
-    void setReturnAtToNull() noexcept;
 
 
     static size_t getColumnNumber() noexcept {  return 5;  }

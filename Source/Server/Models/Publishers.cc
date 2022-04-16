@@ -21,7 +21,7 @@ const std::string Publishers::tableName = "publishers";
 
 const std::vector<typename Publishers::MetaData> Publishers::metaData_={
 {"id","uint64_t","bigint unsigned",8,1,1,1},
-{"name","std::string","varchar(32)",32,0,0,0}
+{"name","std::string","varchar(32)",32,0,0,1}
 };
 const std::string &Publishers::getColumnName(size_t index) noexcept(false)
 {
@@ -196,11 +196,6 @@ void Publishers::setName(std::string &&pName) noexcept
     name_ = std::make_shared<std::string>(std::move(pName));
     dirtyFlag_[1] = true;
 }
-void Publishers::setNameToNull() noexcept
-{
-    name_.reset();
-    dirtyFlag_[1] = true;
-}
 
 void Publishers::updateId(const uint64_t id)
 {
@@ -338,6 +333,11 @@ bool Publishers::validateJsonForCreation(const Json::Value &pJson, std::string &
         if(!validJsonOfField(1, "name", pJson["name"], err, true))
             return false;
     }
+    else
+    {
+        err="The name column cannot be null";
+        return false;
+    }
     return true;
 }
 bool Publishers::validateMasqueradedJsonForCreation(const Json::Value &pJson,
@@ -365,6 +365,11 @@ bool Publishers::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[1] + " column cannot be null";
+            return false;
+        }
       }
     }
     catch(const Json::LogicError &e)
@@ -454,7 +459,8 @@ bool Publishers::validJsonOfField(size_t index,
         case 1:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isString())
             {

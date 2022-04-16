@@ -25,10 +25,10 @@ const std::string Books::tableName = "books";
 
 const std::vector<typename Books::MetaData> Books::metaData_={
 {"id","uint64_t","bigint unsigned",8,1,1,1},
-{"name","std::string","varchar(64)",64,0,0,0},
-{"author_id","uint64_t","bigint unsigned",8,0,0,0},
-{"publisher_id","uint64_t","bigint unsigned",8,0,0,0},
-{"published_at","::trantor::Date","date",0,0,0,0},
+{"name","std::string","varchar(64)",64,0,0,1},
+{"author_id","uint64_t","bigint unsigned",8,0,0,1},
+{"publisher_id","uint64_t","bigint unsigned",8,0,0,1},
+{"published_at","::trantor::Date","date",0,0,0,1},
 {"file_storage_path","std::string","varchar(255)",255,0,0,0}
 };
 const std::string &Books::getColumnName(size_t index) noexcept(false)
@@ -398,11 +398,6 @@ void Books::setName(std::string &&pName) noexcept
     name_ = std::make_shared<std::string>(std::move(pName));
     dirtyFlag_[1] = true;
 }
-void Books::setNameToNull() noexcept
-{
-    name_.reset();
-    dirtyFlag_[1] = true;
-}
 
 const uint64_t &Books::getValueOfAuthorId() const noexcept
 {
@@ -418,11 +413,6 @@ const std::shared_ptr<uint64_t> &Books::getAuthorId() const noexcept
 void Books::setAuthorId(const uint64_t &pAuthorId) noexcept
 {
     authorId_ = std::make_shared<uint64_t>(pAuthorId);
-    dirtyFlag_[2] = true;
-}
-void Books::setAuthorIdToNull() noexcept
-{
-    authorId_.reset();
     dirtyFlag_[2] = true;
 }
 
@@ -442,11 +432,6 @@ void Books::setPublisherId(const uint64_t &pPublisherId) noexcept
     publisherId_ = std::make_shared<uint64_t>(pPublisherId);
     dirtyFlag_[3] = true;
 }
-void Books::setPublisherIdToNull() noexcept
-{
-    publisherId_.reset();
-    dirtyFlag_[3] = true;
-}
 
 const ::trantor::Date &Books::getValueOfPublishedAt() const noexcept
 {
@@ -462,11 +447,6 @@ const std::shared_ptr<::trantor::Date> &Books::getPublishedAt() const noexcept
 void Books::setPublishedAt(const ::trantor::Date &pPublishedAt) noexcept
 {
     publishedAt_ = std::make_shared<::trantor::Date>(pPublishedAt.roundDay());
-    dirtyFlag_[4] = true;
-}
-void Books::setPublishedAtToNull() noexcept
-{
-    publishedAt_.reset();
     dirtyFlag_[4] = true;
 }
 
@@ -849,20 +829,40 @@ bool Books::validateJsonForCreation(const Json::Value &pJson, std::string &err)
         if(!validJsonOfField(1, "name", pJson["name"], err, true))
             return false;
     }
+    else
+    {
+        err="The name column cannot be null";
+        return false;
+    }
     if(pJson.isMember("author_id"))
     {
         if(!validJsonOfField(2, "author_id", pJson["author_id"], err, true))
             return false;
+    }
+    else
+    {
+        err="The author_id column cannot be null";
+        return false;
     }
     if(pJson.isMember("publisher_id"))
     {
         if(!validJsonOfField(3, "publisher_id", pJson["publisher_id"], err, true))
             return false;
     }
+    else
+    {
+        err="The publisher_id column cannot be null";
+        return false;
+    }
     if(pJson.isMember("published_at"))
     {
         if(!validJsonOfField(4, "published_at", pJson["published_at"], err, true))
             return false;
+    }
+    else
+    {
+        err="The published_at column cannot be null";
+        return false;
     }
     if(pJson.isMember("file_storage_path"))
     {
@@ -896,6 +896,11 @@ bool Books::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[1] + " column cannot be null";
+            return false;
+        }
       }
       if(!pMasqueradingVector[2].empty())
       {
@@ -904,6 +909,11 @@ bool Books::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[2] + " column cannot be null";
+            return false;
+        }
       }
       if(!pMasqueradingVector[3].empty())
       {
@@ -912,6 +922,11 @@ bool Books::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[3] + " column cannot be null";
+            return false;
+        }
       }
       if(!pMasqueradingVector[4].empty())
       {
@@ -920,6 +935,11 @@ bool Books::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[4] + " column cannot be null";
+            return false;
+        }
       }
       if(!pMasqueradingVector[5].empty())
       {
@@ -1057,7 +1077,8 @@ bool Books::validJsonOfField(size_t index,
         case 1:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isString())
             {
@@ -1077,7 +1098,8 @@ bool Books::validJsonOfField(size_t index,
         case 2:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isUInt64())
             {
@@ -1088,7 +1110,8 @@ bool Books::validJsonOfField(size_t index,
         case 3:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isUInt64())
             {
@@ -1099,7 +1122,8 @@ bool Books::validJsonOfField(size_t index,
         case 4:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isString())
             {

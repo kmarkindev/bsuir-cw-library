@@ -110,7 +110,6 @@ class BookInstances
     const std::shared_ptr<uint64_t> &getBookId() const noexcept;
     ///Set the value of the column book_id
     void setBookId(const uint64_t &pBookId) noexcept;
-    void setBookIdToNull() noexcept;
 
 
     static size_t getColumnNumber() noexcept {  return 2;  }

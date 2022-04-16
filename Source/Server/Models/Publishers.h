@@ -111,7 +111,6 @@ class Publishers
     ///Set the value of the column name
     void setName(const std::string &pName) noexcept;
     void setName(std::string &&pName) noexcept;
-    void setNameToNull() noexcept;
 
 
     static size_t getColumnNumber() noexcept {  return 2;  }

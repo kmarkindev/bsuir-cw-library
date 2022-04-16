@@ -22,8 +22,8 @@ const std::string BookHistory::tableName = "book_history";
 
 const std::vector<typename BookHistory::MetaData> BookHistory::metaData_={
 {"id","uint64_t","bigint unsigned",8,1,1,1},
-{"book_instance_id","uint64_t","bigint unsigned",8,0,0,0},
-{"message","std::string","text",0,0,0,0}
+{"book_instance_id","uint64_t","bigint unsigned",8,0,0,1},
+{"message","std::string","text",0,0,0,1}
 };
 const std::string &BookHistory::getColumnName(size_t index) noexcept(false)
 {
@@ -234,11 +234,6 @@ void BookHistory::setBookInstanceId(const uint64_t &pBookInstanceId) noexcept
     bookInstanceId_ = std::make_shared<uint64_t>(pBookInstanceId);
     dirtyFlag_[1] = true;
 }
-void BookHistory::setBookInstanceIdToNull() noexcept
-{
-    bookInstanceId_.reset();
-    dirtyFlag_[1] = true;
-}
 
 const std::string &BookHistory::getValueOfMessage() const noexcept
 {
@@ -259,11 +254,6 @@ void BookHistory::setMessage(const std::string &pMessage) noexcept
 void BookHistory::setMessage(std::string &&pMessage) noexcept
 {
     message_ = std::make_shared<std::string>(std::move(pMessage));
-    dirtyFlag_[2] = true;
-}
-void BookHistory::setMessageToNull() noexcept
-{
-    message_.reset();
     dirtyFlag_[2] = true;
 }
 
@@ -457,10 +447,20 @@ bool BookHistory::validateJsonForCreation(const Json::Value &pJson, std::string 
         if(!validJsonOfField(1, "book_instance_id", pJson["book_instance_id"], err, true))
             return false;
     }
+    else
+    {
+        err="The book_instance_id column cannot be null";
+        return false;
+    }
     if(pJson.isMember("message"))
     {
         if(!validJsonOfField(2, "message", pJson["message"], err, true))
             return false;
+    }
+    else
+    {
+        err="The message column cannot be null";
+        return false;
     }
     return true;
 }
@@ -489,6 +489,11 @@ bool BookHistory::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[1] + " column cannot be null";
+            return false;
+        }
       }
       if(!pMasqueradingVector[2].empty())
       {
@@ -497,6 +502,11 @@ bool BookHistory::validateMasqueradedJsonForCreation(const Json::Value &pJson,
               if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
                   return false;
           }
+        else
+        {
+            err="The " + pMasqueradingVector[2] + " column cannot be null";
+            return false;
+        }
       }
     }
     catch(const Json::LogicError &e)
@@ -596,7 +606,8 @@ bool BookHistory::validJsonOfField(size_t index,
         case 1:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isUInt64())
             {
@@ -607,7 +618,8 @@ bool BookHistory::validJsonOfField(size_t index,
         case 2:
             if(pJson.isNull())
             {
-                return true;
+                err="The " + fieldName + " column cannot be null";
+                return false;
             }
             if(!pJson.isString())
             {
