@@ -12,7 +12,7 @@
 	  "rdbms": "mysql",
 	  "host": "127.0.0.1",
 	  "port": 3306,
-	  "dbname": "bsuir-library",
+	  "dbname": "bsuir_library",
 	  "user": "Laravel",
 	  "passwd": "Laravel",
 	  "is_fast": false,
