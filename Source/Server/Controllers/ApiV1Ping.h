@@ -10,7 +10,7 @@ namespace api::v1
     {
     public:
         METHOD_LIST_BEGIN
-        METHOD_ADD(Ping::PingServer, "", Get);
+            METHOD_ADD(Ping::PingServer, "", Get);
         METHOD_LIST_END
 
         void PingServer(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback);
