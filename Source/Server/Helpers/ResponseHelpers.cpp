@@ -10,3 +10,8 @@ drogon::HttpResponsePtr GetErrorResponse(std::string error, int code)
 
     return response;
 }
+
+drogon::HttpResponsePtr GetNoJsonErrorResponse()
+{
+    return GetErrorResponse("JSON не найдет в запросе", 400);
+}

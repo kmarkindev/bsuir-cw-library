@@ -9,8 +9,19 @@ api::v1::Authors::Authors()
 void api::v1::Authors::GetAuthor(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback,
     unsigned long long authorId)
 {
+    _authorsRepository.FindAuthorById(authorId, [callback](bool success, std::string error, std::vector<Author>* authors){
 
-    callback(drogon::HttpResponse::newHttpResponse());
+        if(!success)
+        {
+            callback(GetErrorResponse("Ошибка при получении автора", 500));
+            return;
+        }
+
+        if(authors->empty())
+            callback(GetErrorResponse("Автор не найден", 404));
+        else
+            callback(HttpResponse::newHttpJsonResponse((*authors)[0].ToJson()));
+    });
 }
 
 void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback)
@@ -25,9 +36,7 @@ void api::v1::Authors::CreateAuthor(const HttpRequestPtr &req, std::function<voi
 
     if(!json)
     {
-        auto response = drogon::HttpResponse::newHttpResponse();
-        response->setBody("No json found");
-        callback(response);
+        callback(GetNoJsonErrorResponse());
         return;
     }
 
@@ -46,7 +55,7 @@ void api::v1::Authors::CreateAuthor(const HttpRequestPtr &req, std::function<voi
             }
             else
             {
-                callback(GetErrorResponse(std::move(error), 400));
+                callback(GetErrorResponse(std::move(error), 500));
             }
         });
     }

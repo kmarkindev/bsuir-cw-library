@@ -4,3 +4,4 @@
 #include <json/json.h>
 
 drogon::HttpResponsePtr GetErrorResponse(std::string error, int code);
+drogon::HttpResponsePtr GetNoJsonErrorResponse();
