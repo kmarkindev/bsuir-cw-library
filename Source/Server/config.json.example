@@ -6,8 +6,22 @@
       "https": false
     }
   ],
+  "db_clients": [
+	{
+	  "name": "",
+	  "rdbms": "mysql",
+	  "host": "127.0.0.1",
+	  "port": 3306,
+	  "dbname": "bsuir-library",
+	  "user": "Laravel",
+	  "passwd": "Laravel",
+	  "is_fast": false,
+	  "connection_number": 1,
+	  "file_name": ""
+	}
+  ],
   "app": {
-    "number_of_threads": 2,
-    "server_header_field": "Hello there!"
+    "threads_num": 1,
+    "server_header_field": "bsuir-library"
   }
 }
