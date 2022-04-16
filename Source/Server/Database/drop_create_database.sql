@@ -63,9 +63,6 @@ CREATE TABLE book_withdraws (
     withdrawn_at DATE NOT NULL,
     return_at DATE NOT NULL,
 
-    CONSTRAINT book_withdraws_return_at_more_than_withdrawn_at
-    CHECK (book_withdraws.withdrawn_at < book_withdraws.return_at),
-
     CONSTRAINT book_withdraws_book_instance_id_to_book_instances_id
     FOREIGN KEY (book_instance_id) REFERENCES book_instances (id)
     ON DELETE CASCADE,

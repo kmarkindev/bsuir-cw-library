@@ -17,21 +17,26 @@ aux_source_directory(Controllers CTL_SRC)
 aux_source_directory(Filters FILTER_SRC)
 aux_source_directory(Plugins PLUGIN_SRC)
 aux_source_directory(Models MODEL_SRC)
+aux_source_directory(Services SERVICES_SRC)
+aux_source_directory(Repositories REPOS_SRC)
+aux_source_directory(Helpers HELPERS_SRC)
 
 drogon_create_views(ApiServer
     ${CMAKE_CURRENT_SOURCE_DIR}/Views
     ${APISERVER_BINARY_DIR}
 )
 target_include_directories(ApiServer PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/Models
+	${CMAKE_CURRENT_SOURCE_DIR}
 )
 target_sources(ApiServer PRIVATE
-   ${SRC_DIR}
-   ${CTL_SRC}
-   ${FILTER_SRC}
-   ${PLUGIN_SRC}
-   ${MODEL_SRC}
+	${SRC_DIR}
+	${CTL_SRC}
+	${FILTER_SRC}
+	${PLUGIN_SRC}
+	${MODEL_SRC}
+	${SERVICES_SRC}
+	${REPOS_SRC}
+	${HELPERS_SRC}
 )
 
 # Copy config example to binary folder
