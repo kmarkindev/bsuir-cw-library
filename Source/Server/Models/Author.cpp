@@ -14,7 +14,9 @@ Author::Author(unsigned long long int id, std::string name)
 
 Author::Author(const Json::Value& json)
 {
-    FillFromJson(json);
+    SetId(0);
+
+    FillFromJson(json, true);
 }
 
 Json::Value Author::ToJson() const
@@ -29,17 +31,17 @@ Json::Value Author::ToJson() const
     return json;
 }
 
-void Author::FillFromJson(const Json::Value& json)
+void Author::FillFromJson(const Json::Value& json, bool checkFields)
 {
-    if(!json.isMember("name"))
-        throw std::invalid_argument("Имя обязательно для заполнения");
+    if(checkFields)
+        if(!json.isMember("name"))
+            throw std::invalid_argument("Имя обязательно для заполнения");
 
-    SetName(json["name"].asString());
+    if(json.isMember("name"))
+        SetName(json["name"].asString());
 
     if(json.isMember("id"))
         SetId(json["id"].asUInt64());
-    else
-        SetId(0);
 }
 
 void Author::SetId(unsigned long long int id)
@@ -66,4 +68,9 @@ void Author::SetName(std::string name)
 const std::string& Author::GetName() const
 {
     return _name;
+}
+
+bool Author::HasId() const
+{
+    return _id > 0;
 }

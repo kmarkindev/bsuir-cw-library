@@ -30,11 +30,27 @@ void AuthorMySqlRepository::FindAuthorById(unsigned long long id,
     }, id);
 }
 
-void AuthorMySqlRepository::FilterAuthorsByName(std::string_view name, bool sortAsc,
+void AuthorMySqlRepository::FilterAuthorsByName(const std::string& name, bool sortAsc,
     std::function<void(bool, std::string, std::vector<Author>*)>&& callback)
 {
-    //TODO:
-    callback(false, "", nullptr);
+    std::string orderBy = sortAsc ? "ASC" : "DESC";
+    std::string wrappedName = '%' + name + '%';
+
+    std::string query = "SELECT * FROM authors WHERE name LIKE ? ORDER BY id ASC";
+    if(!sortAsc)
+        query = "SELECT * FROM authors WHERE name LIKE ? ORDER BY id DESC";
+
+    _dbClient->execSqlAsync(query, [callback](const drogon::orm::Result& res) {
+        std::vector<Author> result;
+        result.reserve(res.size());
+
+        for(const auto& row : res)
+            result.emplace_back(row["id"].as<unsigned long long>(), row["name"].as<std::string>());
+
+        callback(true, "", &result);
+    }, [callback](const drogon::orm::DrogonDbException& ex) {
+        callback(false, ex.base().what(), nullptr);
+    }, wrappedName, orderBy);
 }
 
 void AuthorMySqlRepository::InsertAuthor(const Author& author, std::function<void(bool, std::string, unsigned long long)>&& callback)
@@ -46,4 +62,18 @@ void AuthorMySqlRepository::InsertAuthor(const Author& author, std::function<voi
     {
         callback(false, ex.base().what(), 0);
     }, author.GetName());
+}
+
+void AuthorMySqlRepository::UpdateAuthor(const Author& author, std::function<void(bool, std::string)>&& callback)
+{
+    if(!author.HasId())
+        throw std::invalid_argument("Нельзя обновить автора без Id");
+
+    _dbClient->execSqlAsync("UPDATE authors SET name = ? WHERE id = ?", [callback](const drogon::orm::Result& res)
+    {
+        callback(true, "");
+    }, [callback](const drogon::orm::DrogonDbException& ex)
+    {
+        callback(false, ex.base().what());
+    }, author.GetName(), author.GetId());
 }

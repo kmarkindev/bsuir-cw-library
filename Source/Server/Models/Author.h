@@ -12,8 +12,9 @@ public:
     explicit Author(const Json::Value& json);
 
     [[nodiscard]] Json::Value ToJson() const;
-    void FillFromJson(const Json::Value& json);
+    void FillFromJson(const Json::Value& json, bool checkFields);
 
+    [[nodiscard]] bool HasId() const;
     void SetId(unsigned long long id);
     [[nodiscard]] unsigned long long GetId() const;
     void SetName(std::string name);
