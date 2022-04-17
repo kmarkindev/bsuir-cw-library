@@ -28,6 +28,7 @@ void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void 
 {
     auto json = req->getJsonObject();
 
+    //TODO: refactor this shit
     std::string name;
     std::string orderBy = "ASC";
 
@@ -50,6 +51,7 @@ void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void 
             return;
         }
 
+        //TODO: move to helpers as a template function
         Json::Value result;
         result["authors"] = Json::arrayValue;
 
