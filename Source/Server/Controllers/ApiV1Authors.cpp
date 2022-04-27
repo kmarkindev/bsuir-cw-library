@@ -15,7 +15,7 @@ void api::v1::Authors::GetAuthor(const HttpRequestPtr &req, std::function<void (
 
             if(!res.isSuccess)
             {
-                callback(GetErrorResponse("Ошибка при получении автора", 500));
+                callback(GetErrorResponse(res.error, 500));
                 return;
             }
 
@@ -56,7 +56,7 @@ void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void 
 
             if(!res.isSuccess)
             {
-                callback(GetErrorResponse("Не удалось получить список авторов", 500));
+                callback(GetErrorResponse(res.error, 500));
                 return;
             }
 
@@ -93,7 +93,7 @@ void api::v1::Authors::CreateAuthor(const HttpRequestPtr &req, std::function<voi
             }
             else
             {
-                callback(GetErrorResponse(std::move(res.error), 500));
+                callback(GetErrorResponse(res.error, 500));
             }
         });
     }
@@ -131,7 +131,7 @@ void api::v1::Authors::UpdateAuthor(const HttpRequestPtr &req, std::function<voi
         {
             if(!res.isSuccess)
             {
-                callback(GetErrorResponse("Ошибка при поиске автора", 500));
+                callback(GetErrorResponse(res.error, 500));
                 return;
             }
 
@@ -167,7 +167,7 @@ void api::v1::Authors::DeleteAuthor(const HttpRequestPtr &req, std::function<voi
         {
             if(!res.isSuccess)
             {
-                callback(GetErrorResponse("Ошибка при поиске автора", 500));
+                callback(GetErrorResponse(res.error, 500));
                 return;
             }
 
