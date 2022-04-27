@@ -15,3 +15,15 @@ drogon::HttpResponsePtr GetNoJsonErrorResponse()
 {
     return GetErrorResponse("JSON не найдет в запросе", 400);
 }
+
+template<typename Model>
+drogon::HttpResponsePtr GetJsonCollectionResponseFrom(const std::vector<Model>& collection)
+{
+    Json::Value result;
+    result["data"] = Json::arrayValue;
+
+    for(const auto& model : *collection)
+        result["data"].append(model.ToJson());
+
+    return drogon::HttpResponse::newHttpJsonResponse(result);
+}

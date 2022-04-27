@@ -58,14 +58,7 @@ void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void 
             return;
         }
 
-        //TODO: move to helpers as a template function
-        Json::Value result;
-        result["authors"] = Json::arrayValue;
-
-        for(const auto& author : *authors)
-            result["authors"].append(author.ToJson());
-
-        callback(HttpResponse::newHttpJsonResponse(result));
+        callback(GetJsonCollectionResponseFrom(*authors));
     });
 }
 
