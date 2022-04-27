@@ -9,19 +9,26 @@ api::v1::Authors::Authors()
 void api::v1::Authors::GetAuthor(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback,
     unsigned long long authorId)
 {
-    _authorsRepository.FindAuthorById(authorId, [callback](bool success, std::string error, std::vector<Author>* authors){
+    try
+    {
+        _authorsRepository.FindAuthorById(authorId, [callback](RepoQueryResult res, std::vector<Author>* authors){
 
-        if(!success)
-        {
-            callback(GetErrorResponse("Ошибка при получении автора", 500));
-            return;
-        }
+            if(!res.isSuccess)
+            {
+                callback(GetErrorResponse("Ошибка при получении автора", 500));
+                return;
+            }
 
-        if(authors->empty())
-            callback(GetErrorResponse("Автор не найден", 404));
-        else
-            callback(HttpResponse::newHttpJsonResponse((*authors)[0].ToJson()));
-    });
+            if(authors->empty())
+                callback(GetErrorResponse("Автор не найден", 404));
+            else
+                callback(HttpResponse::newHttpJsonResponse((*authors)[0].ToJson()));
+        });
+    }
+    catch(std::exception& ex)
+    {
+        callback(GetErrorResponse(ex.what(), 500));
+    }
 }
 
 void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback)
@@ -43,9 +50,9 @@ void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void 
 
     bool sortAsc = orderBy == "desc" ? false : true;
 
-    _authorsRepository.FilterAuthorsByName(name, sortAsc, [callback](bool success, std::string error, std::vector<Author>* authors) {
+    _authorsRepository.FilterAuthorsByName(name, sortAsc, [callback](RepoQueryResult res, std::vector<Author>* authors) {
 
-        if(!success)
+        if(!res.isSuccess)
         {
             callback(GetErrorResponse("Не удалось получить список авторов", 500));
             return;
@@ -76,24 +83,27 @@ void api::v1::Authors::CreateAuthor(const HttpRequestPtr &req, std::function<voi
     {
         Author author(*json);
 
-        _authorsRepository.InsertAuthor(author, [callback, author](bool success,
-            std::string error, unsigned long long insertedId)
+        _authorsRepository.InsertAuthor(author, [callback, author](RepoQueryResult res,
+            unsigned long long insertedId) mutable
         {
-            auto authorNew = author;
-            if(success)
+            if(res.isSuccess)
             {
-                authorNew.SetId(insertedId);
-                callback(HttpResponse::newHttpJsonResponse(authorNew.ToJson()));
+                author.SetId(insertedId);
+                callback(HttpResponse::newHttpJsonResponse(author.ToJson()));
             }
             else
             {
-                callback(GetErrorResponse(std::move(error), 500));
+                callback(GetErrorResponse(std::move(res.error), 500));
             }
         });
     }
-    catch(std::exception& ex)
+    catch(std::invalid_argument& ex)
     {
         callback(GetErrorResponse(ex.what(), 400));
+    }
+    catch(std::exception& ex)
+    {
+        callback(GetErrorResponse(ex.what(), 500));
     }
 }
 
@@ -116,10 +126,10 @@ void api::v1::Authors::UpdateAuthor(const HttpRequestPtr &req, std::function<voi
 
     try
     {
-        _authorsRepository.FindAuthorById(authorId, [callback, json, this](bool success, std::string error,
+        _authorsRepository.FindAuthorById(authorId, [callback, json, this](RepoQueryResult res,
             std::vector<Author>* authors)
         {
-            if(!success)
+            if(!res.isSuccess)
             {
                 callback(GetErrorResponse("Ошибка при поиске автора", 500));
                 return;
@@ -133,9 +143,9 @@ void api::v1::Authors::UpdateAuthor(const HttpRequestPtr &req, std::function<voi
 
             auto author = (*authors)[0];
             author.FillFromJson(*json, false);
-            _authorsRepository.UpdateAuthor(author, [callback, author](bool success, std::string error) {
-                if(!success)
-                    callback(GetErrorResponse(error, 500));
+            _authorsRepository.UpdateAuthor(author, [callback, author](RepoQueryResult res) {
+                if(!res.isSuccess)
+                    callback(GetErrorResponse(res.error, 500));
                 else
                     callback(HttpResponse::newHttpJsonResponse(author.ToJson()));
             });
@@ -143,6 +153,41 @@ void api::v1::Authors::UpdateAuthor(const HttpRequestPtr &req, std::function<voi
     }
     catch(std::exception& ex)
     {
-        callback(GetErrorResponse(ex.what(), 400));
+        callback(GetErrorResponse(ex.what(), 500));
+    }
+}
+
+void api::v1::Authors::DeleteAuthor(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback,
+    unsigned long long authorId)
+{
+    try
+    {
+        _authorsRepository.FindAuthorById(authorId, [callback, this](RepoQueryResult res,
+            std::vector<Author>* authors)
+        {
+            if(!res.isSuccess)
+            {
+                callback(GetErrorResponse("Ошибка при поиске автора", 500));
+                return;
+            }
+
+            if(authors->empty())
+            {
+                callback(GetErrorResponse("Автор не найден", 404));
+                return;
+            }
+
+            auto author = (*authors)[0];
+            _authorsRepository.DeleteAuthor(author, [callback, author](RepoQueryResult res) {
+                if(!res.isSuccess)
+                    callback(GetErrorResponse(res.error, 500));
+                else
+                    callback(HttpResponse::newHttpJsonResponse(author.ToJson()));
+            });
+        });
+    }
+    catch(std::exception& ex)
+    {
+        callback(GetErrorResponse(ex.what(), 500));
     }
 }
