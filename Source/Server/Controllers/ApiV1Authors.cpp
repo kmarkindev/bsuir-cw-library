@@ -33,33 +33,40 @@ void api::v1::Authors::GetAuthor(const HttpRequestPtr &req, std::function<void (
 
 void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback)
 {
-    auto json = req->getJsonObject();
-
-    //TODO: refactor this shit
-    std::string name;
-    std::string orderBy = "ASC";
-
-    if(json)
+    try
     {
-        name = json->get("name", "").asString();
-        orderBy = json->get("order_by", "ASC").asString();
-    }
+        auto json = req->getJsonObject();
 
-    std::transform(orderBy.begin(), orderBy.end(), orderBy.begin(),
-        [](auto c){ return std::tolower(c); });
+        //TODO: refactor this shit
+        std::string name;
+        std::string orderBy = "ASC";
 
-    bool sortAsc = orderBy == "desc" ? false : true;
-
-    _authorsRepository.FilterAuthorsByName(name, sortAsc, [callback](RepoQueryResult res, std::vector<Author>* authors) {
-
-        if(!res.isSuccess)
+        if(json)
         {
-            callback(GetErrorResponse("Не удалось получить список авторов", 500));
-            return;
+            name = json->get("name", "").asString();
+            orderBy = json->get("order_by", "ASC").asString();
         }
 
-        callback(GetJsonCollectionResponseFrom(*authors));
-    });
+        std::transform(orderBy.begin(), orderBy.end(), orderBy.begin(),
+            [](auto c){ return std::tolower(c); });
+
+        bool sortAsc = orderBy == "desc" ? false : true;
+
+        _authorsRepository.FilterAuthorsByName(name, sortAsc, [callback](RepoQueryResult res, std::vector<Author>* authors) {
+
+            if(!res.isSuccess)
+            {
+                callback(GetErrorResponse("Не удалось получить список авторов", 500));
+                return;
+            }
+
+            callback(GetJsonCollectionResponseFrom(*authors));
+        });
+    }
+    catch(std::exception& ex)
+    {
+        callback(GetErrorResponse(ex.what(), 500));
+    }
 }
 
 void api::v1::Authors::CreateAuthor(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback)
