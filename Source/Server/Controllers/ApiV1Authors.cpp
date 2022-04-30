@@ -22,7 +22,7 @@ void api::v1::Authors::GetAuthor(const HttpRequestPtr &req, std::function<void(c
             if(authors->empty())
                 callback(GetErrorResponse("Автор не найден", 404));
             else
-                callback(HttpResponse::newHttpJsonResponse((*authors)[0].ToJson()));
+                callback(GetJsonModelResponseFrom((*authors)[0]));
         });
     }
     catch(std::exception& ex)
@@ -89,7 +89,7 @@ void api::v1::Authors::CreateAuthor(const HttpRequestPtr &req, std::function<voi
             if(res.isSuccess)
             {
                 author.SetId(insertedId);
-                callback(HttpResponse::newHttpJsonResponse(author.ToJson()));
+                callback(GetJsonModelResponseFrom(author));
             }
             else
             {
@@ -147,7 +147,7 @@ void api::v1::Authors::UpdateAuthor(const HttpRequestPtr &req, std::function<voi
                 if(!res.isSuccess)
                     callback(GetErrorResponse(res.error, 500));
                 else
-                    callback(HttpResponse::newHttpJsonResponse(author.ToJson()));
+                    callback(GetJsonModelResponseFrom(author));
             });
         });
     }
@@ -178,11 +178,11 @@ void api::v1::Authors::DeleteAuthor(const HttpRequestPtr &req, std::function<voi
             }
 
             auto author = (*authors)[0];
-            _authorsRepository.DeleteAuthor(author, [callback, author](RepoQueryResult res) {
+            _authorsRepository.DeleteAuthor(author.GetId(), [callback, author](RepoQueryResult res) {
                 if(!res.isSuccess)
                     callback(GetErrorResponse(res.error, 500));
                 else
-                    callback(HttpResponse::newHttpJsonResponse(author.ToJson()));
+                    callback(GetJsonModelResponseFrom(author));
             });
         });
     }

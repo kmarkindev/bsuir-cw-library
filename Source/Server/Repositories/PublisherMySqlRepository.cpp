@@ -51,41 +51,23 @@ void PublisherMySqlRepository::FilterPublishersByName(const std::string& name, b
     }, wrappedName, orderBy);
 }
 
-void PublisherMySqlRepository::InsertPublisher(const Publisher& publisher, std::function<void(RepoQueryResult, unsigned long long)>&& callback)
+void PublisherMySqlRepository::InsertPublisher(const Publisher& publisher,
+    std::function<void(RepoQueryResult, unsigned long long)>&& callback)
 {
-    _dbClient->execSqlAsync("INSERT INTO publishers(name) VALUES (?)", [callback](const drogon::orm::Result& res)
-    {
-        callback({true, ""}, res.insertId());
-    }, [callback](const drogon::orm::DrogonDbException& ex)
-    {
-        callback({false, ex.base().what()}, 0);
-    }, publisher.GetName());
+    InsertRecord(_dbClient, "publishers", callback, {"name"}, publisher.GetName());
 }
 
-void PublisherMySqlRepository::UpdatePublisher(const Publisher& publisher, std::function<void(RepoQueryResult)>&& callback)
+void PublisherMySqlRepository::UpdatePublisher(const Publisher& publisher,
+    std::function<void(RepoQueryResult)>&& callback)
 {
     if(!publisher.HasId())
         throw std::invalid_argument("Нельзя обновить издателя без Id");
 
-    _dbClient->execSqlAsync("UPDATE publishers SET name = ? WHERE id = ?", [callback](const drogon::orm::Result& res)
-    {
-        callback({true, ""});
-    }, [callback](const drogon::orm::DrogonDbException& ex)
-    {
-        callback({false, ex.base().what()});
-    }, publisher.GetName(), publisher.GetId());
+    UpdateRecord(_dbClient, "publishers", publisher.GetId(), callback, {"name"}, publisher.GetName());
 }
 
-void PublisherMySqlRepository::DeletePublisher(const Publisher& publisher, std::function<void(RepoQueryResult)>&& callback)
+void PublisherMySqlRepository::DeletePublisher(unsigned long long id,
+    std::function<void(RepoQueryResult)>&& callback)
 {
-    if(!publisher.HasId())
-        throw std::invalid_argument("Нельзя удалить издателя без Id");
-
-    _dbClient->execSqlAsync("DELETE FROM publishers WHERE id = ?", [callback](const drogon::orm::Result& res)
-    {
-        callback({true, ""});
-    }, [callback](const drogon::orm::DrogonDbException& ex)
-    {
-        callback({false, ex.base().what()});
-    }, publisher.GetId());
+    DeleteRecord(_dbClient, "publishers", id, callback);
 }

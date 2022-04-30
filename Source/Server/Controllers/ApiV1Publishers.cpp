@@ -22,7 +22,7 @@ void api::v1::Publishers::GetPublisher(const HttpRequestPtr &req, std::function<
             if(publishers->empty())
                 callback(GetErrorResponse("Издатель не найден", 404));
             else
-                callback(HttpResponse::newHttpJsonResponse((*publishers)[0].ToJson()));
+                callback(GetJsonModelResponseFrom((*publishers)[0]));
         });
     }
     catch(std::exception& ex)
@@ -89,7 +89,7 @@ void api::v1::Publishers::CreatePublisher(const HttpRequestPtr &req, std::functi
             if(res.isSuccess)
             {
                 publisher.SetId(insertedId);
-                callback(HttpResponse::newHttpJsonResponse(publisher.ToJson()));
+                callback(GetJsonModelResponseFrom(publisher));
             }
             else
             {
@@ -147,7 +147,7 @@ void api::v1::Publishers::UpdatePublisher(const HttpRequestPtr &req, std::functi
                 if(!res.isSuccess)
                     callback(GetErrorResponse(res.error, 500));
                 else
-                    callback(HttpResponse::newHttpJsonResponse(publisher.ToJson()));
+                    callback(GetJsonModelResponseFrom(publisher));
             });
         });
     }
@@ -178,11 +178,11 @@ void api::v1::Publishers::DeletePublisher(const HttpRequestPtr &req, std::functi
             }
 
             auto publisher = (*publishers)[0];
-            _publishersRepository.DeletePublisher(publisher, [callback, publisher](RepoQueryResult res) {
+            _publishersRepository.DeletePublisher(publisher.GetId(), [callback, publisher](RepoQueryResult res) {
                 if(!res.isSuccess)
                     callback(GetErrorResponse(res.error, 500));
                 else
-                    callback(HttpResponse::newHttpJsonResponse(publisher.ToJson()));
+                    callback(GetJsonModelResponseFrom(publisher));
             });
         });
     }

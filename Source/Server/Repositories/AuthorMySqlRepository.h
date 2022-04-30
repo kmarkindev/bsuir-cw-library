@@ -4,6 +4,7 @@
 #include <vector>
 #include <functional>
 #include <drogon/orm/DbClient.h>
+#include <Helpers/DbClientHelper.h>
 #include <utility>
 #include <Dto/RepoQueryResult.h>
 
@@ -18,7 +19,7 @@ public:
         bool sortAsc, std::function<void(RepoQueryResult, std::vector<Author>*)>&& callback);
     void InsertAuthor(const Author& author, std::function<void(RepoQueryResult, unsigned long long)>&& callback);
     void UpdateAuthor(const Author& author, std::function<void(RepoQueryResult)>&& callback);
-    void DeleteAuthor(const Author& author, std::function<void(RepoQueryResult)>&& callback);
+    void DeleteAuthor(unsigned long long id, std::function<void(RepoQueryResult)>&& callback);
 private:
     drogon::orm::DbClientPtr _dbClient;
 };
