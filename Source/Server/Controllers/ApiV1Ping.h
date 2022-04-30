@@ -13,6 +13,6 @@ namespace api::v1
             METHOD_ADD(Ping::PingServer, "", Get);
         METHOD_LIST_END
 
-        void PingServer(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback);
+        void PingServer(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback);
     };
 }

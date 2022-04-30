@@ -6,7 +6,7 @@ api::v1::Authors::Authors()
 
 }
 
-void api::v1::Authors::GetAuthor(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback,
+void api::v1::Authors::GetAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
     unsigned long long authorId)
 {
     try
@@ -31,7 +31,7 @@ void api::v1::Authors::GetAuthor(const HttpRequestPtr &req, std::function<void (
     }
 }
 
-void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback)
+void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback)
 {
     try
     {
@@ -69,7 +69,7 @@ void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void 
     }
 }
 
-void api::v1::Authors::CreateAuthor(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback)
+void api::v1::Authors::CreateAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback)
 {
     auto json = req->getJsonObject();
 
@@ -107,7 +107,7 @@ void api::v1::Authors::CreateAuthor(const HttpRequestPtr &req, std::function<voi
     }
 }
 
-void api::v1::Authors::UpdateAuthor(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback,
+void api::v1::Authors::UpdateAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
     unsigned long long authorId)
 {
     auto json = req->getJsonObject();
@@ -157,7 +157,7 @@ void api::v1::Authors::UpdateAuthor(const HttpRequestPtr &req, std::function<voi
     }
 }
 
-void api::v1::Authors::DeleteAuthor(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback,
+void api::v1::Authors::DeleteAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
     unsigned long long authorId)
 {
     try
