@@ -35,25 +35,8 @@ void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void(
 {
     try
     {
-        auto json = req->getJsonObject();
-
-        //TODO: refactor this shit
-        std::string name;
-        std::string orderBy = "ASC";
-
-        if(json)
+        _authorsRepository.GetAuthors([callback](RepoQueryResult res, std::vector<Author>* authors)
         {
-            name = json->get("name", "").asString();
-            orderBy = json->get("order_by", "ASC").asString();
-        }
-
-        std::transform(orderBy.begin(), orderBy.end(), orderBy.begin(),
-            [](auto c){ return std::tolower(c); });
-
-        bool sortAsc = orderBy == "desc" ? false : true;
-
-        _authorsRepository.FilterAuthorsByName(name, sortAsc, [callback](RepoQueryResult res, std::vector<Author>* authors) {
-
             if(!res.isSuccess)
             {
                 callback(GetErrorResponse(res.error, 500));

@@ -15,8 +15,7 @@ public:
 
     [[nodiscard]] void FindPublisherById(unsigned long long id,
         std::function<void(RepoQueryResult, std::vector<Publisher>*)>&& callback);
-    [[nodiscard]] void FilterPublishersByName(const std::string& name,
-        bool sortAsc, std::function<void(RepoQueryResult, std::vector<Publisher>*)>&& callback);
+    [[nodiscard]] void GetPublishers(std::function<void(RepoQueryResult, std::vector<Publisher>*)>&& callback);
     void InsertPublisher(const Publisher& publisher, std::function<void(RepoQueryResult, unsigned long long)>&& callback);
     void UpdatePublisher(const Publisher& publisher, std::function<void(RepoQueryResult)>&& callback);
     void DeletePublisher(unsigned long long id, std::function<void(RepoQueryResult)>&& callback);

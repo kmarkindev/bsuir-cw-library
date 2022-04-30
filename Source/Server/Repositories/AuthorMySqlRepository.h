@@ -15,8 +15,7 @@ public:
 
     [[nodiscard]] void FindAuthorById(unsigned long long id,
         std::function<void(RepoQueryResult, std::vector<Author>*)>&& callback);
-    [[nodiscard]] void FilterAuthorsByName(const std::string& name,
-        bool sortAsc, std::function<void(RepoQueryResult, std::vector<Author>*)>&& callback);
+    [[nodiscard]] void GetAuthors(std::function<void(RepoQueryResult, std::vector<Author>*)>&& callback);
     void InsertAuthor(const Author& author, std::function<void(RepoQueryResult, unsigned long long)>&& callback);
     void UpdateAuthor(const Author& author, std::function<void(RepoQueryResult)>&& callback);
     void DeleteAuthor(unsigned long long id, std::function<void(RepoQueryResult)>&& callback);

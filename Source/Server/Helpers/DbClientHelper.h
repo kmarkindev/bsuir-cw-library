@@ -78,3 +78,43 @@ inline void UpdateRecord(drogon::orm::DbClientPtr dbClient, const std::string& t
         callback({false, ex.base().what()});
     }, values..., id);
 }
+
+template<typename ModelType>
+inline void FindRecordById(drogon::orm::DbClientPtr dbClient, const std::string& table, unsigned long long id,
+    std::function<void(RepoQueryResult, std::vector<ModelType>*)> callback)
+{
+    dbClient->execSqlAsync("SELECT * FROM " + table + " WHERE id = ? LIMIT 1",
+        [callback](const drogon::orm::Result& res)
+    {
+        std::vector<ModelType> result;
+        if(res.empty())
+        {
+            callback({true, ""}, &result);
+        }
+        else
+        {
+            result.emplace_back(res[0]);
+            callback({true, ""}, &result);
+        }
+    }, [callback](const drogon::orm::DrogonDbException& ex)
+    {
+        callback({false, ex.base().what()}, nullptr);
+    }, id);
+}
+
+template<typename ModelType>
+inline void GetRecords(drogon::orm::DbClientPtr dbClient, const std::string& table,
+    std::function<void(RepoQueryResult, std::vector<ModelType>*)> callback)
+{
+    dbClient->execSqlAsync("SELECT * FROM " + table, [callback](const drogon::orm::Result& res) {
+        std::vector<ModelType> result;
+        result.reserve(res.size());
+
+        for(const auto& row : res)
+            result.emplace_back(row);
+
+        callback({true, ""}, &result);
+    }, [callback](const drogon::orm::DrogonDbException& ex) {
+        callback({false, ex.base().what()}, nullptr);
+    });
+}

@@ -11,8 +11,8 @@ void api::v1::Publishers::GetPublisher(const HttpRequestPtr &req, std::function<
 {
     try
     {
-        _publishersRepository.FindPublisherById(publisherId, [callback](RepoQueryResult res, std::vector<Publisher>* publishers){
-
+        _publishersRepository.FindPublisherById(publisherId, [callback](RepoQueryResult res, std::vector<Publisher>* publishers)
+        {
             if(!res.isSuccess)
             {
                 callback(GetErrorResponse(res.error, 500));
@@ -35,25 +35,8 @@ void api::v1::Publishers::GetPublishers(const HttpRequestPtr &req, std::function
 {
     try
     {
-        auto json = req->getJsonObject();
-
-        //TODO: refactor this shit
-        std::string name;
-        std::string orderBy = "ASC";
-
-        if(json)
+        _publishersRepository.GetPublishers([callback](RepoQueryResult res, std::vector<Publisher>* publishers)
         {
-            name = json->get("name", "").asString();
-            orderBy = json->get("order_by", "ASC").asString();
-        }
-
-        std::transform(orderBy.begin(), orderBy.end(), orderBy.begin(),
-            [](auto c){ return std::tolower(c); });
-
-        bool sortAsc = orderBy == "desc" ? false : true;
-
-        _publishersRepository.FilterPublishersByName(name, sortAsc, [callback](RepoQueryResult res, std::vector<Publisher>* publishers) {
-
             if(!res.isSuccess)
             {
                 callback(GetErrorResponse(res.error, 500));

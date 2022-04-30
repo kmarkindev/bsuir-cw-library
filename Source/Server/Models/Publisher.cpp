@@ -19,6 +19,13 @@ Publisher::Publisher(const Json::Value& json)
     FillFromJson(json, true);
 }
 
+Publisher::Publisher(const drogon::orm::Row& row)
+{
+    SetId(0);
+    FillFromRow(row, true);
+}
+
+
 Json::Value Publisher::ToJson() const
 {
     Json::Value json;
@@ -33,15 +40,54 @@ Json::Value Publisher::ToJson() const
 
 void Publisher::FillFromJson(const Json::Value& json, bool checkFields)
 {
+    std::string name;
+    unsigned long long id;
+
+    bool hasName = json.isMember("name");
+    bool hasId = json.isMember("id");
+
+    if(hasName)
+        name = json["name"].asString();
+    if(hasId)
+        id = json["id"].asUInt64();
+
+    FillFields(
+        hasName ? &name : nullptr,
+        hasId ? &id : nullptr,
+        checkFields
+    );
+}
+
+void Publisher::FillFromRow(const drogon::orm::Row& row, bool checkFields)
+{
+    std::string name;
+    unsigned long long id;
+
+    bool hasName = !row["name"].isNull();
+    bool hasId = !row["id"].isNull();
+
+    if(hasName)
+        name = row["name"].as<std::string>();
+    if(hasId)
+        id = row["id"].as<unsigned long long>();
+
+    FillFields(
+        hasName ? &name : nullptr,
+        hasId ? &id : nullptr,
+        checkFields
+    );
+}
+
+void Publisher::FillFields(std::string* name, unsigned long long* id, bool checkFields)
+{
     if(checkFields)
-        if(!json.isMember("name"))
+        if(!name)
             throw std::invalid_argument("Имя обязательно для заполнения");
 
-    if(json.isMember("name"))
-        SetName(json["name"].asString());
-
-    if(json.isMember("id"))
-        SetId(json["id"].asUInt64());
+    if(name)
+        SetName(*name);
+    if(id)
+        SetId(*id);
 }
 
 void Publisher::SetId(unsigned long long int id)

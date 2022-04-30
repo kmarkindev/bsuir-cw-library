@@ -9,46 +9,12 @@ AuthorMySqlRepository::AuthorMySqlRepository(drogon::orm::DbClientPtr dbClient)
 void AuthorMySqlRepository::FindAuthorById(unsigned long long id,
     std::function<void(RepoQueryResult, std::vector<Author>*)>&& callback)
 {
-    _dbClient->execSqlAsync("SELECT * FROM authors WHERE id = ? LIMIT 1", [callback](const drogon::orm::Result& res)
-    {
-        std::vector<Author> result;
-        if(res.empty())
-        {
-            callback({true, ""}, &result);
-        }
-        else
-        {
-            auto row = res[0];
-            result.emplace_back(row["id"].as<unsigned long long>(), row["name"].as<std::string>());
-            callback({true, ""}, &result);
-        }
-    }, [callback](const drogon::orm::DrogonDbException& ex)
-    {
-        callback({false, ex.base().what()}, nullptr);
-    }, id);
+    FindRecordById(_dbClient, "authors", id, callback);
 }
 
-void AuthorMySqlRepository::FilterAuthorsByName(const std::string& name, bool sortAsc,
-    std::function<void(RepoQueryResult, std::vector<Author>*)>&& callback)
+void AuthorMySqlRepository::GetAuthors(std::function<void(RepoQueryResult, std::vector<Author>*)>&& callback)
 {
-    std::string orderBy = sortAsc ? "ASC" : "DESC";
-    std::string wrappedName = '%' + name + '%';
-
-    std::string query = "SELECT * FROM authors WHERE name LIKE ? ORDER BY id ASC";
-    if(!sortAsc)
-        query = "SELECT * FROM authors WHERE name LIKE ? ORDER BY id DESC";
-
-    _dbClient->execSqlAsync(query, [callback](const drogon::orm::Result& res) {
-        std::vector<Author> result;
-        result.reserve(res.size());
-
-        for(const auto& row : res)
-            result.emplace_back(row["id"].as<unsigned long long>(), row["name"].as<std::string>());
-
-        callback({true, ""}, &result);
-    }, [callback](const drogon::orm::DrogonDbException& ex) {
-        callback({false, ex.base().what()}, nullptr);
-    }, wrappedName, orderBy);
+    GetRecords(_dbClient, "authors", callback);
 }
 
 void AuthorMySqlRepository::InsertAuthor(const Author& author,
