@@ -1,0 +1,13 @@
+[requires]
+nlohmann_json/3.10.5
+wxwidgets/3.1.5@bincrafters/stable
+cpp-httplib/0.10.4
+openssl/3.0.2
+cryptopp/8.6.0
+jsoncpp/1.9.5
+mariadb-connector-c/3.1.12
+zlib/1.2.12
+rttr/0.9.6
+
+[generators]
+cmake
