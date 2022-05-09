@@ -2,8 +2,6 @@
 
 #include <drogon/HttpController.h>
 #include <Models/Authors.h>
-#include <Helpers/ResponseHelpers.h>
-#include <Dto/RepoQueryResult.h>
 #include "CrudController.h"
 
 using namespace drogon;
