@@ -20,6 +20,7 @@ aux_source_directory(Models MODEL_SRC)
 aux_source_directory(Services SERVICES_SRC)
 aux_source_directory(Repositories REPOS_SRC)
 aux_source_directory(Helpers HELPERS_SRC)
+aux_source_directory(Validators VALIDATORS_SRC)
 
 drogon_create_views(ApiServer
     ${CMAKE_CURRENT_SOURCE_DIR}/Views
@@ -37,6 +38,7 @@ target_sources(ApiServer PRIVATE
 	${SERVICES_SRC}
 	${REPOS_SRC}
 	${HELPERS_SRC}
+	${VALIDATORS_SRC}
 )
 
 # Copy config example to binary folder

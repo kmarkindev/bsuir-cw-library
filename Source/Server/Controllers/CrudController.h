@@ -3,16 +3,18 @@
 #include "drogon/drogon.h"
 #include "drogon/orm/Mapper.h"
 #include "Helpers/ResponseHelpers.h"
+#include <Validators/IValidator.h>
 
 using namespace drogon;
 
-template<typename ModelType>
+template<typename ModelType, typename ModelValidator = IValidator<ModelType>>
 class CrudController
 {
 public:
 
     explicit CrudController()
-        : _modelMapper(app().getDbClient())
+        : _modelMapper(app().getDbClient()),
+        _validator()
     {
 
     }
@@ -43,8 +45,6 @@ public:
     void Create(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback)
     try
     {
-        //TODO: validate json for creation
-
         auto json = req->getJsonObject();
 
         if(!json)
@@ -54,6 +54,13 @@ public:
         }
 
         ModelType model(*json);
+
+        auto errors = _validator.ValidateForCreation(model);
+        if(!errors.empty())
+        {
+            callback(GetValidatonErrorResponse(errors));
+            return;
+        }
 
         _modelMapper.insert(model, [callback](ModelType model) mutable
         {
@@ -72,8 +79,6 @@ public:
         std::uint64_t id)
     try
     {
-        //TODO: validate json for update
-
         auto json = req->getJsonObject();
 
         if(!json)
@@ -82,9 +87,23 @@ public:
             return;
         }
 
+        if(json->isMember("id"))
+        {
+            callback(GetErrorResponse("Нельзя обновить id записи", 400));
+            return;
+        }
+
         _modelMapper.findByPrimaryKey(id, [callback, json = *json, this](ModelType model) mutable
         {
             model.updateByJson(json);
+
+            auto errors = _validator.ValidateForUpdate(model);
+            if(!errors.empty())
+            {
+                callback(GetValidatonErrorResponse(errors));
+                return;
+            }
+
             _modelMapper.update(model, [callback, model](auto updatedCount) mutable
             {
                 callback(GetJsonModelResponseFrom(model));
@@ -107,10 +126,15 @@ public:
         std::uint64_t id)
     try
     {
-        //TODO: validate for delete
-
         _modelMapper.findByPrimaryKey(id, [callback, this](auto model) mutable
         {
+            auto errors = _validator.ValidateForDelete(model);
+            if(!errors.empty())
+            {
+                callback(GetValidatonErrorResponse(errors));
+                return;
+            }
+
             _modelMapper.deleteByPrimaryKey(*model.getId(), [callback, model](auto deletedCount) mutable
             {
                 callback(GetJsonModelResponseFrom(model));
@@ -131,4 +155,5 @@ public:
 
 protected:
     drogon::orm::Mapper<ModelType> _modelMapper;
+    ModelValidator _validator;
 };

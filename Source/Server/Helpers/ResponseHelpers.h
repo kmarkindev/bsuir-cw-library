@@ -14,17 +14,30 @@ inline drogon::HttpResponsePtr GetJsonResponse(const Json::Value& json, int code
 inline drogon::HttpResponsePtr GetErrorResponse(const std::string& error, int code)
 {
     auto json = Json::Value();
+    json["details"] = Json::arrayValue;
 
 #ifdef DEBUG_BUILD
-    json["error_message"] = error;
+    json["error"] = error;
 #else
     if(code >= 500)
-        json["error_message"] = "Упс, что то пошло не так";
+        json["error"] = "Упс, что то пошло не так";
     else
-        json["error_message"] = error;
+        json["error"] = error;
 #endif
 
     return GetJsonResponse(json, code);
+}
+
+inline drogon::HttpResponsePtr GetValidatonErrorResponse(const std::vector<std::string>& errors)
+{
+    Json::Value result;
+    result["error"] = "Ошибка валидации";
+    result["details"] = Json::arrayValue;
+
+    for(const auto& error : errors)
+        result["details"].append(error);
+
+    return GetJsonResponse(result, 400);
 }
 
 inline drogon::HttpResponsePtr GetNoJsonErrorResponse()

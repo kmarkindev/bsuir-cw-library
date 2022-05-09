@@ -3,13 +3,14 @@
 #include <drogon/HttpController.h>
 #include <Models/Publishers.h>
 #include "CrudController.h"
+#include <Validators/PublishersValidator.h>
 
 using namespace drogon;
 
 namespace api::v1
 {
     class Publishers : public drogon::HttpController<Publishers>,
-        public CrudController<drogon_model::bsuir_library::Publishers>
+        public CrudController<drogon_model::bsuir_library::Publishers, PublishersValidator>
     {
     public:
         METHOD_LIST_BEGIN
