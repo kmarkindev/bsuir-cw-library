@@ -2,36 +2,24 @@
 
 #include <drogon/HttpController.h>
 #include <Models/Authors.h>
-#include <Repositories/AuthorMySqlRepository.h>
 #include <Helpers/ResponseHelpers.h>
 #include <Dto/RepoQueryResult.h>
+#include "CrudController.h"
 
 using namespace drogon;
 
 namespace api::v1
 {
-    class Authors : public drogon::HttpController<Authors>
+    class Authors : public drogon::HttpController<Authors>,
+        public CrudController<drogon_model::bsuir_library::Authors>
     {
     public:
         METHOD_LIST_BEGIN
-            METHOD_ADD(Authors::GetAuthor, "/{authorId}", Get);
-            METHOD_ADD(Authors::GetAuthors, "", Get);
-            METHOD_ADD(Authors::CreateAuthor, "", Post);
-            METHOD_ADD(Authors::UpdateAuthor, "/{authorId}", Put);
-            METHOD_ADD(Authors::DeleteAuthor, "/{authorId}", Delete);
+            METHOD_ADD(Authors::GetOne, "/{id}", Get);
+            METHOD_ADD(Authors::GetAll, "", Get);
+            METHOD_ADD(Authors::Create, "", Post);
+            METHOD_ADD(Authors::Update, "/{id}", Put);
+//            METHOD_ADD(Authors::Delete, "/{id}", Delete);
         METHOD_LIST_END
-
-        explicit Authors();
-
-        void GetAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
-            std::uint64_t authorId);
-        void GetAuthors(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback);
-        void CreateAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback);
-        void UpdateAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
-            std::uint64_t authorId);
-        void DeleteAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
-            std::uint64_t authorId);
-    private:
-        drogon::orm::Mapper<drogon_model::bsuir_library::Authors> _authorsMapper;
     };
 }
