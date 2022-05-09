@@ -6,8 +6,10 @@
 class PublishersValidator : public IValidator<drogon_model::bsuir_library::Publishers>
 {
 public:
-    Errors ValidateForCreation(const drogon_model::bsuir_library::Publishers& model) noexcept override;
-    Errors ValidateForUpdate(const drogon_model::bsuir_library::Publishers& model) noexcept override;
+    void ValidateForCreation(const drogon_model::bsuir_library::Publishers& model,
+        const std::function<void(Errors)>& callback) noexcept override;
+    void ValidateForUpdate(const drogon_model::bsuir_library::Publishers& model,
+        const std::function<void(Errors)>& callback) noexcept override;
 };
 
 

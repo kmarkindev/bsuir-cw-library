@@ -55,19 +55,21 @@ public:
 
         ModelType model(*json);
 
-        auto errors = _validator.ValidateForCreation(model);
-        if(!errors.empty())
+        _validator.ValidateForCreation(model, [callback, model, this](auto errors)
         {
-            callback(GetValidatonErrorResponse(errors));
-            return;
-        }
+            if(!errors.empty())
+            {
+                callback(GetValidatonErrorResponse(errors));
+                return;
+            }
 
-        _modelMapper.insert(model, [callback](ModelType model) mutable
-        {
-            callback(GetJsonModelResponseFrom(model));
-        }, [callback](const drogon::orm::DrogonDbException& ex)
-        {
-            callback(GetErrorResponseFromException(ex));
+            _modelMapper.insert(model, [callback](ModelType model) mutable
+            {
+                callback(GetJsonModelResponseFrom(model));
+            }, [callback](const drogon::orm::DrogonDbException& ex)
+            {
+                callback(GetErrorResponseFromException(ex));
+            });
         });
     }
     catch(std::exception& ex)
@@ -97,19 +99,21 @@ public:
         {
             model.updateByJson(json);
 
-            auto errors = _validator.ValidateForUpdate(model);
-            if(!errors.empty())
+            _validator.ValidateForUpdate(model, [callback, model, this](auto errors)
             {
-                callback(GetValidatonErrorResponse(errors));
-                return;
-            }
+                if(!errors.empty())
+                {
+                    callback(GetValidatonErrorResponse(errors));
+                    return;
+                }
 
-            _modelMapper.update(model, [callback, model](auto updatedCount) mutable
-            {
-                callback(GetJsonModelResponseFrom(model));
-            }, [callback](const drogon::orm::DrogonDbException& ex)
-            {
-                callback(GetErrorResponseFromException(ex));
+                _modelMapper.update(model, [callback, model](auto updatedCount) mutable
+                {
+                    callback(GetJsonModelResponseFrom(model));
+                }, [callback](const drogon::orm::DrogonDbException& ex)
+                {
+                    callback(GetErrorResponseFromException(ex));
+                });
             });
 
         }, [callback](const drogon::orm::DrogonDbException& ex)
@@ -128,19 +132,21 @@ public:
     {
         _modelMapper.findByPrimaryKey(id, [callback, this](auto model) mutable
         {
-            auto errors = _validator.ValidateForDelete(model);
-            if(!errors.empty())
+            _validator.ValidateForDelete(model, [callback, model, this](auto errors)
             {
-                callback(GetValidatonErrorResponse(errors));
-                return;
-            }
+                if(!errors.empty())
+                {
+                    callback(GetValidatonErrorResponse(errors));
+                    return;
+                }
 
-            _modelMapper.deleteByPrimaryKey(*model.getId(), [callback, model](auto deletedCount) mutable
-            {
-                callback(GetJsonModelResponseFrom(model));
-            }, [callback](const drogon::orm::DrogonDbException& ex)
-            {
-                callback(GetErrorResponseFromException(ex));
+                _modelMapper.deleteByPrimaryKey(*model.getId(), [callback, model](auto deletedCount) mutable
+                {
+                    callback(GetJsonModelResponseFrom(model));
+                }, [callback](const drogon::orm::DrogonDbException& ex)
+                {
+                    callback(GetErrorResponseFromException(ex));
+                });
             });
 
         }, [callback](const drogon::orm::DrogonDbException& ex)

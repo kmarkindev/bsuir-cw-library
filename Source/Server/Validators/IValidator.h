@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <functional>
 
 template<typename ModelType>
 class IValidator
@@ -10,19 +11,19 @@ public:
 
     using Errors = std::vector<std::string>;
 
-    virtual Errors ValidateForCreation(const ModelType& model) noexcept
+    virtual void ValidateForCreation(const ModelType& model, const std::function<void(Errors)>& callback) noexcept
     {
-        return {};
+        callback({});
     }
 
-    virtual Errors ValidateForUpdate(const ModelType& model) noexcept
+    virtual void ValidateForUpdate(const ModelType& model, const std::function<void(Errors)>& callback) noexcept
     {
-        return {};
+        callback({});
     }
 
-    virtual Errors ValidateForDelete(const ModelType& model) noexcept
+    virtual void ValidateForDelete(const ModelType& model, const std::function<void(Errors)>& callback) noexcept
     {
-        return {};
+        callback({});
     }
 
 };

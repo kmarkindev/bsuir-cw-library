@@ -1,7 +1,7 @@
 #include "PublishersValidator.h"
 
-IValidator<drogon_model::bsuir_library::Publishers>::Errors PublishersValidator::ValidateForCreation(
-    const drogon_model::bsuir_library::Publishers& model) noexcept
+void PublishersValidator::ValidateForCreation(const drogon_model::bsuir_library::Publishers& model,
+    const std::function<void(Errors)>& callback) noexcept
 {
     IValidator<drogon_model::bsuir_library::Publishers>::Errors result;
 
@@ -10,11 +10,11 @@ IValidator<drogon_model::bsuir_library::Publishers>::Errors PublishersValidator:
     else if(model.getName()->size() > 32)
         result.push_back("Имя издателя не может быть длинее 32 символов");
 
-    return result;
+    callback(result);
 }
 
-IValidator<drogon_model::bsuir_library::Publishers>::Errors PublishersValidator::ValidateForUpdate(
-    const drogon_model::bsuir_library::Publishers& model) noexcept
+void PublishersValidator::ValidateForUpdate(const drogon_model::bsuir_library::Publishers& model,
+    const std::function<void(Errors)>& callback) noexcept
 {
     IValidator<drogon_model::bsuir_library::Publishers>::Errors result;
 
@@ -26,5 +26,5 @@ IValidator<drogon_model::bsuir_library::Publishers>::Errors PublishersValidator:
     if(model.getId())
         result.push_back("Нельзя обновить id издателя");
 
-    return result;
+    callback(result);
 }
