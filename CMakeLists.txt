@@ -11,7 +11,7 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(NO_OUTPUT_DIRS)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-	add_compile_definitions(DEBUG_BUILD)
+	add_compile_definitions(DEBUG_BUILD NOMINMAX)
 endif()
 
 add_subdirectory(Packages)

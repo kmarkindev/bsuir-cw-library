@@ -15,9 +15,9 @@ namespace api::v1
         METHOD_LIST_BEGIN
             METHOD_ADD(Publishers::GetOne, "/{id}", HttpMethod::Get);
             METHOD_ADD(Publishers::GetAll, "", HttpMethod::Get);
-            METHOD_ADD(Publishers::Create, "", HttpMethod::Post);
-            METHOD_ADD(Publishers::Update, "/{id}", HttpMethod::Put);
-            METHOD_ADD(Publishers::Delete, "/{id}", HttpMethod::Delete);
+            METHOD_ADD(Publishers::Create, "", HttpMethod::Post, "AuthFilter");
+            METHOD_ADD(Publishers::Update, "/{id}", HttpMethod::Put, "AuthFilter");
+            METHOD_ADD(Publishers::Delete, "/{id}", HttpMethod::Delete, "AuthFilter");
         METHOD_LIST_END
     };
 }

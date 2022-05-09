@@ -4,6 +4,13 @@
 #include <json/json.h>
 #include <vector>
 
+inline drogon::HttpResponsePtr GetJsonResponse(const Json::Value& json, int code)
+{
+    auto response = drogon::HttpResponse::newHttpJsonResponse(json);
+    response->setStatusCode(static_cast<drogon::HttpStatusCode>(code));
+    return response;
+}
+
 inline drogon::HttpResponsePtr GetErrorResponse(const std::string& error, int code)
 {
     auto json = Json::Value();
@@ -17,10 +24,7 @@ inline drogon::HttpResponsePtr GetErrorResponse(const std::string& error, int co
         json["error_message"] = error;
 #endif
 
-    auto response = drogon::HttpResponse::newHttpJsonResponse(json);
-    response->setStatusCode(static_cast<drogon::HttpStatusCode>(code));
-
-    return response;
+    return GetJsonResponse(json, code);
 }
 
 inline drogon::HttpResponsePtr GetNoJsonErrorResponse()
@@ -37,7 +41,7 @@ inline drogon::HttpResponsePtr GetJsonCollectionResponseFrom(const std::vector<M
     for(const auto& model : collection)
         result["data"].append(model.toJson());
 
-    return drogon::HttpResponse::newHttpJsonResponse(result);
+    return GetJsonResponse(result, 200);
 }
 
 template<typename ModelType>
@@ -46,7 +50,7 @@ inline drogon::HttpResponsePtr GetJsonModelResponseFrom(const ModelType& model)
     Json::Value result;
     result["data"] = model.toJson();
 
-    return drogon::HttpResponse::newHttpJsonResponse(result);
+    return GetJsonResponse(result, 200);
 }
 
 inline drogon::HttpResponsePtr GetErrorResponseFromException(const std::exception& ex)
