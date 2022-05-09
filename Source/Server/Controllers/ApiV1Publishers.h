@@ -4,7 +4,7 @@
 #include <Repositories/PublisherMySqlRepository.h>
 #include <Helpers/ResponseHelpers.h>
 #include <Dto/RepoQueryResult.h>
-#include <Models/Publisher.h>
+#include <Models/Publishers.h>
 
 using namespace drogon;
 
@@ -24,13 +24,13 @@ namespace api::v1
         explicit Publishers();
 
         void GetPublisher(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&publishers,
-            unsigned long long publisherId);
+            std::uint64_t publisherId);
         void GetPublishers(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback);
         void CreatePublisher(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback);
         void UpdatePublisher(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&publishers,
-            unsigned long long publisherId);
+            std::uint64_t publisherId);
         void DeletePublisher(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
-            unsigned long long publisherId);
+            std::uint64_t publisherId);
     private:
         PublisherMySqlRepository _publishersRepository;
     };

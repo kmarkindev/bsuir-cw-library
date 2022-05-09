@@ -1,7 +1,7 @@
 #pragma once
 
 #include <drogon/HttpController.h>
-#include <Models/Author.h>
+#include <Models/Authors.h>
 #include <Repositories/AuthorMySqlRepository.h>
 #include <Helpers/ResponseHelpers.h>
 #include <Dto/RepoQueryResult.h>
@@ -24,14 +24,14 @@ namespace api::v1
         explicit Authors();
 
         void GetAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
-            unsigned long long authorId);
+            std::uint64_t authorId);
         void GetAuthors(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback);
         void CreateAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback);
         void UpdateAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
-            unsigned long long authorId);
+            std::uint64_t authorId);
         void DeleteAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
-            unsigned long long authorId);
+            std::uint64_t authorId);
     private:
-        AuthorMySqlRepository _authorsRepository;
+        drogon::orm::Mapper<drogon_model::bsuir_library::Authors> _authorsMapper;
     };
 }

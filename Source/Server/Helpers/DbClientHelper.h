@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 
-inline void DeleteRecord(drogon::orm::DbClientPtr dbClient, const std::string& table, unsigned long long id,
+inline void DeleteRecord(drogon::orm::DbClientPtr dbClient, const std::string& table, std::uint64_t id,
     std::function<void(RepoQueryResult)> callback)
 {
     dbClient->execSqlAsync("DELETE FROM " + table + " WHERE id = ?", [callback](const drogon::orm::Result& res)
@@ -19,7 +19,7 @@ inline void DeleteRecord(drogon::orm::DbClientPtr dbClient, const std::string& t
 
 template<typename... Values>
 inline void InsertRecord(drogon::orm::DbClientPtr dbClient, const std::string& table,
-    std::function<void(RepoQueryResult, unsigned long long)> callback,
+    std::function<void(RepoQueryResult, std::uint64_t)> callback,
     const std::vector<std::string>& columns, Values&&... values)
 {
     if(columns.empty())
@@ -52,7 +52,7 @@ inline void InsertRecord(drogon::orm::DbClientPtr dbClient, const std::string& t
 }
 
 template<typename... Values>
-inline void UpdateRecord(drogon::orm::DbClientPtr dbClient, const std::string& table, unsigned long long id,
+inline void UpdateRecord(drogon::orm::DbClientPtr dbClient, const std::string& table, std::uint64_t id,
     std::function<void(RepoQueryResult)> callback,
     const std::vector<std::string>& columns, Values&&... values)
 {
@@ -80,7 +80,7 @@ inline void UpdateRecord(drogon::orm::DbClientPtr dbClient, const std::string& t
 }
 
 template<typename ModelType>
-inline void FindRecordById(drogon::orm::DbClientPtr dbClient, const std::string& table, unsigned long long id,
+inline void FindRecordById(drogon::orm::DbClientPtr dbClient, const std::string& table, std::uint64_t id,
     std::function<void(RepoQueryResult, std::vector<ModelType>*)> callback)
 {
     dbClient->execSqlAsync("SELECT * FROM " + table + " WHERE id = ? LIMIT 1",

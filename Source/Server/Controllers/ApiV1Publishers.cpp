@@ -7,11 +7,12 @@ api::v1::Publishers::Publishers()
 }
 
 void api::v1::Publishers::GetPublisher(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback,
-    unsigned long long publisherId)
+    std::uint64_t publisherId)
 {
     try
     {
-        _publishersRepository.FindPublisherById(publisherId, [callback](RepoQueryResult res, std::vector<Publisher>* publishers)
+        _publishersRepository.FindPublisherById(publisherId, [callback](RepoQueryResult res,
+            std::vector<drogon_model::bsuir_library::Publishers>* publishers)
         {
             if(!res.isSuccess)
             {
@@ -35,7 +36,8 @@ void api::v1::Publishers::GetPublishers(const HttpRequestPtr &req, std::function
 {
     try
     {
-        _publishersRepository.GetPublishers([callback](RepoQueryResult res, std::vector<Publisher>* publishers)
+        _publishersRepository.GetPublishers([callback](RepoQueryResult res,
+            std::vector<drogon_model::bsuir_library::Publishers>* publishers)
         {
             if(!res.isSuccess)
             {
@@ -64,14 +66,14 @@ void api::v1::Publishers::CreatePublisher(const HttpRequestPtr &req, std::functi
 
     try
     {
-        Publisher publisher(*json);
+        drogon_model::bsuir_library::Publishers publisher(*json);
 
         _publishersRepository.InsertPublisher(publisher, [callback, publisher](RepoQueryResult res,
-            unsigned long long insertedId) mutable
+            std::uint64_t insertedId) mutable
         {
             if(res.isSuccess)
             {
-                publisher.SetId(insertedId);
+                publisher.setId(insertedId);
                 callback(GetJsonModelResponseFrom(publisher));
             }
             else
@@ -91,7 +93,7 @@ void api::v1::Publishers::CreatePublisher(const HttpRequestPtr &req, std::functi
 }
 
 void api::v1::Publishers::UpdatePublisher(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
-    unsigned long long publisherId)
+    std::uint64_t publisherId)
 {
     auto json = req->getJsonObject();
 
@@ -110,7 +112,7 @@ void api::v1::Publishers::UpdatePublisher(const HttpRequestPtr &req, std::functi
     try
     {
         _publishersRepository.FindPublisherById(publisherId, [callback, json, this](RepoQueryResult res,
-            std::vector<Publisher>* publishers)
+            std::vector<drogon_model::bsuir_library::Publishers>* publishers)
         {
             if(!res.isSuccess)
             {
@@ -125,7 +127,7 @@ void api::v1::Publishers::UpdatePublisher(const HttpRequestPtr &req, std::functi
             }
 
             auto publisher = (*publishers)[0];
-            publisher.FillFromJson(*json, false);
+            publisher.updateByJson(*json);
             _publishersRepository.UpdatePublisher(publisher, [callback, publisher](RepoQueryResult res) {
                 if(!res.isSuccess)
                     callback(GetErrorResponse(res.error, 500));
@@ -141,12 +143,12 @@ void api::v1::Publishers::UpdatePublisher(const HttpRequestPtr &req, std::functi
 }
 
 void api::v1::Publishers::DeletePublisher(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
-    unsigned long long publisherId)
+    std::uint64_t publisherId)
 {
     try
     {
         _publishersRepository.FindPublisherById(publisherId, [callback, this](RepoQueryResult res,
-            std::vector<Publisher>* publishers)
+            std::vector<drogon_model::bsuir_library::Publishers>* publishers)
         {
             if(!res.isSuccess)
             {
@@ -161,7 +163,7 @@ void api::v1::Publishers::DeletePublisher(const HttpRequestPtr &req, std::functi
             }
 
             auto publisher = (*publishers)[0];
-            _publishersRepository.DeletePublisher(publisher.GetId(), [callback, publisher](RepoQueryResult res) {
+            _publishersRepository.DeletePublisher(*publisher.getId(), [callback, publisher](RepoQueryResult res) {
                 if(!res.isSuccess)
                     callback(GetErrorResponse(res.error, 500));
                 else

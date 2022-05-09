@@ -1,58 +1,36 @@
 #include "ApiV1Authors.h"
 
 api::v1::Authors::Authors()
-    : _authorsRepository(app().getDbClient())
+    : _authorsMapper(app().getDbClient())
 {
 
 }
 
 void api::v1::Authors::GetAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
-    unsigned long long authorId)
+    std::uint64_t authorId)
 {
-    try
+    _authorsMapper.findByPrimaryKey(authorId, [callback](auto author)
     {
-        _authorsRepository.FindAuthorById(authorId, [callback](RepoQueryResult res, std::vector<Author>* authors){
-
-            if(!res.isSuccess)
-            {
-                callback(GetErrorResponse(res.error, 500));
-                return;
-            }
-
-            if(authors->empty())
-                callback(GetErrorResponse("Автор не найден", 404));
-            else
-                callback(GetJsonModelResponseFrom((*authors)[0]));
-        });
-    }
-    catch(std::exception& ex)
+        callback(GetJsonModelResponseFrom(author));
+    }, [callback](const orm::DrogonDbException& ex)
     {
-        callback(GetErrorResponse(ex.what(), 500));
-    }
+       callback(GetErrorResponseFromException(ex));
+    });
 }
 
 void api::v1::Authors::GetAuthors(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback)
 {
-    try
+    _authorsMapper.findAll([callback](auto authors)
     {
-        _authorsRepository.GetAuthors([callback](RepoQueryResult res, std::vector<Author>* authors)
-        {
-            if(!res.isSuccess)
-            {
-                callback(GetErrorResponse(res.error, 500));
-                return;
-            }
-
-            callback(GetJsonCollectionResponseFrom(*authors));
-        });
-    }
-    catch(std::exception& ex)
+        callback(GetJsonCollectionResponseFrom(authors));
+    }, [callback](const orm::DrogonDbException& ex)
     {
-        callback(GetErrorResponse(ex.what(), 500));
-    }
+        callback(GetErrorResponseFromException(ex));
+    });
 }
 
 void api::v1::Authors::CreateAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback)
+try
 {
     auto json = req->getJsonObject();
 
@@ -62,36 +40,24 @@ void api::v1::Authors::CreateAuthor(const HttpRequestPtr &req, std::function<voi
         return;
     }
 
-    try
-    {
-        Author author(*json);
+    drogon_model::bsuir_library::Authors author(*json);
 
-        _authorsRepository.InsertAuthor(author, [callback, author](RepoQueryResult res,
-            unsigned long long insertedId) mutable
-        {
-            if(res.isSuccess)
-            {
-                author.SetId(insertedId);
-                callback(GetJsonModelResponseFrom(author));
-            }
-            else
-            {
-                callback(GetErrorResponse(res.error, 500));
-            }
-        });
-    }
-    catch(std::invalid_argument& ex)
+    _authorsMapper.insert(author, [callback](auto author)
     {
-        callback(GetErrorResponse(ex.what(), 400));
-    }
-    catch(std::exception& ex)
+        callback(GetJsonModelResponseFrom(author));
+    }, [callback](const orm::DrogonDbException& ex)
     {
-        callback(GetErrorResponse(ex.what(), 500));
-    }
+        callback(GetErrorResponseFromException(ex));
+    });
+}
+catch(std::exception& ex)
+{
+    callback(GetErrorResponseFromException(ex));
 }
 
 void api::v1::Authors::UpdateAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
-    unsigned long long authorId)
+    std::uint64_t authorId)
+try
 {
     auto json = req->getJsonObject();
 
@@ -101,76 +67,47 @@ void api::v1::Authors::UpdateAuthor(const HttpRequestPtr &req, std::function<voi
         return;
     }
 
-    if(json->isMember("id"))
+    _authorsMapper.findByPrimaryKey(authorId, [callback, json = *json, this](auto author)
     {
-        callback(GetErrorResponse("Изменение Id автора невозможно", 400));
-        return;
-    }
-
-    try
-    {
-        _authorsRepository.FindAuthorById(authorId, [callback, json, this](RepoQueryResult res,
-            std::vector<Author>* authors)
+        author.updateByJson(json);
+        _authorsMapper.update(author, [callback, author](auto updatedCount)
         {
-            if(!res.isSuccess)
-            {
-                callback(GetErrorResponse(res.error, 500));
-                return;
-            }
-
-            if(authors->empty())
-            {
-                callback(GetErrorResponse("Автор не найден", 404));
-                return;
-            }
-
-            auto author = (*authors)[0];
-            author.FillFromJson(*json, false);
-            _authorsRepository.UpdateAuthor(author, [callback, author](RepoQueryResult res) {
-                if(!res.isSuccess)
-                    callback(GetErrorResponse(res.error, 500));
-                else
-                    callback(GetJsonModelResponseFrom(author));
-            });
+            callback(GetJsonModelResponseFrom(author));
+        }, [callback](const orm::DrogonDbException& ex)
+        {
+            callback(GetErrorResponseFromException(ex));
         });
-    }
-    catch(std::exception& ex)
+
+    }, [callback](const orm::DrogonDbException& ex)
     {
-        callback(GetErrorResponse(ex.what(), 500));
-    }
+        callback(GetErrorResponseFromException(ex));
+    });
+}
+catch(std::exception& ex)
+{
+    callback(GetErrorResponseFromException(ex));
 }
 
 void api::v1::Authors::DeleteAuthor(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
-    unsigned long long authorId)
+    std::uint64_t authorId)
+try
 {
-    try
+    _authorsMapper.findByPrimaryKey(authorId, [callback, this](auto author)
     {
-        _authorsRepository.FindAuthorById(authorId, [callback, this](RepoQueryResult res,
-            std::vector<Author>* authors)
+        _authorsMapper.deleteByPrimaryKey(*author.getId(), [callback, author](auto deletedCount)
         {
-            if(!res.isSuccess)
-            {
-                callback(GetErrorResponse(res.error, 500));
-                return;
-            }
-
-            if(authors->empty())
-            {
-                callback(GetErrorResponse("Автор не найден", 404));
-                return;
-            }
-
-            auto author = (*authors)[0];
-            _authorsRepository.DeleteAuthor(author.GetId(), [callback, author](RepoQueryResult res) {
-                if(!res.isSuccess)
-                    callback(GetErrorResponse(res.error, 500));
-                else
-                    callback(GetJsonModelResponseFrom(author));
-            });
+            callback(GetJsonModelResponseFrom(author));
+        }, [callback](const orm::DrogonDbException& ex)
+        {
+            callback(GetErrorResponseFromException(ex));
         });
-    }
-    catch(std::exception& ex)
+
+    }, [callback](const orm::DrogonDbException& ex)
     {
-        callback(GetErrorResponse(ex.what(), 500));
-    }
+        callback(GetErrorResponseFromException(ex));
+    });
+}
+catch(std::exception& ex)
+{
+    callback(GetErrorResponseFromException(ex));
 }

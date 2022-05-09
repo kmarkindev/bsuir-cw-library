@@ -35,16 +35,31 @@ inline drogon::HttpResponsePtr GetJsonCollectionResponseFrom(const std::vector<M
     result["data"] = Json::arrayValue;
 
     for(const auto& model : collection)
-        result["data"].append(model.ToJson());
+        result["data"].append(model.toJson());
 
     return drogon::HttpResponse::newHttpJsonResponse(result);
 }
 
 template<typename ModelType>
-inline drogon::HttpResponsePtr  GetJsonModelResponseFrom(const ModelType& model)
+inline drogon::HttpResponsePtr GetJsonModelResponseFrom(const ModelType& model)
 {
     Json::Value result;
-    result["data"] = model.ToJson();
+    result["data"] = model.toJson();
 
     return drogon::HttpResponse::newHttpJsonResponse(result);
+}
+
+inline drogon::HttpResponsePtr GetErrorResponseFromException(const std::exception& ex)
+{
+    std::string message = ex.what();
+
+    if(message == "0 rows found")
+        return GetErrorResponse("Запись не найдена", 404);
+
+    return GetErrorResponse(message, 500);
+}
+
+inline drogon::HttpResponsePtr GetErrorResponseFromException(const drogon::orm::DrogonDbException& ex)
+{
+    return GetErrorResponseFromException(ex.base());
 }
