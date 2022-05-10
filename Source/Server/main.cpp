@@ -2,6 +2,6 @@
 
 int main() {
     drogon::app()
-        .loadConfigFile("config.json")
+        .loadConfigFile("configs/config.json")
         .run();
 }

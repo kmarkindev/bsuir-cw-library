@@ -1,6 +1,7 @@
 /*
 !Packages/
 !Source/
+!ConanProfiles
 !.gitignore
 !.gitmodules
 !conanfile.py

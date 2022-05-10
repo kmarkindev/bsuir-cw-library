@@ -44,7 +44,7 @@ target_sources(ApiServer PRIVATE
 # Copy config example to binary folder
 add_custom_command(TARGET ApiServer POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy
-	${CMAKE_CURRENT_SOURCE_DIR}/config.json.example $<TARGET_FILE_DIR:ApiServer>/config.json.example)
+	${CMAKE_CURRENT_SOURCE_DIR}/config.json.example $<TARGET_FILE_DIR:ApiServer>/configs/config.json.example)
 
 # Copy database queries to binary folder
 add_custom_command(TARGET ApiServer POST_BUILD
