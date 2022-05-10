@@ -1,0 +1,15 @@
+services:
+  api:
+    build:
+      context: .
+      args:
+        BUILD_TYPE: release
+    ports:
+      - "7788:7788"
+    volumes:
+      - "/api-server-bin/configs":"./_Volumes/Api/Configs"
+    links:
+      - mysql
+  mysql:
+    platform: linux/amd64
+    image: mysql:8.0.29
