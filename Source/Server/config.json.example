@@ -1,7 +1,8 @@
 {
 	"custom_config": {
 		"admin_secret": "root",
-		"jwt_secret": "put_secret_token_here"
+		"jwt_secret": "put_secret_token_here",
+		"storage_path": "" // Absolute path to the storage folder
 	},
 	"listeners": [
 		{
@@ -17,8 +18,8 @@
 			"host": "127.0.0.1",
 			"port": 3306,
 			"dbname": "bsuir_library",
-			"user": "Laravel",
-			"passwd": "Laravel",
+			"user": "db-user-here",
+			"passwd": "db-user-password-here",
 			"is_fast": false,
 			"connection_number": 1,
 			"file_name": ""
