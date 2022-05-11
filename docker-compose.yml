@@ -2,19 +2,22 @@ services:
   api:
     image: lackym/bsuir-cw-library:latest
     ports:
-      - 7788
+      - 7788:7788
     volumes:
-      - "./volumes/api/configs":"/api-server-bin/configs"
-      - "./volumes/api/storage":"/api-server-bin/storage"
+      - ./volumes/api/configs:/api-server-bin/configs
+      - ./volumes/api/storage:/api-server-bin/storage
     links:
+      - mysql:docker_database_host
+    depends_on:
       - mysql
   mysql:
     platform: linux/amd64
     image: mysql:8.0.29
     ports:
-      - 3306
+      - 33061:3306
     environment:
       MYSQL_USER: library
       MYSQL_PASSWORD: library
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     volumes:
-      - "/api-server-bin/mysql_files":"/var/lib/mysql"
+      - ./volumes/mysql/data:/var/lib/mysql
