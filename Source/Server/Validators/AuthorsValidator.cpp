@@ -27,3 +27,29 @@ void AuthorsValidator::CommonChecks(const drogon_model::bsuir_library::Authors& 
     else if(model.getName()->size() > 32)
         errors.emplace_back("Имя автора не может быть длинее 32 символов");
 }
+
+void AuthorsValidator::ValidateForDelete(const drogon_model::bsuir_library::Authors& model,
+    const std::function<void(const std::vector<std::string>&)>& callback) noexcept
+{
+    _booksMapper.findBy(drogon::orm::Criteria("author_id", drogon::orm::CompareOperator::EQ, model.getValueOfId()),
+    [callback](auto books)
+    {
+        if(!books.empty())
+        {
+            callback({"Нельзя удалить автора пока существуют приписанные к нему книги"});
+            return;
+        }
+
+        callback({});
+    },
+    [callback](auto& ex)
+    {
+        callback({"Не удалось проверить наличие книг у автора"});
+    });
+}
+
+AuthorsValidator::AuthorsValidator()
+    : _booksMapper(drogon::app().getDbClient())
+{
+
+}
