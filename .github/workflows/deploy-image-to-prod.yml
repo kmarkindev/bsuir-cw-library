@@ -1,0 +1,25 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy image to the production
+
+# Controls when the workflow will run
+on:
+  workflow_run:
+    workflows: [ "Docker image build and push" ]
+    branches: [ prod ]
+    types: 
+      - completed
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  deploy_built_image:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_HOST }}
+          username: ${{ secrets.PRODUCTION_SSH_USERNAME }}
+          password: ${{ secrets.PRODUCTION_SSH_PASSWORD }}
+          port: 22
+          script: touch /etc/nginx/maintenance.on && cd /api-sources && docker-compose down && git pull origin prod && docker-compose up -d && rm /etc/nginx/maintenance.on
