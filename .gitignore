@@ -5,6 +5,7 @@
 !Packages/
 !Source/
 !ConanProfiles
+!nginx-config.conf
 !.gitignore
 !.gitmodules
 !conanfile.py
