@@ -22,10 +22,11 @@ jobs:
           username: ${{ secrets.PRODUCTION_SSH_USERNAME }}
           password: ${{ secrets.PRODUCTION_SSH_PASSWORD }}
           port: 22
+          script_stop: true
           script: |
             touch /etc/nginx/maintenance.on
             cd /api-sources
-            docker-compose down
+            docker compose down
             git pull origin prod
-            docker-compose up -d
+            docker compose up -d
             rm /etc/nginx/maintenance.on
