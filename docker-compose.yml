@@ -1,15 +1,20 @@
 services:
   api:
-    build:
-      context: .
-      args:
-        BUILD_TYPE: release
+    image: lackym/bsuir-cw-library:latest
     ports:
-      - "7788:7788"
+      - 7788
     volumes:
-      - "/api-server-bin/configs":"./_Volumes/Api/Configs"
+      - "./volumes/api/configs":"/api-server-bin/configs"
+      - "./volumes/api/storage":"/api-server-bin/storage"
     links:
       - mysql
   mysql:
     platform: linux/amd64
     image: mysql:8.0.29
+    ports:
+      - 3306
+    environment:
+      MYSQL_USER: library
+      MYSQL_PASSWORD: library
+    volumes:
+      - "/api-server-bin/mysql_files":"/var/lib/mysql"

@@ -35,5 +35,6 @@ WORKDIR api-server-bin
 
 # Add metadata to image
 VOLUME /api-server-bin/configs
+VOLUME /api-server-bin/storage
 
 ENTRYPOINT ./ApiServer
