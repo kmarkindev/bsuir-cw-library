@@ -30,5 +30,6 @@ jobs:
             touch /etc/nginx/maintenance.on
             docker compose down
             git pull origin prod
+            docker compose pull
             docker compose up -d
             rm /etc/nginx/maintenance.on
