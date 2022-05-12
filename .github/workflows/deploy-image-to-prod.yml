@@ -24,8 +24,10 @@ jobs:
           port: 22
           script_stop: true
           script: |
-            touch /etc/nginx/maintenance.on
             cd /api-sources
+            docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+            docker compose config
+            touch /etc/nginx/maintenance.on
             docker compose down
             git pull origin prod
             docker compose up -d
