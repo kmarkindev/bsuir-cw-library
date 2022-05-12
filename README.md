@@ -1,8 +1,8 @@
 # bsuir-cw-library
 [![Docker image build and push](https://github.com/kmarkindev/bsuir-cw-library/actions/workflows/build-and-push-docker-image.yml/badge.svg?branch=prod&event=push)](https://github.com/kmarkindev/bsuir-cw-library/actions/workflows/build-and-push-docker-image.yml)
 
-Library management system with API written on C++/drogon and Client written on C++/wxWidgets. 
-This is my course work for the second semester.
+A Library management system with the API written in C++/drogon and the Client written in C++/wxWidgets. 
+This is my course work for the second term in [BSUIR](https://www.bsuir.by/en/).
 
 Production runs on the following domain: [lib.kmarkin.com](http://lib.kmarkin.com/).
 It will be alive at least till 10th of June 2022.
