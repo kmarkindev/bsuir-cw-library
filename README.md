@@ -4,5 +4,8 @@
 Library management system with API written on C++/drogon and Client written on C++/wxWidgets. 
 This is my course work for the second semester.
 
+Production runs on the following domain: [lib.kmarkin.com](http://lib.kmarkin.com/).
+It will be alive at least till 10th of June 2022.
+
 You can find all API requests 
 [here in Postman public workspace](https://www.postman.com/kmarkindev/workspace/bsuir-cw-library)
