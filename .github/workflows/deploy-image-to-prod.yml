@@ -25,7 +25,7 @@ jobs:
           script_stop: true
           script: |
             cd /api-sources
-            docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+            echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
             docker compose config
             touch /etc/nginx/maintenance.on
             docker compose down
