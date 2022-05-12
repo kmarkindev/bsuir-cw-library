@@ -29,12 +29,13 @@ RUN conan install -b=missing -pr=conan-"$BUILD_TYPE"-profile-linux32_64 .. && \
 # Create image which holds built artifacts
 FROM ubuntu:22.10 as ResultImage
 
-COPY --from=ApiServerBuild /Workdir/BuildResult/api-server-bin ./api-server-bin
+COPY --from=ApiServerBuild /Workdir/BuildResult/api-server-bin /api-server-bin
 
 WORKDIR api-server-bin
 
 # Add metadata to image
 VOLUME /api-server-bin/configs
 VOLUME /api-server-bin/storage
+EXPOSE 7788
 
 ENTRYPOINT ./ApiServer
