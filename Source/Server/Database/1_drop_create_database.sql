@@ -36,16 +36,6 @@ CREATE TABLE book_instances (
     FOREIGN KEY (book_id) REFERENCES books (id)
 );
 
-CREATE TABLE book_history (
-    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    book_instance_id BIGINT UNSIGNED NOT NULL,
-    message TEXT(1024) NOT NULL,
-
-    CONSTRAINT book_history_book_instance_id_to_book_instances_id
-    FOREIGN KEY (book_instance_id) REFERENCES book_instances (id)
-    ON DELETE CASCADE
-);
-
 CREATE TABLE readers (
     id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
     name VARCHAR(64) NOT NULL,

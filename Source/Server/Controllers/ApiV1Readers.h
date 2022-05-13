@@ -22,6 +22,3 @@ namespace api::v1
         METHOD_LIST_END
     };
 }
-
-
-
