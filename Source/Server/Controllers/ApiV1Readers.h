@@ -14,8 +14,8 @@ namespace api::v1
     {
     public:
         METHOD_LIST_BEGIN
-            METHOD_ADD(Readers::GetOne, "/{id}", HttpMethod::Get);
-            METHOD_ADD(Readers::GetAll, "", HttpMethod::Get);
+            METHOD_ADD(Readers::GetOne, "/{id}", HttpMethod::Get, "AuthFilter");
+            METHOD_ADD(Readers::GetAll, "", HttpMethod::Get, "AuthFilter");
             METHOD_ADD(Readers::Create, "", HttpMethod::Post, "AuthFilter");
             METHOD_ADD(Readers::Update, "/{id}", HttpMethod::Put, "AuthFilter");
             METHOD_ADD(Readers::Delete, "/{id}", HttpMethod::Delete, "AuthFilter");
