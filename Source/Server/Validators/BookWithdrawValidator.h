@@ -12,7 +12,7 @@ public:
     BookWithdrawValidator();
 
     void ValidateForCreation(const drogon_model::bsuir_library::BookWithdraws& model,
-        const std::function<void(const std::vector<std::string>&)>& callback) noexcept;
+        const std::function<void(const std::vector<std::string>&)>& callback) noexcept override;
 
 private:
     drogon::orm::Mapper<drogon_model::bsuir_library::BookInstances> _instMapper;
