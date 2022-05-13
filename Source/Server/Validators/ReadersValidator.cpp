@@ -55,3 +55,29 @@ void ReadersValidator::CommonChecks(const drogon_model::bsuir_library::Readers& 
             errors.emplace_back("Email читателя не может быть длинее 32 символов");
     }
 }
+
+void ReadersValidator::ValidateForDelete(const drogon_model::bsuir_library::Readers& model,
+    const std::function<void(const std::vector<std::string>&)>& callback) noexcept
+{
+    _withdrawsMapper.findBy(drogon::orm::Criteria("reader_id", drogon::orm::CompareOperator::EQ, model.getValueOfId()),
+    [callback](auto withdraws)
+    {
+        if(!withdraws.empty())
+        {
+            callback({"Нельзя удалить читателя со взятыми книгами"});
+            return;
+        }
+
+        callback({});
+    },
+    [callback](auto& ex)
+    {
+        callback({"Не удалось проверить наличие читателей"});
+    });
+}
+
+ReadersValidator::ReadersValidator()
+    : _withdrawsMapper(drogon::app().getDbClient())
+{
+
+}
