@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Библиотека</title>
+</head>
+<body>
+	<p>Что бы скачать приложение для работы с системой, нажми на <a download href="/client">эту ссылку</a></p>
+</body>
+</html>

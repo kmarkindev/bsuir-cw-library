@@ -2,7 +2,8 @@
 	"custom_config": {
 		"admin_secret": "root",
 		"jwt_secret": "put_secret_token_here",
-		"storage_path": "" // Absolute path to the storage folder
+		"storage_path": "", // Absolute path to the storage folder
+		"client_path": "" // Absolute path to the client executable
 	},
 	"listeners": [
 		{
