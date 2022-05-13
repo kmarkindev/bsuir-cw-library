@@ -28,7 +28,7 @@ void ReadersValidator::CommonChecks(const drogon_model::bsuir_library::Readers& 
         errors.emplace_back("В поле Пол указано недопустимое значение");
 
     if(!model.getBirthday())
-        errors.emplace_back("Дата рождения обязательня для заполнения");
+        errors.emplace_back("Дата рождения обязательна для заполнения");
     else if(model.getValueOfBirthday().secondsSinceEpoch() > trantor::Date::date().secondsSinceEpoch())
         errors.emplace_back("Дата рождения не может быть в будущем");
 
