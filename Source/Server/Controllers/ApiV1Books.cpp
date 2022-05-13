@@ -131,7 +131,7 @@ void api::v1::Books::GetBookFile(const HttpRequestPtr &req, std::function<void(c
     });
 }
 
-void api::v1::Books::Delete(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id)
+void api::v1::Books::DeleteBook(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id)
 try
 {
     _modelMapper.findByPrimaryKey(id, [callback, this](auto model) mutable
@@ -166,8 +166,74 @@ catch(std::exception& ex)
     callback(GetErrorResponseFromException(ex));
 }
 
+void api::v1::Books::GetInstances(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback,
+    std::uint64_t id)
+{
+    _modelMapper.findByPrimaryKey(id, [callback, this](auto model) mutable
+    {
+        _instancesMapper.findBy(orm::Criteria("book_id", orm::CompareOperator::EQ, model.getValueOfId()),
+        [callback, this](auto instances)
+        {
+            Json::Value result;
+            result["data"] = Json::arrayValue;
+
+            if(instances.size() == 0)
+            {
+                callback(GetJsonResponse(result, 200));
+                return;
+            }
+
+            std::vector<std::uint64_t> instanceIds;
+            instanceIds.reserve(instances.size());
+            for(const auto& inst : instances)
+                instanceIds.push_back(inst.getValueOfId());
+
+            _withdrawsMapper.findBy(orm::Criteria("book_instance_id", orm::CompareOperator::In, instanceIds),
+            [callback, instances](std::vector<drogon_model::bsuir_library::BookWithdraws> withdraws)
+            {
+                Json::Value result;
+                result["data"] = Json::arrayValue;
+
+                for(const auto& inst : instances)
+                {
+                    const drogon_model::bsuir_library::BookWithdraws* matchWithdraw = nullptr;
+                    for(const auto& withdraw : withdraws)
+                    {
+                        if(withdraw.getValueOfBookInstanceId() == inst.getValueOfId())
+                        {
+                            matchWithdraw = &withdraw;
+                            break;
+                        }
+                    }
+
+                    Json::Value obj;
+                    obj["instance"] = inst.toJson();
+                    obj["withdraw"] = matchWithdraw != nullptr ? matchWithdraw->toJson() : Json::nullValue;
+
+                    result["data"].append(obj);
+                }
+
+                callback(GetJsonResponse(result, 200));
+            },
+            [callback](const drogon::orm::DrogonDbException& ex)
+            {
+                callback(GetErrorResponseFromException(ex));
+            });
+        },
+        [callback](const drogon::orm::DrogonDbException& ex)
+        {
+            callback(GetErrorResponseFromException(ex));
+        });
+    }, [callback](const drogon::orm::DrogonDbException& ex)
+    {
+        callback(GetErrorResponseFromException(ex));
+    });
+}
+
 api::v1::Books::Books()
-    : _fileStorageService(app().getCustomConfig()["storage_path"].as<std::string>())
+    : _fileStorageService(app().getCustomConfig()["storage_path"].as<std::string>()),
+      _instancesMapper(app().getDbClient()),
+      _withdrawsMapper(app().getDbClient())
 {
 
 }

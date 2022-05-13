@@ -5,6 +5,8 @@
 #include "CrudController.h"
 #include <Validators/BooksValidator.h>
 #include <Services/FileStorageService.h>
+#include <Models/BookInstances.h>
+#include <Models/BookWithdraws.h>
 
 namespace api::v1
 {
@@ -18,7 +20,8 @@ namespace api::v1
             METHOD_ADD(Books::GetAll, "", HttpMethod::Get);
             METHOD_ADD(Books::CreateBook, "", HttpMethod::Post, "AuthFilter");
             METHOD_ADD(Books::UpdateBook, "/{id}", HttpMethod::Put, "AuthFilter");
-            METHOD_ADD(Books::Delete, "/{id}", HttpMethod::Delete, "AuthFilter");
+            METHOD_ADD(Books::DeleteBook, "/{id}", HttpMethod::Delete, "AuthFilter");
+            METHOD_ADD(Books::GetInstances, "/{id}/instances", HttpMethod::Get);
         METHOD_LIST_END
 
         Books();
@@ -26,9 +29,12 @@ namespace api::v1
         void CreateBook(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback);
         void UpdateBook(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
         void GetBookFile(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
-        void Delete(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
+        void DeleteBook(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
+        void GetInstances(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
 
     private:
         FileStorageService _fileStorageService;
+        orm::Mapper<drogon_model::bsuir_library::BookInstances> _instancesMapper;
+        orm::Mapper<drogon_model::bsuir_library::BookWithdraws> _withdrawsMapper;
     };
 }
