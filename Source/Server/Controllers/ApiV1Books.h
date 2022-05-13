@@ -22,6 +22,7 @@ namespace api::v1
             METHOD_ADD(Books::UpdateBook, "/{id}", HttpMethod::Put, "AuthFilter");
             METHOD_ADD(Books::DeleteBook, "/{id}", HttpMethod::Delete, "AuthFilter");
             METHOD_ADD(Books::GetInstances, "/{id}/instances", HttpMethod::Get);
+            METHOD_ADD(Books::CreateInstance, "/{id}/instances", HttpMethod::Post, "AuthFilter");
         METHOD_LIST_END
 
         Books();
@@ -31,6 +32,7 @@ namespace api::v1
         void GetBookFile(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
         void DeleteBook(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
         void GetInstances(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
+        void CreateInstance(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
 
     private:
         FileStorageService _fileStorageService;

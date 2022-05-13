@@ -230,6 +230,28 @@ void api::v1::Books::GetInstances(const HttpRequestPtr &req, std::function<void(
     });
 }
 
+void api::v1::Books::CreateInstance(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id)
+{
+    _modelMapper.findByPrimaryKey(id, [callback, this](auto model) mutable
+    {
+        drogon_model::bsuir_library::BookInstances instance;
+        instance.setBookId(model.getValueOfId());
+
+        _instancesMapper.insert(instance, [callback](auto model)
+        {
+            callback(GetJsonModelResponseFrom(model));
+        },
+        [callback](const drogon::orm::DrogonDbException& ex)
+        {
+            callback(GetErrorResponseFromException(ex));
+        });
+
+    }, [callback](const drogon::orm::DrogonDbException& ex)
+    {
+        callback(GetErrorResponseFromException(ex));
+    });
+}
+
 api::v1::Books::Books()
     : _fileStorageService(app().getCustomConfig()["storage_path"].as<std::string>()),
       _instancesMapper(app().getDbClient()),
