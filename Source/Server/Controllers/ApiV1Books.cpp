@@ -231,11 +231,18 @@ void api::v1::Books::GetInstances(const HttpRequestPtr &req, std::function<void(
 }
 
 void api::v1::Books::CreateInstance(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id)
+try
 {
-    _modelMapper.findByPrimaryKey(id, [callback, this](auto model) mutable
+    drogon_model::bsuir_library::BookInstances instance;
+    instance.setBookId(id);
+
+    _bookInstanceValidator.ValidateForCreation(instance, [callback, instance, this](auto errors)
     {
-        drogon_model::bsuir_library::BookInstances instance;
-        instance.setBookId(model.getValueOfId());
+        if(!errors.empty())
+        {
+            callback(GetValidatonErrorResponse(errors));
+            return;
+        }
 
         _instancesMapper.insert(instance, [callback](auto model)
         {
@@ -245,8 +252,103 @@ void api::v1::Books::CreateInstance(const HttpRequestPtr &req, std::function<voi
         {
             callback(GetErrorResponseFromException(ex));
         });
+    });
+}
+catch(std::exception& ex)
+{
+    callback(GetErrorResponseFromException(ex));
+}
 
+void api::v1::Books::DeleteInstance(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id)
+{
+    _instancesMapper.findByPrimaryKey(id, [callback, this](auto inst)
+    {
+        _bookInstanceValidator.ValidateForDelete(inst, [callback, inst, this](auto errors)
+        {
+            if(!errors.empty())
+            {
+                callback(GetValidatonErrorResponse(errors));
+                return;
+            }
+
+            _instancesMapper.deleteByPrimaryKey(inst.getValueOfId(), [callback, inst](auto count)
+            {
+                callback(GetJsonModelResponseFrom(inst));
+            }, [callback](const drogon::orm::DrogonDbException& ex)
+            {
+                callback(GetErrorResponseFromException(ex));
+            });
+        });
     }, [callback](const drogon::orm::DrogonDbException& ex)
+    {
+        callback(GetErrorResponseFromException(ex));
+    });
+}
+
+void api::v1::Books::WithdrawInstance(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id)
+try
+{
+    auto json = req->getJsonObject();
+
+    if(!json)
+    {
+        callback(GetNoJsonErrorResponse());
+        return;
+    }
+
+    drogon_model::bsuir_library::BookWithdraws withdraw;
+    if(json->isMember("reader_id"))
+        withdraw.setReaderId((*json)["reader_id"].as<std::uint64_t>());
+    if(json->isMember("return_at"))
+        withdraw.setReturnAt(TrantorDateFromString((*json)["return_at"].as<std::string>()));
+    withdraw.setBookInstanceId(id);
+    withdraw.setWithdrawnAt(trantor::Date::date());
+
+    _bookWithdrawValidator.ValidateForCreation(withdraw, [callback, withdraw, this](auto errors)
+    {
+        if(!errors.empty())
+        {
+            callback(GetValidatonErrorResponse(errors));
+            return;
+        }
+
+        _withdrawsMapper.insert(withdraw, [callback](auto withdraw)
+        {
+            callback(GetJsonModelResponseFrom(withdraw));
+        }, [callback](const drogon::orm::DrogonDbException& ex)
+        {
+            callback(GetErrorResponseFromException(ex));
+        });
+    });
+}
+catch(std::exception& ex)
+{
+    callback(GetErrorResponseFromException(ex));
+}
+
+void api::v1::Books::ReturnInstance(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id)
+{
+    _withdrawsMapper.findOne(orm::Criteria("book_instance_id", orm::CompareOperator::EQ, id),
+    [callback, this](auto withdraw)
+    {
+        _bookWithdrawValidator.ValidateForDelete(withdraw, [callback, withdraw, this](auto errors)
+        {
+            if(!errors.empty())
+            {
+                callback(GetValidatonErrorResponse(errors));
+                return;
+            }
+
+            _withdrawsMapper.deleteByPrimaryKey(withdraw.getValueOfId(), [callback, withdraw](auto count)
+            {
+                callback(GetJsonModelResponseFrom(withdraw));
+            }, [callback](const drogon::orm::DrogonDbException& ex)
+            {
+                callback(GetErrorResponseFromException(ex));
+            });
+        });
+    },
+    [callback](const drogon::orm::DrogonDbException& ex)
     {
         callback(GetErrorResponseFromException(ex));
     });

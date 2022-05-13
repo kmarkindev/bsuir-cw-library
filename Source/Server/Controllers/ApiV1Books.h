@@ -7,6 +7,9 @@
 #include <Services/FileStorageService.h>
 #include <Models/BookInstances.h>
 #include <Models/BookWithdraws.h>
+#include <Validators/BookWithdrawValidator.h>
+#include <Validators/BookInstanceValidator.h>
+#include <Helpers/TrantorDateHelper.h>
 
 namespace api::v1
 {
@@ -23,6 +26,9 @@ namespace api::v1
             METHOD_ADD(Books::DeleteBook, "/{id}", HttpMethod::Delete, "AuthFilter");
             METHOD_ADD(Books::GetInstances, "/{id}/instances", HttpMethod::Get);
             METHOD_ADD(Books::CreateInstance, "/{id}/instances", HttpMethod::Post, "AuthFilter");
+            METHOD_ADD(Books::DeleteInstance, "instances/{id}", HttpMethod::Delete, "AuthFilter");
+            METHOD_ADD(Books::WithdrawInstance, "/instances/{id}/withdraw", HttpMethod::Post, "AuthFilter");
+            METHOD_ADD(Books::ReturnInstance, "/instances/{id}/return", HttpMethod::Post, "AuthFilter");
         METHOD_LIST_END
 
         Books();
@@ -33,10 +39,15 @@ namespace api::v1
         void DeleteBook(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
         void GetInstances(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
         void CreateInstance(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
+        void DeleteInstance(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
+        void WithdrawInstance(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
+        void ReturnInstance(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id);
 
     private:
         FileStorageService _fileStorageService;
         orm::Mapper<drogon_model::bsuir_library::BookInstances> _instancesMapper;
         orm::Mapper<drogon_model::bsuir_library::BookWithdraws> _withdrawsMapper;
+        BookWithdrawValidator _bookWithdrawValidator;
+        BookInstanceValidator _bookInstanceValidator;
     };
 }
