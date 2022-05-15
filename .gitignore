@@ -11,5 +11,5 @@
 !conanfile.py
 !install_local_packages.ps1
 !README.md
-!conanfile.txt
+!Source/Server/conanfile.txt
 !CMakeLists.txt
