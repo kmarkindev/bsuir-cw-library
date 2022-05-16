@@ -1,8 +1,14 @@
 set(APISERVER_BINARY_DIR "${CMAKE_BINARY_DIR}/api-server-bin")
 
+find_path(JWT_CPP_INCLUDE_DIRS "jwt-cpp/base.h")
+find_package(Drogon CONFIG REQUIRED)
+find_path(PICOJSON_INCLUDE_DIRS "picojson/picojson.h")
+find_package(unofficial-libmariadb CONFIG REQUIRED)
+
 add_executable(ApiServer)
 target_sources(ApiServer PRIVATE main.cpp)
-target_link_libraries(ApiServer PRIVATE drogon CommonPackages ServerPackages)
+target_link_libraries(ApiServer PRIVATE Drogon::Drogon unofficial::libmariadb iphlpapi.lib)
+target_include_directories(ApiServer PRIVATE ${JWT_CPP_INCLUDE_DIRS} ${PICOJSON_INCLUDE_DIRS})
 
 set_target_properties(ApiServer PROPERTIES
 	CXX_STANDARD 20

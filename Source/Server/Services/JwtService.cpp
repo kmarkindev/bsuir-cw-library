@@ -9,7 +9,7 @@ JwtService::JwtService(std::string_view secret)
 
 std::string JwtService::GenerateToken()
 {
-    auto token = jwt::create<jwt::traits::kazuho_picojson>()
+    auto token = jwt::create<jwt::picojson_traits>()
         .set_issuer("auth")
         .set_type("JWS")
         .set_id(std::to_string(std::time(nullptr)))
@@ -22,7 +22,7 @@ bool JwtService::ValidateToken(const std::string& token)
 {
     try
     {
-        auto decoded = jwt::decode<jwt::traits::kazuho_picojson>(token);
+        auto decoded = jwt::decode<jwt::picojson_traits>(token);
         _verifier.verify(decoded);
     }
     catch(const std::exception& ex)

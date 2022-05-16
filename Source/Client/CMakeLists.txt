@@ -1,5 +1,7 @@
 set(CLIENT_BINARY_DIR "${CMAKE_BINARY_DIR}/client-bin")
 
+find_package(wxWidgets REQUIRED)
+
 if(WIN32)
 	add_executable(Client WIN32)
 else()
@@ -7,7 +9,9 @@ else()
 endif()
 
 target_sources(Client PRIVATE main.cpp)
-target_link_libraries(Client PRIVATE wx::mono CommonPackages ClientPackages)
+target_compile_definitions(Client PRIVATE ${wxWidgets_DEFINITIONS} "$<$<CONFIG:DEBUG>:${wxWidgets_DEFINITIONS_DEBUG}>")
+target_include_directories(Client PRIVATE ${wxWidgets_INCLUDE_DIRS})
+target_link_libraries(Client PRIVATE ${wxWidgets_LIBRARIES})
 
 set_target_properties(Client PROPERTIES
 	CXX_STANDARD 20

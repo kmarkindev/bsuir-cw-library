@@ -14,7 +14,7 @@ public:
 
 private:
     std::string _secret;
-    jwt::verifier<jwt::default_clock, jwt::traits::kazuho_picojson> _verifier;
+    jwt::verifier<jwt::default_clock, jwt::picojson_traits> _verifier;
 };
 
 

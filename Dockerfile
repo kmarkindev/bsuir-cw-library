@@ -4,23 +4,22 @@ FROM --platform=linux/amd64 ubuntu:22.10 as ApiServerBuild
 ARG BUILD_TYPE=release
 
 RUN apt-get update -y && \
-    apt-get install aptitude -y && \
-    aptitude update -y && \
-    aptitude install cmake python3 python3-pip uuid-dev build-essential -y && \
-    pip install conan
+    apt-get install cmake git curl zip unzip tar build-essential -y
 
-WORKDIR Workdir
+WORKDIR /vcpkg
 
-# Copy all sources into container
+RUN git clone https://github.com/Microsoft/vcpkg.git . && \
+    ./bootstrap-vcpkg.sh
+
+WORKDIR /Workdir
+
+RUN apt-get install pkg-config -y
+
 COPY . .
-
-# Copy conan profiles
-COPY Build/ConanProfiles /root/.conan/profiles
 
 WORKDIR BuildResult
 
-RUN conan install -b=missing -pr=conan-"$BUILD_TYPE"-profile-linux32_64 .. && \
-    cmake .. -DSKIP_WX=True && \
+RUN cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake && \
     cmake --build . --target ApiServer --config "$BUILD_TYPE"
 
 FROM --platform=linux/amd64 ubuntu:22.10 as ClientBuild
@@ -28,28 +27,22 @@ FROM --platform=linux/amd64 ubuntu:22.10 as ClientBuild
 ARG BUILD_TYPE=release
 
 RUN apt-get update -y && \
-    apt-get install aptitude -y && \
-    aptitude update -y && \
-    aptitude install cmake python3 python3-pip binutils-mingw-w64-x86-64 g++-mingw-w64-x86-64-win32 gcc-mingw-w64-x86-64-win32 -y && \
-    pip install conan
+    apt-get install cmake git curl zip unzip tar \
+    	binutils-mingw-w64-x86-64 g++-mingw-w64-x86-64-win32 gcc-mingw-w64-x86-64-win32 -y
 
-WORKDIR Workdir
+WORKDIR /vcpkg
 
-# Copy all sources into container
+RUN git clone https://github.com/Microsoft/vcpkg.git . && \
+    ./bootstrap-vcpkg.sh
+
+WORKDIR /Workdir
+
 COPY . .
-
-# Copy conan profiles
-COPY Build/ConanProfiles /root/.conan/profiles
 
 WORKDIR BuildResult
 
-RUN aptitude install m4 libtool pkg-config autoconf-archive -y
-
-RUN ls /usr/bin/
-RUN m4 --version
-
-RUN conan install -b=missing -pr=conan-"$BUILD_TYPE"-profile-crosswin32_64 .. && \
-    cmake .. --toolchain ../Build/Toolchains/linux_to_win32_toolchain.cmake -DSKIP_DROGON=True && \
+RUN cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake \
+    	-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=../Cmake/linux_to_win32_toolchain.cmake && \
     cmake --build . --target Client --config "$BUILD_TYPE"
 
 # Create image which holds built artifacts

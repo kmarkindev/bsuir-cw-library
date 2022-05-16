@@ -1,14 +1,10 @@
 /*
-!Build/
-!Dockerfile
-!docker-compose.yml
+!Cmake/
 !Packages/
 !Source/
 !nginx-config.conf
 !.gitignore
 !.gitmodules
-!conanfile.py
-!install_local_packages.ps1
 !README.md
-!conanfile.txt
 !CMakeLists.txt
+!.dockerignore
