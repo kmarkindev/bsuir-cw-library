@@ -14,6 +14,13 @@ public:
 
     void Index(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback);
     void Client(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback);
+
+private:
+
+    std::string indexPageHtml = R"(
+        qwe
+    )";
+
 };
 
 

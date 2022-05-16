@@ -27,7 +27,6 @@
 		}
 	],
 	"app": {
-		"threads_num": 1,
-		"server_header_field": "bsuir-library"
+		"document_root": "./static/"
 	}
 }

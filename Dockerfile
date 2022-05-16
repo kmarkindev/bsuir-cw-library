@@ -6,7 +6,7 @@ ARG BUILD_TYPE=release
 RUN apt-get update -y && \
     apt-get install aptitude -y && \
     aptitude update -y && \
-    aptitude install cmake python3 python3-pip build-essential -y && \
+    aptitude install cmake python3 python3-pip uuid-dev build-essential -y && \
     pip install conan
 
 WORKDIR Workdir
@@ -27,7 +27,7 @@ RUN conan install -b=missing -pr=conan-"$BUILD_TYPE"-profile-linux32_64 .. && \
 # ...
 
 # Create image which holds built artifacts
-FROM ubuntu:22.10 as ResultImage
+FROM --platform=linux/amd64 ubuntu:22.10 as ResultImage
 
 COPY --from=ApiServerBuild /Workdir/BuildResult/api-server-bin /api-server-bin
 

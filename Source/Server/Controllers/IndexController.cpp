@@ -2,7 +2,7 @@
 
 void IndexController::Index(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback)
 {
-    callback(HttpResponse::newHttpViewResponse("index"));
+    callback(HttpResponse::newRedirectionResponse("/index.html"));
 }
 
 void IndexController::Client(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback)

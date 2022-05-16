@@ -1,9 +1,0 @@
-[requires]
-cpp-httplib/0.10.4
-zlib/1.2.12
-openssl/3.0.3
-cryptopp/8.6.0
-wxwidgets/3.1.5@bincrafters/stable
-
-[generators]
-cmake

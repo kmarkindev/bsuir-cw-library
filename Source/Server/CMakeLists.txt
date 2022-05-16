@@ -2,7 +2,7 @@ set(APISERVER_BINARY_DIR "${CMAKE_BINARY_DIR}/api-server-bin")
 
 add_executable(ApiServer)
 target_sources(ApiServer PRIVATE main.cpp)
-target_link_libraries(ApiServer PRIVATE ${CONAN_LIBS} drogon)
+target_link_libraries(ApiServer PRIVATE drogon CommonPackages ServerPackages)
 
 set_target_properties(ApiServer PROPERTIES
 	CXX_STANDARD 20
@@ -50,6 +50,11 @@ add_custom_command(TARGET ApiServer POST_BUILD
 add_custom_command(TARGET ApiServer POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
 	${CMAKE_CURRENT_SOURCE_DIR}/Database $<TARGET_FILE_DIR:ApiServer>/database)
+
+# Copy static files to binary folder
+add_custom_command(TARGET ApiServer POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+	${CMAKE_CURRENT_SOURCE_DIR}/Static $<TARGET_FILE_DIR:ApiServer>/static)
 
 # ##############################################################################
 # uncomment the following line for dynamically loading views 
