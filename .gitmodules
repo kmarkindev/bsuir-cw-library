@@ -1,3 +1,6 @@
 [submodule "Packages/drogon"]
 	path = Packages/drogon
 	url = https://github.com/drogonframework/drogon.git
+[submodule "Packages/wxWidgets"]
+	path = Packages/wxWidgets
+	url = https://github.com/wxWidgets/wxWidgets.git
