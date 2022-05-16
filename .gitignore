@@ -1,10 +1,9 @@
 /*
-!ConanProfiles/
+!Build/
 !Dockerfile
 !docker-compose.yml
 !Packages/
 !Source/
-!ConanProfiles
 !nginx-config.conf
 !.gitignore
 !.gitmodules

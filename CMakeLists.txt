@@ -19,10 +19,12 @@ add_library(CommonPackages INTERFACE)
 target_include_directories(CommonPackages INTERFACE
 	${CONAN_INCLUDE_DIRS_OPENSSL}
 	${CONAN_INCLUDE_DIRS_ZLIB}
+	${CONAN_INCLUDE_DIRS_LIBCURL}
 )
 target_link_libraries(CommonPackages INTERFACE
 	${CONAN_LIBS_OPENSSL}
 	${CONAN_LIBS_ZLIB}
+	${CONAN_LIBS_LIBCURL}
 )
 
 # Create target with Client packages
