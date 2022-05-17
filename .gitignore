@@ -1,5 +1,4 @@
 /*
-!CMake/
 !Packages/
 !Source/
 !nginx-config.conf
@@ -8,3 +7,4 @@
 !README.md
 !CMakeLists.txt
 !.dockerignore
+!vcpkg.json
