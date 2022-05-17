@@ -1,0 +1,19 @@
+{
+    "name": "bsuir-cw-library",
+    "version": "1.0.0",
+    "dependencies": [
+        {
+            "name": "drogon",
+            "features": [
+                "mysql",
+                "orm"
+            ]
+        },
+        "wxwidgets",
+        "cpp-httplib",
+        "nlohmann-json",
+        "jwt-cpp",
+        "picojson",
+        "libmariadb"
+    ]
+}
