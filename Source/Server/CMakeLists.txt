@@ -7,7 +7,10 @@ find_package(unofficial-libmariadb CONFIG REQUIRED)
 
 add_executable(ApiServer)
 target_sources(ApiServer PRIVATE main.cpp)
-target_link_libraries(ApiServer PRIVATE Drogon::Drogon unofficial::libmariadb iphlpapi.lib)
+target_link_libraries(ApiServer PRIVATE Drogon::Drogon unofficial::libmariadb)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	target_link_libraries(ApiServer PRIVATE iphlpapi.lib)
+endif()
 target_include_directories(ApiServer PRIVATE ${JWT_CPP_INCLUDE_DIRS} ${PICOJSON_INCLUDE_DIRS})
 
 set_target_properties(ApiServer PROPERTIES

@@ -4,17 +4,21 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 	message(FATAL_ERROR "Cmake generation in source dir is not allowed. Make an out of source build instead.")
 endif()
 
+set(VCPKG_CRT_LINKAGE "static")
+
 # Config vcpkg
-if(WIN32)
-	set(VCPKG_TARGET_TRIPLET "x64-windows-static")
-else()
-	set(VCPKG_TARGET_TRIPLET "x64-linux")
+if(NOT DEFINED VCPKG_TARGET_TRIPLET)
+	if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+		set(VCPKG_TARGET_TRIPLET "x64-windows-static")
+	else()
+		set(VCPKG_TARGET_TRIPLET "x64-mingw-static")
+	endif()
 endif()
 
 project(bsuir-cw-library LANGUAGES CXX)
 
 # Since we are using static linkage for packages, we need to use the same one here
-if(MSVC)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 		set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDebug")
 	else()

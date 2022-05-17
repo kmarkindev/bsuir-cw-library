@@ -1,8 +1,8 @@
 set(CLIENT_BINARY_DIR "${CMAKE_BINARY_DIR}/client-bin")
 
-find_package(wxWidgets REQUIRED)
+find_package(wxWidgets COMPONENTS mono REQUIRED)
 
-if(WIN32)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	add_executable(Client WIN32)
 else()
 	add_executable(Client)
