@@ -20,21 +20,23 @@ RUN git clone https://github.com/Microsoft/vcpkg.git . && \
 
 # Finally configure and build
 WORKDIR /Workdir/BuildResult
-RUN cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake \
-    -DCMAKE_MAKE_PROGRAM=/usr/bin/make -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DCMAKE_C_COMPILER=/usr/bin/gcc && \
+RUN export CC=/usr/bin/gcc && export CXX=g++ && export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
+	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_SYSTEM_NAME=Linux && \
     cmake --build . --target ApiServer --config "$BUILD_TYPE"
 
 FROM --platform=linux/amd64 ubuntu:22.10 as ClientBuild
 
 ARG BUILD_TYPE=release
 
-# Install all packages
+# Install all packages and add additional repos
 RUN apt-get update -y && \
-    apt-get install cmake make pkg-config git curl zip unzip tar \
+    apt-get install wget apt-transport-https software-properties-common -y && \
+    echo "deb http://security.ubuntu.com/ubuntu impish-security main" | tee /etc/apt/sources.list.d/impish-security.list && \
+	wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb && \
+	dpkg -i packages-microsoft-prod.deb && \
+    apt-get update -y && \
+    apt-get install cmake make pkg-config git curl zip unzip tar libssl1.1 powershell \
     	gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 binutils-mingw-w64-x86-64 mingw-w64-x86-64-dev -y
-
-# Install powershell since brotli needs it in order to compile in vcpkg
-WORKDIR /PowershellInstall
 
 # Copy sources into work dir
 WORKDIR /Workdir
@@ -45,9 +47,11 @@ WORKDIR /vcpkg
 RUN git clone https://github.com/Microsoft/vcpkg.git . && \
     ./bootstrap-vcpkg.sh
 
+# TODO: Fix it in some more elegant way?
 # Need to create symlinks since some packages can't find win32 headers without first capical letter
 RUN ln -s /usr/x86_64-w64-mingw32/include/windows.h /usr/x86_64-w64-mingw32/include/Windows.h && \
-	ln -s /usr/x86_64-w64-mingw32/include/winsock2.h /usr/x86_64-w64-mingw32/include/WinSock2.h
+	ln -s /usr/x86_64-w64-mingw32/include/winsock2.h /usr/x86_64-w64-mingw32/include/WinSock2.h && \
+    ln -s /usr/x86_64-w64-mingw32/include/rpc.h /usr/x86_64-w64-mingw32/include/Rpc.h
 
 # Set compiler symlink to posix since we need to support std multithreading library
 RUN echo '1' | update-alternatives --config x86_64-w64-mingw32-g++ && \
@@ -55,8 +59,8 @@ RUN echo '1' | update-alternatives --config x86_64-w64-mingw32-g++ && \
 
 # Finally run configuration and build
 WORKDIR /Workdir/BuildResult
-RUN export CC=/usr/bin/x86_64-w64-mingw32-gcc-posix && export CXX=/usr/bin/x86_64-w64-mingw32-g++-posix && export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
-	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake \
+RUN export CC=/usr/bin/x86_64-w64-mingw32-gcc && export CXX=/usr/bin/x86_64-w64-mingw32-g++ && export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
+	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_SYSTEM_NAME=Windows && \
     	-DVCPKG_TARGET_TRIPLET=x64-mingw-static -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=/vcpkg/scripts/toolchains/windows.cmake && \
     cmake --build . --target Client --config "$BUILD_TYPE"
 
