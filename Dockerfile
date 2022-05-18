@@ -66,7 +66,7 @@ RUN export CC=/usr/bin/x86_64-w64-mingw32-gcc && export CXX=/usr/bin/x86_64-w64-
 FROM --platform=linux/amd64 ubuntu:22.10 as ResultImage
 
 RUN apt-get update -y && \
-    apt-get install brotli -y
+    apt-get install libbrotli1  -y
 
 # Copy all compiled binaries
 COPY --from=ApiServerBuild /Workdir/BuildResult/api-server-bin /api-server-bin
