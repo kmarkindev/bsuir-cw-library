@@ -4,6 +4,7 @@ name: Deploy image to the production
 
 # Controls when the workflow will run
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: [ "Docker image build and push" ]
     branches: [ prod ]
