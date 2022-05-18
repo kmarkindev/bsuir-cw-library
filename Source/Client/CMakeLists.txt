@@ -7,7 +7,7 @@ else()
 	add_executable(Client)
 endif()
 
-if(MINGW)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
 	target_link_options(Client PRIVATE -static-libgcc -static-libstdc++)
 endif()
 
