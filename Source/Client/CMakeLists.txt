@@ -8,7 +8,7 @@ else()
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-	target_link_options(Client PRIVATE -static-libgcc -static-libstdc++)
+	target_link_options(Client PRIVATE -static-libgcc -static-libstdc++ -pthread)
 endif()
 
 target_sources(Client PRIVATE main.cpp)
