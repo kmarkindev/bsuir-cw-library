@@ -5,6 +5,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	add_executable(Client WIN32)
 else()
 	add_executable(Client)
+endif()
+
+if(MINGW)
 	target_link_options(Client PRIVATE -static-libgcc -static-libstdc++)
 endif()
 
