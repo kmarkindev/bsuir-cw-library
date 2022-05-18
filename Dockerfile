@@ -20,7 +20,7 @@ RUN git clone https://github.com/Microsoft/vcpkg.git . && \
 
 # Finally configure and build
 WORKDIR /Workdir/BuildResult
-RUN export CC=/usr/bin/gcc && export CXX=g++ && export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
+RUN export CC=/usr/bin/gcc && export CXX=/usr/bin/g++ && export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
 	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_SYSTEM_NAME=Linux && \
     cmake --build . --target ApiServer --config "$BUILD_TYPE"
 
@@ -51,17 +51,15 @@ RUN git clone https://github.com/Microsoft/vcpkg.git . && \
 # Need to create symlinks since some packages can't find win32 headers without first capical letter
 RUN ln -s /usr/x86_64-w64-mingw32/include/windows.h /usr/x86_64-w64-mingw32/include/Windows.h && \
 	ln -s /usr/x86_64-w64-mingw32/include/winsock2.h /usr/x86_64-w64-mingw32/include/WinSock2.h && \
-    ln -s /usr/x86_64-w64-mingw32/include/rpc.h /usr/x86_64-w64-mingw32/include/Rpc.h
-
-# Set compiler symlink to posix since we need to support std multithreading library
-RUN echo '1' | update-alternatives --config x86_64-w64-mingw32-g++ && \
+    ln -s /usr/x86_64-w64-mingw32/include/rpc.h /usr/x86_64-w64-mingw32/include/Rpc.h && \
+# Set compiler symlink to posix since we need to support std threading library
+	echo '1' | update-alternatives --config x86_64-w64-mingw32-g++ && \
     echo '1' | update-alternatives --config x86_64-w64-mingw32-gcc
 
 # Finally run configuration and build
 WORKDIR /Workdir/BuildResult
 RUN export CC=/usr/bin/x86_64-w64-mingw32-gcc && export CXX=/usr/bin/x86_64-w64-mingw32-g++ && export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
 	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_SYSTEM_NAME=Windows && \
-    	-DVCPKG_TARGET_TRIPLET=x64-mingw-static -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=/vcpkg/scripts/toolchains/windows.cmake && \
     cmake --build . --target Client --config "$BUILD_TYPE"
 
 # Create image which holds built artifacts

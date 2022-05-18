@@ -1,6 +1,7 @@
 {
     "name": "bsuir-cw-library",
     "version": "1.0.0",
+    "builtin-baseline": "e162e68c7e5103d85f3599211bb1fe706964f553",
     "dependencies": [
         {
             "name": "drogon",
@@ -9,7 +10,6 @@
                 "orm"
             ]
         },
-        "wxwidgets",
         "cpp-httplib",
         "nlohmann-json",
         "jwt-cpp",
