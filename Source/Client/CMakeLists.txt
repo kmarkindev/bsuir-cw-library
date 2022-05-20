@@ -1,10 +1,12 @@
 set(CLIENT_BINARY_DIR "${CMAKE_BINARY_DIR}/client-bin")
 
+find_path(CPP_HTTPLIB_INCLUDE_DIRS "httplib.h")
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	# wxWidgets wants to use WinMain if built for Windows
 	add_executable(Client WIN32)
 else()
-	add_executable(Client)
+	add_executable(Client Repository/ReadersRepository.cpp Repository/ReadersRepository.h Repository/AuthorsRepository.cpp Repository/AuthorsRepository.h Repository/PublishersRepository.cpp Repository/PublishersRepository.h Repository/AuthorsRepository.cpp Repository/AuthorsRepository.h Repository/PublishersRepository.cpp Repository/PublishersRepository.h Repository/ReadersRepository.cpp Repository/ReadersRepository.h)
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
@@ -14,6 +16,7 @@ endif()
 
 target_sources(Client PRIVATE main.cpp)
 target_link_libraries(Client PRIVATE wx::core wx::base)
+target_include_directories(Client PRIVATE ${CPP_HTTPLIB_INCLUDE_DIRS})
 
 set_target_properties(Client PROPERTIES
 	CXX_STANDARD 20
@@ -27,8 +30,14 @@ set_target_properties(Client PROPERTIES
 target_include_directories(Client PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+aux_source_directory(Repository REPOS_SRC)
+aux_source_directory(Services/HttpClient HTTPCLIENT_SRC)
+
 target_sources(Client PRIVATE
 	main.cpp
 	App.cpp
 	App.h
+	${REPOS_SRC}
+	${HTTPCLIENT_SRC}
 )
