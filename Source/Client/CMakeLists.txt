@@ -33,13 +33,19 @@ target_include_directories(Client PRIVATE
 
 aux_source_directory(Repository REPOS_SRC)
 aux_source_directory(Models MODELS_SRC)
+aux_source_directory(Dto DTO_SRC)
+aux_source_directory(Services/Api APTSERVICES_SRC)
 aux_source_directory(Services/HttpClient HTTPCLIENT_SRC)
+aux_source_directory(Exceptions EXCEPTIONS_SRC)
 
 target_sources(Client PRIVATE
 	main.cpp
 	App.cpp
 	App.h
 	${REPOS_SRC}
+	${EXCEPTIONS_SRC}
 	${MODELS_SRC}
+	${APTSERVICES_SRC}
 	${HTTPCLIENT_SRC}
+	${DTO_SRC}
 )
