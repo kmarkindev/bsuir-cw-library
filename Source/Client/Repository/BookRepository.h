@@ -5,6 +5,7 @@
 
 class BookRepository
 {
+public:
     Book GetBookById(std::uint64_t id);
     std::vector<Book> GetAllBooks();
     Book CreateBook(const Book& author);

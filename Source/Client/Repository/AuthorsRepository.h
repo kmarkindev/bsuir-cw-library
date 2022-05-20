@@ -6,6 +6,7 @@
 
 class AuthorsRepository
 {
+public:
     Author GetAuthorById(std::uint64_t id);
     std::vector<Author> GetAllAuthors();
     Author CreateAuthor(const Author& author);

@@ -6,6 +6,7 @@
 
 class PublishersRepository
 {
+public:
     Publisher GetPublisherById(std::uint64_t id);
     std::vector<Publisher> GetAllPublishers();
     Publisher CreatePublisher(const Publisher& publisher);

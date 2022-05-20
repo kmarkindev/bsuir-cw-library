@@ -6,6 +6,7 @@
 
 class ReadersRepository
 {
+public:
     Reader GetPublisherById(std::uint64_t id);
     std::vector<Reader> GetAllPublishers();
     Reader CreatePublisher(const Reader& reader);
