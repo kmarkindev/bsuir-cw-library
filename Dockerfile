@@ -21,7 +21,7 @@ RUN git clone https://github.com/Microsoft/vcpkg.git . && \
 # Finally configure and build
 WORKDIR /Workdir/BuildResult
 RUN export CC=/usr/bin/gcc && export CXX=/usr/bin/g++ && export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
-	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_SYSTEM_NAME=Linux && \
+	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux && \
     cmake --build . --target ApiServer --config "$BUILD_TYPE"
 
 FROM --platform=linux/amd64 ubuntu:22.10 as ClientBuild
@@ -59,7 +59,8 @@ RUN ln -s /usr/x86_64-w64-mingw32/include/windows.h /usr/x86_64-w64-mingw32/incl
 # Finally run configuration and build
 WORKDIR /Workdir/BuildResult
 RUN export CC=/usr/bin/x86_64-w64-mingw32-gcc && export CXX=/usr/bin/x86_64-w64-mingw32-g++ && export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
-	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_SYSTEM_NAME=Windows && \
+	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-static \
+    	-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=/vcpkg/scripts/toolchains/windows.cmake && \
     cmake --build . --target Client --config "$BUILD_TYPE"
 
 # Create image which holds built artifacts

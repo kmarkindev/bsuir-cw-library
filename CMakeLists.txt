@@ -6,23 +6,14 @@ endif()
 
 # Config vcpkg
 set(VCPKG_CRT_LINKAGE "static")
-message(STATUS "Target system name is '${CMAKE_SYSTEM_NAME}'")
-message(STATUS "Host system name is '${CMAKE_HOST_SYSTEM_NAME}'")
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-	set(VCPKG_TARGET_TRIPLET "x64-linux")
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
-		set(VCPKG_TARGET_TRIPLET "x64-windows-static")
-	else()
-		set(VCPKG_TARGET_TRIPLET "x64-mingw-static")
-	endif()
-else()
-	message(FATAL_ERROR "Target system '${CMAKE_SYSTEM_NAME}' is not supported")
-endif()
 
 message(STATUS "Setting ${VCPKG_TARGET_TRIPLET} triplet")
 
 project(bsuir-cw-library LANGUAGES CXX)
+
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows" AND NOT CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	message(FATAL_ERROR "Trying to compile for unsupported OS '${CMAKE_SYSTEM_NAME}'")
+endif()
 
 # Since we are using static linkage for packages, we need to use the same one here
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND MSVC)

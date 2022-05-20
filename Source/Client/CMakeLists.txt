@@ -9,6 +9,7 @@ endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
 	target_link_options(Client PRIVATE -static)
+	target_compile_options(Client PRIVATE -Os)
 endif()
 
 target_sources(Client PRIVATE main.cpp)
