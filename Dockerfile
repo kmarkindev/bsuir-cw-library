@@ -60,14 +60,14 @@ RUN ln -s /usr/x86_64-w64-mingw32/include/windows.h /usr/x86_64-w64-mingw32/incl
 WORKDIR /Workdir/BuildResult
 RUN export CC=/usr/bin/x86_64-w64-mingw32-gcc && export CXX=/usr/bin/x86_64-w64-mingw32-g++ && export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
 	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-static \
-    	-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=/vcpkg/scripts/toolchains/windows.cmake -G "MinGW Makefiles" && \
+    	-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=/vcpkg/scripts/toolchains/windows.cmake -DCMAKE_SYSTEM_NAME=Windows && \
     cmake --build . --target Client --config "$BUILD_TYPE"
 
 # Create image which holds built artifacts
 FROM --platform=linux/amd64 ubuntu:22.10 as ResultImage
 
 RUN apt-get update -y && \
-    apt-get install libbrotli1  -y
+    apt-get install libbrotli1 -y
 
 # Copy all compiled binaries
 COPY --from=ApiServerBuild /Workdir/BuildResult/api-server-bin /api-server-bin
