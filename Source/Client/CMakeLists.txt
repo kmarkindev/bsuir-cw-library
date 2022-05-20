@@ -6,7 +6,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	# wxWidgets wants to use WinMain if built for Windows
 	add_executable(Client WIN32)
 else()
-	add_executable(Client Repository/ReadersRepository.cpp Repository/ReadersRepository.h Repository/AuthorsRepository.cpp Repository/AuthorsRepository.h Repository/PublishersRepository.cpp Repository/PublishersRepository.h Repository/AuthorsRepository.cpp Repository/AuthorsRepository.h Repository/PublishersRepository.cpp Repository/PublishersRepository.h Repository/ReadersRepository.cpp Repository/ReadersRepository.h)
+	add_executable(Client)
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
@@ -32,6 +32,7 @@ target_include_directories(Client PRIVATE
 )
 
 aux_source_directory(Repository REPOS_SRC)
+aux_source_directory(Models MODELS_SRC)
 aux_source_directory(Services/HttpClient HTTPCLIENT_SRC)
 
 target_sources(Client PRIVATE
@@ -39,5 +40,6 @@ target_sources(Client PRIVATE
 	App.cpp
 	App.h
 	${REPOS_SRC}
+	${MODELS_SRC}
 	${HTTPCLIENT_SRC}
 )

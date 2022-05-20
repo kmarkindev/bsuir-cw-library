@@ -26,7 +26,10 @@ try
         }
 
         if(json.isMember("file"))
-            book.setFileStoragePath(_fileStorageService.SaveFileToStorage(json["file"].as<std::string>()));
+        {
+            book.setFileStoragePath(_fileStorageService.SaveFileToStorage(json["file"]["content"].as<std::string>()));
+            book.setFileExtension(json["file"]["extension"].as<std::string>());
+        }
 
         _modelMapper.insert(book, [callback](auto model) mutable
         {
@@ -84,14 +87,17 @@ try
                     {
                         _fileStorageService.RemoveFileFromStorage(book.getValueOfFileStoragePath());
                         book.setFileStoragePathToNull();
+                        book.setFileExtensionToNull();
                     }
                 }
                 else
                 {
                     if(book.getFileStoragePath())
-                        _fileStorageService.ReplaceFileInStorage(json["file"].as<std::string>(), book.getValueOfFileStoragePath());
+                        _fileStorageService.ReplaceFileInStorage(json["file"]["content"].as<std::string>(), book.getValueOfFileStoragePath());
                     else
-                        book.setFileStoragePath(_fileStorageService.SaveFileToStorage(json["file"].as<std::string>()));
+                        book.setFileStoragePath(_fileStorageService.SaveFileToStorage(json["file"]["content"].as<std::string>()));
+
+                    book.setFileExtension(json["file"]["extension"].as<std::string>());
                 }
             }
 
@@ -124,7 +130,9 @@ void api::v1::Books::GetBookFile(const HttpRequestPtr &req, std::function<void(c
             return;
         }
 
-        callback(HttpResponse::newFileResponse(_fileStorageService.GetFilePathFromStorage(model.getValueOfFileStoragePath())));
+        auto response = HttpResponse::newFileResponse(_fileStorageService.GetFilePathFromStorage(model.getValueOfFileStoragePath()));
+        response->addHeader("file-ext", model.getValueOfFileExtension());
+        callback(response);
     }, [callback](const drogon::orm::DrogonDbException& ex)
     {
          callback(GetErrorResponseFromException(ex));

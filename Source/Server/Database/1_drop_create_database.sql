@@ -20,6 +20,7 @@ CREATE TABLE books (
     publisher_id BIGINT UNSIGNED NOT NULL,
     published_at DATE NOT NULL,
     file_storage_path VARCHAR(255) NULL,
+    file_extension VARCHAR(16) NULL,
 
     CONSTRAINT books_author_id_to_authors_id
     FOREIGN KEY (author_id) REFERENCES authors (id),

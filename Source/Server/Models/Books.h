@@ -48,6 +48,7 @@ class Books
         static const std::string _publisher_id;
         static const std::string _published_at;
         static const std::string _file_storage_path;
+        static const std::string _file_extension;
     };
 
     const static int primaryKeyNumber;
@@ -150,8 +151,18 @@ class Books
     void setFileStoragePath(std::string &&pFileStoragePath) noexcept;
     void setFileStoragePathToNull() noexcept;
 
+    /**  For column file_extension  */
+    ///Get the value of the column file_extension, returns the default value if the column is null
+    const std::string &getValueOfFileExtension() const noexcept;
+    ///Return a shared_ptr object pointing to the column const value, or an empty shared_ptr object if the column is null
+    const std::shared_ptr<std::string> &getFileExtension() const noexcept;
+    ///Set the value of the column file_extension
+    void setFileExtension(const std::string &pFileExtension) noexcept;
+    void setFileExtension(std::string &&pFileExtension) noexcept;
+    void setFileExtensionToNull() noexcept;
 
-    static size_t getColumnNumber() noexcept {  return 6;  }
+
+    static size_t getColumnNumber() noexcept {  return 7;  }
     static const std::string &getColumnName(size_t index) noexcept(false);
 
     Json::Value toJson() const;
@@ -174,6 +185,7 @@ class Books
     std::shared_ptr<uint64_t> publisherId_;
     std::shared_ptr<::trantor::Date> publishedAt_;
     std::shared_ptr<std::string> fileStoragePath_;
+    std::shared_ptr<std::string> fileExtension_;
     struct MetaData
     {
         const std::string colName_;
@@ -185,7 +197,7 @@ class Books
         const bool notNull_;
     };
     static const std::vector<MetaData> metaData_;
-    bool dirtyFlag_[6]={ false };
+    bool dirtyFlag_[7]={ false };
   public:
     static const std::string &sqlForFindingByPrimaryKey()
     {
@@ -230,6 +242,11 @@ class Books
             sql += "file_storage_path,";
             ++parametersCount;
         }
+        if(dirtyFlag_[6])
+        {
+            sql += "file_extension,";
+            ++parametersCount;
+        }
         needSelection=true;
         if(parametersCount > 0)
         {
@@ -261,6 +278,11 @@ class Books
 
         }
         if(dirtyFlag_[5])
+        {
+            sql.append("?,");
+
+        }
+        if(dirtyFlag_[6])
         {
             sql.append("?,");
 

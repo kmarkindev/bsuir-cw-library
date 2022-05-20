@@ -19,6 +19,7 @@ const std::string Books::Cols::_author_id = "author_id";
 const std::string Books::Cols::_publisher_id = "publisher_id";
 const std::string Books::Cols::_published_at = "published_at";
 const std::string Books::Cols::_file_storage_path = "file_storage_path";
+const std::string Books::Cols::_file_extension = "file_extension";
 const std::string Books::primaryKeyName = "id";
 const bool Books::hasPrimaryKey = true;
 const std::string Books::tableName = "books";
@@ -29,7 +30,8 @@ const std::vector<typename Books::MetaData> Books::metaData_={
 {"author_id","uint64_t","bigint unsigned",8,0,0,1},
 {"publisher_id","uint64_t","bigint unsigned",8,0,0,1},
 {"published_at","::trantor::Date","date",0,0,0,1},
-{"file_storage_path","std::string","varchar(255)",255,0,0,0}
+{"file_storage_path","std::string","varchar(255)",255,0,0,0},
+{"file_extension","std::string","varchar(16)",16,0,0,0}
 };
 const std::string &Books::getColumnName(size_t index) noexcept(false)
 {
@@ -69,11 +71,15 @@ Books::Books(const Row &r, const ssize_t indexOffset) noexcept
         {
             fileStoragePath_=std::make_shared<std::string>(r["file_storage_path"].as<std::string>());
         }
+        if(!r["file_extension"].isNull())
+        {
+            fileExtension_=std::make_shared<std::string>(r["file_extension"].as<std::string>());
+        }
     }
     else
     {
         size_t offset = (size_t)indexOffset;
-        if(offset + 6 > r.size())
+        if(offset + 7 > r.size())
         {
             LOG_FATAL << "Invalid SQL result for this model";
             return;
@@ -114,13 +120,18 @@ Books::Books(const Row &r, const ssize_t indexOffset) noexcept
         {
             fileStoragePath_=std::make_shared<std::string>(r[index].as<std::string>());
         }
+        index = offset + 6;
+        if(!r[index].isNull())
+        {
+            fileExtension_=std::make_shared<std::string>(r[index].as<std::string>());
+        }
     }
 
 }
 
 Books::Books(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
 {
-    if(pMasqueradingVector.size() != 6)
+    if(pMasqueradingVector.size() != 7)
     {
         LOG_ERROR << "Bad masquerading vector";
         return;
@@ -176,6 +187,14 @@ Books::Books(const Json::Value &pJson, const std::vector<std::string> &pMasquera
         if(!pJson[pMasqueradingVector[5]].isNull())
         {
             fileStoragePath_=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        dirtyFlag_[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            fileExtension_=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
         }
     }
 }
@@ -235,12 +254,20 @@ Books::Books(const Json::Value &pJson) noexcept(false)
             fileStoragePath_=std::make_shared<std::string>(pJson["file_storage_path"].asString());
         }
     }
+    if(pJson.isMember("file_extension"))
+    {
+        dirtyFlag_[6]=true;
+        if(!pJson["file_extension"].isNull())
+        {
+            fileExtension_=std::make_shared<std::string>(pJson["file_extension"].asString());
+        }
+    }
 }
 
 void Books::updateByMasqueradedJson(const Json::Value &pJson,
                                             const std::vector<std::string> &pMasqueradingVector) noexcept(false)
 {
-    if(pMasqueradingVector.size() != 6)
+    if(pMasqueradingVector.size() != 7)
     {
         LOG_ERROR << "Bad masquerading vector";
         return;
@@ -297,6 +324,14 @@ void Books::updateByMasqueradedJson(const Json::Value &pJson,
             fileStoragePath_=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
         }
     }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        dirtyFlag_[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            fileExtension_=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        }
+    }
 }
 
 void Books::updateByJson(const Json::Value &pJson) noexcept(false)
@@ -351,6 +386,14 @@ void Books::updateByJson(const Json::Value &pJson) noexcept(false)
         if(!pJson["file_storage_path"].isNull())
         {
             fileStoragePath_=std::make_shared<std::string>(pJson["file_storage_path"].asString());
+        }
+    }
+    if(pJson.isMember("file_extension"))
+    {
+        dirtyFlag_[6] = true;
+        if(!pJson["file_extension"].isNull())
+        {
+            fileExtension_=std::make_shared<std::string>(pJson["file_extension"].asString());
         }
     }
 }
@@ -477,6 +520,33 @@ void Books::setFileStoragePathToNull() noexcept
     dirtyFlag_[5] = true;
 }
 
+const std::string &Books::getValueOfFileExtension() const noexcept
+{
+    const static std::string defaultValue = std::string();
+    if(fileExtension_)
+        return *fileExtension_;
+    return defaultValue;
+}
+const std::shared_ptr<std::string> &Books::getFileExtension() const noexcept
+{
+    return fileExtension_;
+}
+void Books::setFileExtension(const std::string &pFileExtension) noexcept
+{
+    fileExtension_ = std::make_shared<std::string>(pFileExtension);
+    dirtyFlag_[6] = true;
+}
+void Books::setFileExtension(std::string &&pFileExtension) noexcept
+{
+    fileExtension_ = std::make_shared<std::string>(std::move(pFileExtension));
+    dirtyFlag_[6] = true;
+}
+void Books::setFileExtensionToNull() noexcept
+{
+    fileExtension_.reset();
+    dirtyFlag_[6] = true;
+}
+
 void Books::updateId(const uint64_t id)
 {
     id_ = std::make_shared<uint64_t>(id);
@@ -489,7 +559,8 @@ const std::vector<std::string> &Books::insertColumns() noexcept
         "author_id",
         "publisher_id",
         "published_at",
-        "file_storage_path"
+        "file_storage_path",
+        "file_extension"
     };
     return inCols;
 }
@@ -551,6 +622,17 @@ void Books::outputArgs(drogon::orm::internal::SqlBinder &binder) const
             binder << nullptr;
         }
     }
+    if(dirtyFlag_[6])
+    {
+        if(getFileExtension())
+        {
+            binder << getValueOfFileExtension();
+        }
+        else
+        {
+            binder << nullptr;
+        }
+    }
 }
 
 const std::vector<std::string> Books::updateColumns() const
@@ -575,6 +657,10 @@ const std::vector<std::string> Books::updateColumns() const
     if(dirtyFlag_[5])
     {
         ret.push_back(getColumnName(5));
+    }
+    if(dirtyFlag_[6])
+    {
+        ret.push_back(getColumnName(6));
     }
     return ret;
 }
@@ -636,6 +722,17 @@ void Books::updateArgs(drogon::orm::internal::SqlBinder &binder) const
             binder << nullptr;
         }
     }
+    if(dirtyFlag_[6])
+    {
+        if(getFileExtension())
+        {
+            binder << getValueOfFileExtension();
+        }
+        else
+        {
+            binder << nullptr;
+        }
+    }
 }
 Json::Value Books::toJson() const
 {
@@ -688,6 +785,14 @@ Json::Value Books::toJson() const
     {
         ret["file_storage_path"]=Json::Value();
     }
+    if(getFileExtension())
+    {
+        ret["file_extension"]=getValueOfFileExtension();
+    }
+    else
+    {
+        ret["file_extension"]=Json::Value();
+    }
     return ret;
 }
 
@@ -695,7 +800,7 @@ Json::Value Books::toMasqueradedJson(
     const std::vector<std::string> &pMasqueradingVector) const
 {
     Json::Value ret;
-    if(pMasqueradingVector.size() == 6)
+    if(pMasqueradingVector.size() == 7)
     {
         if(!pMasqueradingVector[0].empty())
         {
@@ -763,6 +868,17 @@ Json::Value Books::toMasqueradedJson(
                 ret[pMasqueradingVector[5]]=Json::Value();
             }
         }
+        if(!pMasqueradingVector[6].empty())
+        {
+            if(getFileExtension())
+            {
+                ret[pMasqueradingVector[6]]=getValueOfFileExtension();
+            }
+            else
+            {
+                ret[pMasqueradingVector[6]]=Json::Value();
+            }
+        }
         return ret;
     }
     LOG_ERROR << "Masquerade failed";
@@ -813,6 +929,14 @@ Json::Value Books::toMasqueradedJson(
     else
     {
         ret["file_storage_path"]=Json::Value();
+    }
+    if(getFileExtension())
+    {
+        ret["file_extension"]=getValueOfFileExtension();
+    }
+    else
+    {
+        ret["file_extension"]=Json::Value();
     }
     return ret;
 }
@@ -869,13 +993,18 @@ bool Books::validateJsonForCreation(const Json::Value &pJson, std::string &err)
         if(!validJsonOfField(5, "file_storage_path", pJson["file_storage_path"], err, true))
             return false;
     }
+    if(pJson.isMember("file_extension"))
+    {
+        if(!validJsonOfField(6, "file_extension", pJson["file_extension"], err, true))
+            return false;
+    }
     return true;
 }
 bool Books::validateMasqueradedJsonForCreation(const Json::Value &pJson,
                                                const std::vector<std::string> &pMasqueradingVector,
                                                std::string &err)
 {
-    if(pMasqueradingVector.size() != 6)
+    if(pMasqueradingVector.size() != 7)
     {
         err = "Bad masquerading vector";
         return false;
@@ -949,6 +1078,14 @@ bool Books::validateMasqueradedJsonForCreation(const Json::Value &pJson,
                   return false;
           }
       }
+      if(!pMasqueradingVector[6].empty())
+      {
+          if(pJson.isMember(pMasqueradingVector[6]))
+          {
+              if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, true))
+                  return false;
+          }
+      }
     }
     catch(const Json::LogicError &e)
     {
@@ -994,13 +1131,18 @@ bool Books::validateJsonForUpdate(const Json::Value &pJson, std::string &err)
         if(!validJsonOfField(5, "file_storage_path", pJson["file_storage_path"], err, false))
             return false;
     }
+    if(pJson.isMember("file_extension"))
+    {
+        if(!validJsonOfField(6, "file_extension", pJson["file_extension"], err, false))
+            return false;
+    }
     return true;
 }
 bool Books::validateMasqueradedJsonForUpdate(const Json::Value &pJson,
                                              const std::vector<std::string> &pMasqueradingVector,
                                              std::string &err)
 {
-    if(pMasqueradingVector.size() != 6)
+    if(pMasqueradingVector.size() != 7)
     {
         err = "Bad masquerading vector";
         return false;
@@ -1039,6 +1181,11 @@ bool Books::validateMasqueradedJsonForUpdate(const Json::Value &pJson,
       if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
       {
           if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, false))
+              return false;
+      }
+      if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+      {
+          if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, false))
               return false;
       }
     }
@@ -1147,6 +1294,26 @@ bool Books::validJsonOfField(size_t index,
                 err="String length exceeds limit for the " +
                     fieldName +
                     " field (the maximum value is 255)";
+                return false;
+            }
+
+            break;
+        case 6:
+            if(pJson.isNull())
+            {
+                return true;
+            }
+            if(!pJson.isString())
+            {
+                err="Type error in the "+fieldName+" field";
+                return false;
+            }
+            // asString().length() creates a string object, is there any better way to validate the length?
+            if(pJson.isString() && pJson.asString().length() > 16)
+            {
+                err="String length exceeds limit for the " +
+                    fieldName +
+                    " field (the maximum value is 16)";
                 return false;
             }
 

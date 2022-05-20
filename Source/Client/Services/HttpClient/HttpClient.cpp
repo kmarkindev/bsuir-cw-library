@@ -4,7 +4,6 @@ HttpResponse HttpClient::Send(const HttpRequest& request)
 {
     httplib::Client client(request.GetHostname());
     client.set_follow_location(true);
-    client.enable_server_certificate_verification(false);
 
     httplib::Request libRequest;
 
