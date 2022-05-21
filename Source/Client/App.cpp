@@ -3,5 +3,5 @@
 bool App::OnInit()
 {
     wxMessageBox("Hello, World!", "Hi");
-    return true;
+    return false;
 }

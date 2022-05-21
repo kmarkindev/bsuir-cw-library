@@ -1,17 +1,21 @@
 #pragma once
 
 #include <Models/Book.h>
-#include <vector>
+#include "Repository.h"
+#include <Dto/File.h>
 
-class BookRepository
+class BookRepository : public Repository<Book>
 {
 public:
-    Book GetBookById(std::uint64_t id);
-    std::vector<Book> GetAllBooks();
-    Book CreateBook(const Book& author);
-    Book UpdateBook(const Book& author);
-    Book DeleteBook(std::uint64_t id);
+    explicit BookRepository(AppConfig config);
+
+    Book CreateWithFile(const Book& book, const std::string& fileContent, const std::string& fileExtension);
+    Book UpdateWithFile(const Book& book, const std::string& fileContent, const std::string& fileExtension);
+    File GetFile(std::uint64_t id);
     std::vector<BookInstance> GetInstances(std::uint64_t bookId);
     BookWithdraw WithdrawBook(std::uint64_t instanceId);
     void ReturnBook(std::uint64_t instanceId);
+
+private:
+    AppConfig _config;
 };

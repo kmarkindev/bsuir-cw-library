@@ -1,28 +1,9 @@
 #include "BookRepository.h"
 
-Book BookRepository::GetBookById(std::uint64_t id)
+BookRepository::BookRepository(AppConfig config)
+    : Repository<Book>(std::move(config))
 {
-    return Book();
-}
 
-std::vector<Book> BookRepository::GetAllBooks()
-{
-    return std::vector<Book>();
-}
-
-Book BookRepository::CreateBook(const Book& author)
-{
-    return Book();
-}
-
-Book BookRepository::UpdateBook(const Book& author)
-{
-    return Book();
-}
-
-Book BookRepository::DeleteBook(std::uint64_t id)
-{
-    return Book();
 }
 
 std::vector<BookInstance> BookRepository::GetInstances(std::uint64_t bookId)
@@ -38,4 +19,19 @@ BookWithdraw BookRepository::WithdrawBook(std::uint64_t instanceId)
 void BookRepository::ReturnBook(std::uint64_t instanceId)
 {
 
+}
+
+Book BookRepository::CreateWithFile(const Book& book, const std::string& fileContent, const std::string& fileExtension)
+{
+    return Book(nlohmann::basic_json());
+}
+
+Book BookRepository::UpdateWithFile(const Book& book, const std::string& fileContent, const std::string& fileExtension)
+{
+    return Book(nlohmann::basic_json());
+}
+
+File BookRepository::GetFile(std::uint64_t id)
+{
+    return {};
 }

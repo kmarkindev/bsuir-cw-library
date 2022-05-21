@@ -7,6 +7,7 @@
 
 class BookInstance
 {
+public:
     std::optional<std::uint64_t> id;
     std::optional<std::uint64_t> bookId;
     std::optional<BookWithdraw> withdraw;

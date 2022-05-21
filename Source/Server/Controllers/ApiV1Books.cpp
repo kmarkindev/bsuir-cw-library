@@ -11,9 +11,11 @@ try
         return;
     }
 
-    // Do not allow setting path from request since we'll generate it ourselves
+    // Do not allow setting path and extension from request since we'll generate it ourselves
     if(json->isMember("file_storage_path"))
         json->removeMember("file_storage_path");
+    if(json->isMember("file_extension"))
+        json->removeMember("file_extension");
 
     drogon_model::bsuir_library::Books book(*json);
 
