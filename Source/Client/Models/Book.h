@@ -20,6 +20,8 @@ public:
     std::optional<std::string> fileStoragePath;
     std::optional<std::string> fileExtension;
 
+    Book() = default;
+
     explicit Book(const nlohmann::json& json)
     {
         if(json["id"].is_number())

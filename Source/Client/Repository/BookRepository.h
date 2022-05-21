@@ -9,13 +9,10 @@ class BookRepository : public Repository<Book>
 public:
     explicit BookRepository(AppConfig config);
 
-    Book CreateWithFile(const Book& book, const std::string& fileContent, const std::string& fileExtension);
-    Book UpdateFile(const std::string& fileContent, const std::string& fileExtension);
+    Book CreateWithFile(const Book& book, const File& file);
+    Book UpdateFile(std::uint64_t bookId, const File& file);
     File GetFile(std::uint64_t id);
     std::vector<BookInstance> GetInstances(std::uint64_t bookId);
     BookWithdraw WithdrawBook(std::uint64_t instanceId);
     void ReturnBook(std::uint64_t instanceId);
-
-private:
-    AppConfig _config;
 };

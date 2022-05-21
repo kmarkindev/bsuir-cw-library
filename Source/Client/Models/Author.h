@@ -11,6 +11,8 @@ public:
     std::optional<std::uint64_t> id;
     std::optional<std::string> name;
 
+    Author() = default;
+
     explicit Author(const nlohmann::json& json)
     {
         if(json["id"].is_number())

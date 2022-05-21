@@ -18,6 +18,8 @@ public:
     std::optional<std::string> phone;
     std::optional<std::string> email;
 
+    Reader() = default;
+
     explicit Reader(const nlohmann::json& json)
     {
         if(json["id"].is_number())

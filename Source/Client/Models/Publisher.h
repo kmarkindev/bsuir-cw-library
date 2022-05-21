@@ -11,6 +11,8 @@ public:
     std::optional<std::uint64_t> id;
     std::optional<std::string> name;
 
+    Publisher() = default;
+
     explicit Publisher(const nlohmann::json& json)
     {
         if(json["id"].is_number())

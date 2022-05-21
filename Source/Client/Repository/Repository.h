@@ -43,7 +43,7 @@ public:
 
     virtual ModelType GetById(std::uint64_t id)
     {
-        auto response = FetchApi("GET", _config.apiUrl, std::string(ModelType::GetPath()) + "/" + std::to_string(id));
+        auto response = FetchApi("GET", _config.apiUrl, ModelType::GetPath() + "/" + std::to_string(id));
         auto json = nlohmann::json::parse(response.GetBody());
 
         return ModelType(json);
@@ -51,7 +51,7 @@ public:
 
     virtual std::vector<ModelType> GetAll()
     {
-        auto response = FetchApi("GET", _config.apiUrl, std::string(ModelType::GetPath()));
+        auto response = FetchApi("GET", _config.apiUrl, ModelType::GetPath());
         auto json = nlohmann::json::parse(response.GetBody());
 
         std::vector<ModelType> models;
@@ -62,7 +62,7 @@ public:
 
     virtual ModelType Create(const ModelType& model)
     {
-        auto response = FetchApi("POST", _config.apiUrl, std::string(ModelType::GetPath()), to_string(model.ToJson()));
+        auto response = FetchApi("POST", _config.apiUrl, ModelType::GetPath(), to_string(model.ToJson()));
         auto json = nlohmann::json::parse(response.GetBody());
 
         return ModelType(json);
@@ -74,7 +74,7 @@ public:
         if(!body["id"].empty())
             body["id"].clear();
 
-        auto response = FetchApi("PUT", _config.apiUrl, std::string(ModelType::GetPath()), to_string(body));
+        auto response = FetchApi("PUT", _config.apiUrl, ModelType::GetPath(), to_string(body));
         auto json = nlohmann::json::parse(response.GetBody());
 
         return ModelType(json);
@@ -82,13 +82,14 @@ public:
 
     virtual ModelType Delete(std::uint64_t id)
     {
-        auto response = FetchApi("DELETE", _config.apiUrl, std::string(ModelType::GetPath()) + "/" + std::to_string(id));
+        auto response = FetchApi("DELETE", _config.apiUrl, ModelType::GetPath() + "/" + std::to_string(id));
         auto json = nlohmann::json::parse(response.GetBody());
 
         return ModelType(json);
     }
 
 protected:
+    AppConfig _config;
 
     HttpResponse FetchApi(std::string_view method, std::string_view host, std::string_view path, std::string_view body = {})
     {
@@ -111,6 +112,5 @@ protected:
     }
 
 private:
-    AppConfig _config;
     std::optional<std::string> _token;
 };

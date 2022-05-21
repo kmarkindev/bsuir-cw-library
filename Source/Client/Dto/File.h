@@ -4,6 +4,7 @@
 
 class File
 {
+public:
     std::string extension;
     std::string content;
 };
