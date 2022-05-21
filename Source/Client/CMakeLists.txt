@@ -46,6 +46,8 @@ target_sources(Client PRIVATE
 	App.h
 	AppState.cpp
 	AppState.h
+	Windows/WxBuilder/ClientWindows.cpp
+	Windows/WxBuilder/ClientWindows.h
 	${REPOS_SRC}
 	${EXCEPTIONS_SRC}
 	${MODELS_SRC}
