@@ -22,19 +22,19 @@ public:
 
     explicit Reader(const nlohmann::json& json)
     {
-        if(json["id"].is_number())
+        if(json.contains("id") && json["id"].is_number())
             id = json["id"];
-        if(json["name"].is_string())
+        if(json.contains("name") && json["name"].is_string())
             name = json["name"];
-        if(json["address"].is_string())
+        if(json.contains("address") && json["address"].is_string())
             address = json["address"];
-        if(json["birthday"].is_string())
+        if(json.contains("birthday") && json["birthday"].is_string())
             birthday = ParseTime(to_string(json["birthday"]));
-        if(json["sex"].is_number() || json["sex"].is_boolean())
+        if(json.contains("sex") && json["sex"].is_number() || json["sex"].is_boolean())
             sex = json["sex"];
-        if(json["phone"].is_string())
+        if(json.contains("phone") && json["phone"].is_string())
             phone = json["phone"];
-        if(json["email"].is_string())
+        if(json.contains("email") && json["email"].is_string())
             email = json["email"];
     }
 

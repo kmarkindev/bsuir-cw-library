@@ -3,7 +3,7 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <AppState.h>
-#include <Windows/WelcomeWindow.h>
+#include <Windows/MainWindow.h>
 
 bool App::OnInit()
 {
@@ -20,7 +20,7 @@ bool App::OnInit()
 
     AppState::GetAppState().SetConfig(config);
 
-    auto window = new WelcomeWindow();
+    auto window = new MainWindow();
     window->Show();
 
     return true;

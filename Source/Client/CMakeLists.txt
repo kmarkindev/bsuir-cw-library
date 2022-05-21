@@ -15,7 +15,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_HOST_SYSTEM_NAME STREQUAL "Lin
 endif()
 
 target_sources(Client PRIVATE main.cpp)
-target_link_libraries(Client PRIVATE wx::core wx::base)
+target_link_libraries(Client PRIVATE wx::core wx::base wx::aui)
 target_include_directories(Client PRIVATE ${CPP_HTTPLIB_INCLUDE_DIRS})
 
 set_target_properties(Client PROPERTIES

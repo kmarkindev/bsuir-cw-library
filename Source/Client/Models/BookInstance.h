@@ -16,9 +16,9 @@ public:
 
     explicit BookInstance(const nlohmann::json& json)
     {
-        if(json["id"].is_number())
+        if(json.contains("id") && json["id"].is_number())
             id = json["id"];
-        if(json["book_id"].is_number())
+        if(json.contains("book_id") && json["book_id"].is_number())
             bookId = json["book_id"];
     }
 };

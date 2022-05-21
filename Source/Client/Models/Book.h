@@ -24,19 +24,19 @@ public:
 
     explicit Book(const nlohmann::json& json)
     {
-        if(json["id"].is_number())
+        if(json.contains("id") && json["id"].is_number())
             id = json["id"];
-        if(json["name"].is_string())
+        if(json.contains("name") && json["name"].is_string())
             name = json["name"];
-        if(json["author_id"].is_number())
+        if(json.contains("author_id") && json["author_id"].is_number())
             authorId = json["author_id"];
-        if(json["publisher_id"].is_number())
+        if(json.contains("publisher_id") && json["publisher_id"].is_number())
             publisherId = json["publisher_id"];
-        if(json["published_at"].is_string())
+        if(json.contains("published_at") && json["published_at"].is_string())
             publishedAt = ParseTime(to_string(json["published_at"]));
-        if(json["file_storage_path"].is_string())
+        if(json.contains("file_storage_path") && json["file_storage_path"].is_string())
             fileStoragePath = json["file_storage_path"];
-        if(json["file_extension"].is_string())
+        if(json.contains("file_extension") && json["file_extension"].is_string())
             fileExtension = json["file_extension"];
     }
 

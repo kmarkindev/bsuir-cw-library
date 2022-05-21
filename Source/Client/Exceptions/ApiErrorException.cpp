@@ -8,16 +8,16 @@ ApiErrorException::ApiErrorException(nlohmann::json body)
     _json = std::move(body);
 }
 
-std::string ApiErrorException::GetErrorMessage()
+std::string ApiErrorException::GetErrorMessage() const
 {
     return _json["error"];
 }
 
-std::vector<std::string> ApiErrorException::GetDetails()
+std::vector<std::string> ApiErrorException::GetDetails() const
 {
     std::vector<std::string> details;
 
-    if(_json["details"].is_array())
+    if(_json.contains("details") && _json["details"].is_array())
         for(const auto& item : _json["details"])
             details.push_back(item);
 

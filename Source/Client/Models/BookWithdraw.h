@@ -20,15 +20,15 @@ public:
 
     explicit BookWithdraw(const nlohmann::json& json)
     {
-        if(json["id"].is_number())
+        if(json.contains("id") && json["id"].is_number())
             id = json["id"];
-        if(json["book_instance_id"].is_number())
-            bookInstanceId = json["name"];
-        if(json["reader_id"].is_number())
+        if(json.contains("book_instance_id") && json["book_instance_id"].is_number())
+            bookInstanceId = json["book_instance_id"];
+        if(json.contains("reader_id") && json["reader_id"].is_number())
             readerId = json["reader_id"];
-        if(json["withdrawn_at"].is_string())
+        if(json.contains("withdrawn_at") && json["withdrawn_at"].is_string())
             withdrawnAt = ParseTime(to_string(json["withdrawn_at"]));
-        if(json["return_at"].is_string())
+        if(json.contains("return_at") && json["return_at"].is_string())
             returnAt = ParseTime(to_string(json["return_at"]));
     }
 };

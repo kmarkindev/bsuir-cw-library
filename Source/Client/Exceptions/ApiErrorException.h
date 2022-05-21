@@ -8,8 +8,8 @@ class ApiErrorException : public std::exception
 {
 public:
     ApiErrorException(nlohmann::json body);
-    std::string GetErrorMessage();
-    std::vector<std::string> GetDetails();
+    std::string GetErrorMessage() const;
+    std::vector<std::string> GetDetails() const;
 private:
     nlohmann::json _json;
 };

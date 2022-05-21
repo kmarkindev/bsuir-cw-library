@@ -15,9 +15,9 @@ public:
 
     explicit Author(const nlohmann::json& json)
     {
-        if(json["id"].is_number())
+        if(json.contains("id") && json["id"].is_number())
             id = json["id"];
-        if(json["name"].is_string())
+        if(json.contains("name") && json["name"].is_string())
             name = json["name"];
     }
 
