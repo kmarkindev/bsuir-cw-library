@@ -38,11 +38,14 @@ aux_source_directory(Helpers HELPERS_SRC)
 aux_source_directory(Services/Api APTSERVICES_SRC)
 aux_source_directory(Services/HttpClient HTTPCLIENT_SRC)
 aux_source_directory(Exceptions EXCEPTIONS_SRC)
+aux_source_directory(Windows WINDOWS_SRC)
 
 target_sources(Client PRIVATE
 	main.cpp
 	App.cpp
 	App.h
+	AppState.cpp
+	AppState.h
 	${REPOS_SRC}
 	${EXCEPTIONS_SRC}
 	${MODELS_SRC}
@@ -50,4 +53,5 @@ target_sources(Client PRIVATE
 	${HELPERS_SRC}
 	${HTTPCLIENT_SRC}
 	${DTO_SRC}
+	${WINDOWS_SRC}
 )
