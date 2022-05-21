@@ -128,7 +128,7 @@ WelcomePanel::WelcomePanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 
 	bSizer19->Add( m_staticText15, 0, wxEXPAND, 5 );
 
-	m_staticText16 = new wxStaticText( this, wxID_ANY, wxT("Для начала работы, выберите одну из вкладок ниже"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL );
+	m_staticText16 = new wxStaticText( this, wxID_ANY, wxT("Для начала работы, нажмите на одну из кнопок ниже"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL );
 	m_staticText16->Wrap( -1 );
 	m_staticText16->SetFont( wxFont( 12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
