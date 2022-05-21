@@ -26,7 +26,7 @@ Book BookRepository::CreateWithFile(const Book& book, const std::string& fileCon
     return Book(nlohmann::basic_json());
 }
 
-Book BookRepository::UpdateWithFile(const Book& book, const std::string& fileContent, const std::string& fileExtension)
+Book BookRepository::UpdateFile(const std::string& fileContent, const std::string& fileExtension)
 {
     return Book(nlohmann::basic_json());
 }

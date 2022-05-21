@@ -29,7 +29,7 @@ public:
         return json;
     }
 
-    static constexpr std::string GetPath()
+    static std::string GetPath()
     {
         return "/api/v1/authors";
     }
