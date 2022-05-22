@@ -3,24 +3,23 @@
 MainWindow::MainWindow()
     : wxFormBuilder::MainWindow(nullptr)
 {
-    ShowLoginPanel();
+    auto& appState = AppState::GetAppState();
+
+    if(appState.IsAuthorized())
+        ShowLoggedInState();
+    else
+        ShowLoggedOutState();
+
     AddHelpPanel();
     AddWelcomePanel();
 
-    auto& appState = AppState::GetAppState();
-
-    if(!AppState::GetAppState().IsAuthorized())
-        ShowLoginPanel();
-    else
-        ShowLogoutPanel();
-
     _loginEventId = appState.GetLoginEvent().Subscribe([this]()
     {
-        ShowLogoutPanel();
+        ShowLoggedInState();
     });
     _logoutEventId = appState.GetLogoutEvent().Subscribe([this]()
     {
-        ShowLoginPanel();
+        ShowLoggedOutState();
     });
     _apiErrorEventId = appState.GetApiErrorEvent().Subscribe([this](auto exception)
     {
@@ -73,4 +72,18 @@ void MainWindow::AddHelpPanel()
 void MainWindow::AddWelcomePanel()
 {
     AddPageAndSelect(notebook,new wxFormBuilder::WelcomePanel(notebook), wxString::FromUTF8("Приветствие"));
+}
+
+void MainWindow::ShowLoggedInState()
+{
+    ShowLogoutPanel();
+    debtorsButton->Enable();
+    readersButton->Enable();
+}
+
+void MainWindow::ShowLoggedOutState()
+{
+    ShowLoginPanel();
+    debtorsButton->Disable();
+    readersButton->Disable();
 }

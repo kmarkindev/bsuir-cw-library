@@ -12,6 +12,9 @@ public:
     explicit MainWindow();
     ~MainWindow() override;
 
+    void ShowLoggedInState();
+    void ShowLoggedOutState();
+
     void ShowLoginPanel();
     void ShowLogoutPanel();
 
