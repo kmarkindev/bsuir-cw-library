@@ -26,6 +26,8 @@
 #include <wx/frame.h>
 #include <wx/textctrl.h>
 #include <wx/listbox.h>
+#include <wx/dataview.h>
+#include <wx/splitter.h>
 
 #include "Header.h"
 
@@ -56,6 +58,7 @@ namespace wxFormBuilder
 			wxHyperlinkCtrl* m_hyperlink1;
 
 			// Virtual event handlers, override them in your derived class
+			virtual void OnAuthorsButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnHelpButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnLoginLinkClicked( wxHyperlinkEvent& event ) = 0;
 			virtual void OnLogoutLinkClicked( wxHyperlinkEvent& event ) = 0;
@@ -157,6 +160,69 @@ namespace wxFormBuilder
 			HelpPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 			~HelpPanel();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class EntityListPanel
+	///////////////////////////////////////////////////////////////////////////////
+	class EntityListPanel : public wxPanel
+	{
+		private:
+
+		protected:
+			wxButton* refreshButton;
+			wxButton* openButton;
+			wxButton* createButton;
+			wxButton* deleteButton;
+			wxStaticText* listName;
+			wxSplitterWindow* m_splitter1;
+			wxPanel* m_panel9;
+			wxDataViewListCtrl* dataList;
+			wxPanel* m_panel10;
+			wxPanel* filterPanel;
+			wxBoxSizer* filterSizer;
+			wxButton* filterApply;
+			wxButton* filterReset;
+
+			// Virtual event handlers, override them in your derived class
+			virtual void OnRefreshButtonClicked( wxCommandEvent& event ) = 0;
+			virtual void OnCreateButtonClicked( wxCommandEvent& event ) = 0;
+			virtual void OnDeleteButtonClicked( wxCommandEvent& event ) = 0;
+			virtual void OnFilterApplyClicked( wxCommandEvent& event ) = 0;
+			virtual void OnFilterResetClicked( wxCommandEvent& event ) = 0;
+
+
+		public:
+
+			EntityListPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 561,351 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~EntityListPanel();
+
+			void m_splitter1OnIdle( wxIdleEvent& )
+			{
+				m_splitter1->SetSashPosition( 0 );
+				m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( EntityListPanel::m_splitter1OnIdle ), NULL, this );
+			}
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class AuthorsListFilter
+	///////////////////////////////////////////////////////////////////////////////
+	class AuthorsListFilter : public wxPanel
+	{
+		private:
+
+		protected:
+			wxStaticText* m_staticText15;
+
+		public:
+			wxTextCtrl* authorName;
+
+			AuthorsListFilter( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~AuthorsListFilter();
 
 	};
 

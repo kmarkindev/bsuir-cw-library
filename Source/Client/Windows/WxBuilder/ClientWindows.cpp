@@ -65,7 +65,7 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 
 	bSizer41->Add( logindesc, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-	m_hyperlink11 = new wxHyperlinkCtrl( loginPanel, wxID_ANY, wxT("войти как администратор"), wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_hyperlink11 = new wxHyperlinkCtrl( loginPanel, wxID_ANY, wxT("войти как администратор"), wxT("http://lib.kmarkin.com/"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_hyperlink11->SetFont( wxFont( 9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer41->Add( m_hyperlink11, 0, wxALIGN_CENTER_VERTICAL, 5 );
@@ -86,7 +86,7 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 
 	bSizer4->Add( logoutdesc, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-	m_hyperlink1 = new wxHyperlinkCtrl( logoutPanel, wxID_ANY, wxT("нажмите сюда"), wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_hyperlink1 = new wxHyperlinkCtrl( logoutPanel, wxID_ANY, wxT("нажмите сюда"), wxT("http://lib.kmarkin.com/"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_hyperlink1->SetFont( wxFont( 9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer4->Add( m_hyperlink1, 0, wxALIGN_CENTER_VERTICAL, 5 );
@@ -107,6 +107,7 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 	this->Centre( wxBOTH );
 
 	// Connect Events
+	authorsButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnAuthorsButtonClicked ), NULL, this );
 	helpButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnHelpButtonClicked ), NULL, this );
 	m_hyperlink11->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
 	m_hyperlink1->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
@@ -115,6 +116,7 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 MainWindow::~MainWindow()
 {
 	// Disconnect Events
+	authorsButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnAuthorsButtonClicked ), NULL, this );
 	helpButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnHelpButtonClicked ), NULL, this );
 	m_hyperlink11->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
 	m_hyperlink1->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
@@ -206,7 +208,7 @@ LoginPanel::LoginPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 
 	bSizer20->Add( m_staticText13, 0, wxBOTTOM|wxLEFT|wxTOP, 5 );
 
-	logoutLing = new wxHyperlinkCtrl( logoutPanel, wxID_ANY, wxT("выйти"), wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	logoutLing = new wxHyperlinkCtrl( logoutPanel, wxID_ANY, wxT("выйти"), wxT("http://lib.kmarkin.com/"), wxDefaultPosition, wxDefaultSize, 0 );
 	logoutLing->SetFont( wxFont( 12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer20->Add( logoutLing, 0, wxBOTTOM|wxRIGHT|wxTOP, 5 );
@@ -324,5 +326,129 @@ HelpPanel::HelpPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 }
 
 HelpPanel::~HelpPanel()
+{
+}
+
+EntityListPanel::EntityListPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer22;
+	bSizer22 = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bSizer23;
+	bSizer23 = new wxBoxSizer( wxHORIZONTAL );
+
+	bSizer23->SetMinSize( wxSize( -1,30 ) );
+	refreshButton = new wxButton( this, wxID_ANY, wxT("Обновить"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer23->Add( refreshButton, 0, wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	openButton = new wxButton( this, wxID_ANY, wxT("Открыть"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer23->Add( openButton, 0, wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	createButton = new wxButton( this, wxID_ANY, wxT("Создать"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer23->Add( createButton, 0, wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	deleteButton = new wxButton( this, wxID_ANY, wxT("Удалить"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer23->Add( deleteButton, 0, wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	listName = new wxStaticText( this, wxID_ANY, wxT("Название списка"), wxDefaultPosition, wxDefaultSize, 0 );
+	listName->Wrap( -1 );
+	listName->SetFont( wxFont( 12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+
+	bSizer23->Add( listName, 0, wxALL, 5 );
+
+
+	bSizer22->Add( bSizer23, 0, wxALIGN_LEFT|wxTOP, 5 );
+
+	wxBoxSizer* bSizer24;
+	bSizer24 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_splitter1 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D|wxSP_3DBORDER|wxSP_3DSASH|wxSP_LIVE_UPDATE );
+	m_splitter1->Connect( wxEVT_IDLE, wxIdleEventHandler( EntityListPanel::m_splitter1OnIdle ), NULL, this );
+	m_splitter1->SetMinimumPaneSize( 50 );
+
+	m_panel9 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer33;
+	bSizer33 = new wxBoxSizer( wxVERTICAL );
+
+	dataList = new wxDataViewListCtrl( m_panel9, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_HORIZ_RULES|wxDV_SINGLE );
+	bSizer33->Add( dataList, 1, wxALL|wxEXPAND, 5 );
+
+
+	m_panel9->SetSizer( bSizer33 );
+	m_panel9->Layout();
+	bSizer33->Fit( m_panel9 );
+	m_panel10 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer25;
+	bSizer25 = new wxBoxSizer( wxVERTICAL );
+
+	filterPanel = new wxPanel( m_panel10, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	filterPanel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
+
+	filterSizer = new wxBoxSizer( wxVERTICAL );
+
+
+	filterPanel->SetSizer( filterSizer );
+	filterPanel->Layout();
+	filterSizer->Fit( filterPanel );
+	bSizer25->Add( filterPanel, 1, wxEXPAND, 5 );
+
+	filterApply = new wxButton( m_panel10, wxID_ANY, wxT("Фильтр"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer25->Add( filterApply, 0, wxALL|wxEXPAND, 5 );
+
+	filterReset = new wxButton( m_panel10, wxID_ANY, wxT("Сбросить"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer25->Add( filterReset, 0, wxALL|wxEXPAND, 5 );
+
+
+	m_panel10->SetSizer( bSizer25 );
+	m_panel10->Layout();
+	bSizer25->Fit( m_panel10 );
+	m_splitter1->SplitVertically( m_panel9, m_panel10, 0 );
+	bSizer24->Add( m_splitter1, 1, wxEXPAND, 5 );
+
+
+	bSizer22->Add( bSizer24, 1, wxEXPAND, 5 );
+
+
+	this->SetSizer( bSizer22 );
+	this->Layout();
+
+	// Connect Events
+	refreshButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnRefreshButtonClicked ), NULL, this );
+	createButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnCreateButtonClicked ), NULL, this );
+	deleteButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnDeleteButtonClicked ), NULL, this );
+	filterApply->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnFilterApplyClicked ), NULL, this );
+	filterReset->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnFilterResetClicked ), NULL, this );
+}
+
+EntityListPanel::~EntityListPanel()
+{
+	// Disconnect Events
+	refreshButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnRefreshButtonClicked ), NULL, this );
+	createButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnCreateButtonClicked ), NULL, this );
+	deleteButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnDeleteButtonClicked ), NULL, this );
+	filterApply->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnFilterApplyClicked ), NULL, this );
+	filterReset->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnFilterResetClicked ), NULL, this );
+
+}
+
+AuthorsListFilter::AuthorsListFilter( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer26;
+	bSizer26 = new wxBoxSizer( wxVERTICAL );
+
+	m_staticText15 = new wxStaticText( this, wxID_ANY, wxT("Имя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText15->Wrap( -1 );
+	bSizer26->Add( m_staticText15, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	authorName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer26->Add( authorName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+
+	this->SetSizer( bSizer26 );
+	this->Layout();
+	bSizer26->Fit( this );
+}
+
+AuthorsListFilter::~AuthorsListFilter()
 {
 }

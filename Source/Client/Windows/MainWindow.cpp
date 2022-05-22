@@ -87,3 +87,10 @@ void MainWindow::ShowLoggedOutState()
     debtorsButton->Disable();
     readersButton->Disable();
 }
+
+void MainWindow::OnAuthorsButtonClicked(wxCommandEvent& event)
+{
+    auto panel = new AuthorsListPanel(notebook);
+    panel->LoadList();
+    AddPageAndSelect(notebook, panel, wxString::FromUTF8("Авторы"));
+}
