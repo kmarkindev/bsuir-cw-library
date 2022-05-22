@@ -17,6 +17,7 @@ public:
     bool IsAuthorized();
     void SetAuthorization(std::string_view token);
     void ResetAuthorization();
+    std::string GetAuthorizationToken();
 
     Event<>& GetLoginEvent();
     Event<>& GetLogoutEvent();

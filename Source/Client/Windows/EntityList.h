@@ -2,6 +2,7 @@
 
 #include "WxBuilder/WxBuilder.h"
 #include <Exceptions/ApiErrorException.h>
+#include <wx/msgdlg.h>
 #include <AppState.h>
 
 template<typename FilterPanelType, typename CreationPanelType>
@@ -19,6 +20,40 @@ public:
 
         for(const auto& col : columns)
             dataList->AppendTextColumn(col);
+
+        auto& appState = AppState::GetAppState();
+        if(appState.IsAuthorized())
+            ShowLoggedInState();
+        else
+            ShowLoggedOutState();
+
+        _loginEventId = appState.GetLoginEvent().Subscribe([this]()
+        {
+            ShowLoggedInState();
+        });
+        _logoutEventId = appState.GetLogoutEvent().Subscribe([this]()
+        {
+            ShowLoggedOutState();
+        });
+    }
+
+    ~EntityList() override
+    {
+        auto& appState = AppState::GetAppState();
+        appState.GetLoginEvent().Unsubscribe(_loginEventId);
+        appState.GetLogoutEvent().Unsubscribe(_logoutEventId);
+    }
+
+    void ShowLoggedInState()
+    {
+        deleteButton->Enable();
+        createButton->Enable();
+    }
+
+    void ShowLoggedOutState()
+    {
+        deleteButton->Disable();
+        createButton->Disable();
     }
 
     void LoadList()
@@ -39,7 +74,27 @@ public:
 
     void RemoveSelected()
     {
+        try
+        {
+            auto selected = dataList->GetSelectedRow();
+            wxVariant variant;
+            dataList->GetValue(variant, selected, 0);
+            std::uint64_t id;
+            variant.GetString().ToULongLong(&id);
 
+            auto answer = wxMessageBox(wxString::FromUTF8("Удалить запись с id = ") + variant.GetString() + "?",
+                wxString::FromUTF8("Удаление"), wxYES_NO | wxICON_QUESTION);
+
+            if(answer == wxYES)
+            {
+                RemoveRow(id);
+                LoadList();
+            }
+        }
+        catch(ApiErrorException& ex)
+        {
+            AppState::GetAppState().GetApiErrorEvent().Notify(ex);
+        }
     }
 
     void OpenCreationTab()
@@ -50,6 +105,7 @@ public:
 protected:
 
     virtual wxVector<wxVector<wxVariant>> GetRows(FilterPanelType* filter) = 0;
+    virtual void RemoveRow(std::uint64_t id) = 0;
 
     void OnRefreshButtonClicked(wxCommandEvent& event) override
     {
@@ -79,4 +135,6 @@ protected:
 
 private:
     FilterPanelType* _filter;
+    std::uint32_t _loginEventId;
+    std::uint32_t _logoutEventId;
 };

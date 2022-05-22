@@ -21,5 +21,5 @@ std::string AuthService::LogIn(std::string_view password) const
     if(response.GetCode() != 200)
         throw ApiErrorException(json);
 
-    return to_string(json["token"]);
+    return json["token"];
 }

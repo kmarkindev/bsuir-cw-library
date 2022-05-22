@@ -6,6 +6,7 @@
 #include <Services/HttpClient/HttpClient.h>
 #include <vector>
 #include <Exceptions/ApiErrorException.h>
+#include <AppState.h>
 #include <Dto/AppConfig.h>
 
 template<typename ModelType>
@@ -17,28 +18,6 @@ public:
         : _config(std::move(config))
     {
 
-    }
-
-    void SetToken(std::string token)
-    {
-        _token = std::move(token);
-    }
-
-    std::string GetToken()
-    {
-        if(!_token.has_value())
-            throw std::runtime_error("Token is null");
-        return _token.value();
-    }
-
-    void EraseToken()
-    {
-        _token = std::nullopt;
-    }
-
-    bool HasToken()
-    {
-        return _token.has_value();
     }
 
     virtual ModelType GetById(std::uint64_t id)
@@ -108,8 +87,13 @@ protected:
 
     void AppendTokenHeaderIfPossible(HttpRequest& request)
     {
-        if(HasToken())
-            request.GetHeaders().SetHeader({"jwt-token", GetToken()});
+        auto& appState = AppState::GetAppState();
+        std::string token;
+
+        if(appState.IsAuthorized())
+            token = appState.GetAuthorizationToken();
+
+        request.GetHeaders().SetHeader({"jwt-token", token});
     }
 
 private:

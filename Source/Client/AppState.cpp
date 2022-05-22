@@ -48,3 +48,10 @@ Event<ApiErrorException>& AppState::GetApiErrorEvent()
 {
     return _onApiErrorEvent;
 }
+
+std::string AppState::GetAuthorizationToken()
+{
+    if(!IsAuthorized())
+        throw std::runtime_error("Can't get token when unauthorized");
+    return _token.value();
+}

@@ -28,3 +28,8 @@ AuthorsListPanel::AuthorsListPanel(wxWindow* parent)
 {
 
 }
+
+void AuthorsListPanel::RemoveRow(std::uint64_t id)
+{
+    _repo.Delete(id);
+}

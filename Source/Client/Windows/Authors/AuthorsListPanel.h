@@ -12,4 +12,5 @@ public:
 protected:
     AuthorsRepository _repo;
     wxVector<wxVector<wxVariant>> GetRows(AuthorsFilter* filter) override;
+    void RemoveRow(std::uint64_t id) override;
 };
