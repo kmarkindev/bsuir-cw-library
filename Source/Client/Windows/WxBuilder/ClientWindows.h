@@ -28,6 +28,7 @@
 #include <wx/listbox.h>
 #include <wx/dataview.h>
 #include <wx/splitter.h>
+#include <wx/spinctrl.h>
 
 #include "Header.h"
 
@@ -177,16 +178,17 @@ namespace wxFormBuilder
 			wxButton* deleteButton;
 			wxStaticText* listName;
 			wxSplitterWindow* m_splitter1;
-			wxPanel* m_panel9;
-			wxDataViewListCtrl* dataList;
 			wxPanel* m_panel10;
 			wxPanel* filterPanel;
 			wxBoxSizer* filterSizer;
 			wxButton* filterApply;
 			wxButton* filterReset;
+			wxPanel* m_panel9;
+			wxDataViewListCtrl* dataList;
 
 			// Virtual event handlers, override them in your derived class
 			virtual void OnRefreshButtonClicked( wxCommandEvent& event ) = 0;
+			virtual void OnOpenButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnCreateButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnDeleteButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnFilterApplyClicked( wxCommandEvent& event ) = 0;
@@ -201,7 +203,7 @@ namespace wxFormBuilder
 
 			void m_splitter1OnIdle( wxIdleEvent& )
 			{
-				m_splitter1->SetSashPosition( 0 );
+				m_splitter1->SetSashPosition( 1 );
 				m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( EntityListPanel::m_splitter1OnIdle ), NULL, this );
 			}
 
@@ -223,6 +225,75 @@ namespace wxFormBuilder
 			AuthorsListFilter( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 			~AuthorsListFilter();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class EntityCreationPanel
+	///////////////////////////////////////////////////////////////////////////////
+	class EntityCreationPanel : public wxPanel
+	{
+		private:
+
+		protected:
+			wxPanel* fieldsPanel;
+			wxBoxSizer* fieldsSizer;
+			wxButton* saveButton;
+
+			// Virtual event handlers, override them in your derived class
+			virtual void SaveButtonClicked( wxCommandEvent& event ) = 0;
+
+
+		public:
+
+			EntityCreationPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 518,360 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~EntityCreationPanel();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class AuthorCreationFields
+	///////////////////////////////////////////////////////////////////////////////
+	class AuthorCreationFields : public wxPanel
+	{
+		private:
+
+		protected:
+			wxStaticText* m_staticText18;
+
+		public:
+			wxTextCtrl* authorName;
+
+			AuthorCreationFields( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~AuthorCreationFields();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class AuthorViewPanel
+	///////////////////////////////////////////////////////////////////////////////
+	class AuthorViewPanel : public wxPanel
+	{
+		private:
+
+		protected:
+			wxStaticText* m_staticText19;
+			wxSpinCtrl* authorId;
+			wxStaticText* m_staticText20;
+			wxTextCtrl* authorName;
+			wxButton* saveAuthor;
+
+			// Virtual event handlers, override them in your derived class
+			virtual void OnSaveButtonClicked( wxCommandEvent& event ) = 0;
+
+
+		public:
+
+			AuthorViewPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 491,374 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~AuthorViewPanel();
 
 	};
 

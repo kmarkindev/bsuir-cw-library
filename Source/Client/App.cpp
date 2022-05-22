@@ -7,6 +7,7 @@
 
 bool App::OnInit()
 {
+    auto& appState = AppState::GetAppState();
     AppConfig config;
     config.apiUrl = "http://lib.kmarkin.com";
 
@@ -16,9 +17,11 @@ bool App::OnInit()
         std::string content(std::istreambuf_iterator<char>(stream), {});
         auto json = nlohmann::json::parse(content);
         config.apiUrl = json["api_url"];
+
+        appState.SetAuthorization(json["token"]);
     }
 
-    AppState::GetAppState().SetConfig(config);
+    appState.SetConfig(config);
 
     auto window = new MainWindow();
     window->Show();

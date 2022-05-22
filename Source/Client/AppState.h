@@ -5,6 +5,7 @@
 #include <optional>
 #include <Utils/Event.h>
 #include <Exceptions/ApiErrorException.h>
+#include <wx/wx.h>
 
 class AppState
 {
@@ -22,6 +23,7 @@ public:
     Event<>& GetLoginEvent();
     Event<>& GetLogoutEvent();
     Event<ApiErrorException>& GetApiErrorEvent();
+    Event<wxWindow*, wxString, bool>& GetOpenPageEvent();
 
 private:
     static AppState _instance;
@@ -32,6 +34,7 @@ private:
     AppConfig _config;
     std::optional<std::string> _token;
     Event<> _onLoginEvent;
+    Event<wxWindow*, wxString, bool> _openPageEvent;
     Event<> _onLogoutEvent;
     Event<ApiErrorException> _onApiErrorEvent;
 };

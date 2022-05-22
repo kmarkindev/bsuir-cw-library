@@ -5,6 +5,4 @@
 
 class AuthorsRepository : public Repository<Author>
 {
-public:
-    explicit AuthorsRepository(AppConfig config);
 };

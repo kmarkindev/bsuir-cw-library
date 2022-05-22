@@ -55,3 +55,8 @@ std::string AppState::GetAuthorizationToken()
         throw std::runtime_error("Can't get token when unauthorized");
     return _token.value();
 }
+
+Event<wxWindow*, wxString, bool>& AppState::GetOpenPageEvent()
+{
+    return _openPageEvent;
+}

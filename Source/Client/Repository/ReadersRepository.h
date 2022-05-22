@@ -5,6 +5,4 @@
 
 class ReadersRepository : public Repository<Reader>
 {
-public:
-    explicit ReadersRepository(AppConfig config);
 };

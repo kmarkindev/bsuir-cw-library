@@ -1,11 +1,5 @@
 #include "BookRepository.h"
 
-BookRepository::BookRepository(AppConfig config)
-    : Repository<Book>(std::move(config))
-{
-
-}
-
 std::vector<BookInstance> BookRepository::GetInstances(std::uint64_t bookId)
 {
     auto response = FetchApi("POST", _config.apiUrl,

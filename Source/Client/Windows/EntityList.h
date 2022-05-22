@@ -5,7 +5,7 @@
 #include <wx/msgdlg.h>
 #include <AppState.h>
 
-template<typename FilterPanelType, typename CreationPanelType>
+template<typename FilterPanelType, typename CreationPanelType, typename ViewPanelType>
 class EntityList : public wxFormBuilder::EntityListPanel
 {
 public:
@@ -76,13 +76,8 @@ public:
     {
         try
         {
-            auto selected = dataList->GetSelectedRow();
-            wxVariant variant;
-            dataList->GetValue(variant, selected, 0);
-            std::uint64_t id;
-            variant.GetString().ToULongLong(&id);
-
-            auto answer = wxMessageBox(wxString::FromUTF8("Удалить запись с id = ") + variant.GetString() + "?",
+            auto id = GetSelectedId();
+            auto answer = wxMessageBox(wxString::FromUTF8("Удалить запись с id = ") + std::to_string(id) + "?",
                 wxString::FromUTF8("Удаление"), wxYES_NO | wxICON_QUESTION);
 
             if(answer == wxYES)
@@ -99,7 +94,7 @@ public:
 
     void OpenCreationTab()
     {
-
+        AppState::GetAppState().GetOpenPageEvent().Notify(new CreationPanelType(this), CreationPanelType::GetPanelName(), true);
     }
 
 protected:
@@ -133,8 +128,26 @@ protected:
         LoadList();
     }
 
+    void OnOpenButtonClicked(wxCommandEvent& event) override
+    {
+        auto panel = new ViewPanelType(this, GetSelectedId());
+        panel->Init();
+        AppState::GetAppState().GetOpenPageEvent().Notify(panel, ViewPanelType::GetPanelName(), true);
+    }
+
 private:
     FilterPanelType* _filter;
     std::uint32_t _loginEventId;
     std::uint32_t _logoutEventId;
+
+    std::uint64_t GetSelectedId()
+    {
+        auto selected = dataList->GetSelectedRow();
+        wxVariant variant;
+        dataList->GetValue(variant, selected, 0);
+        std::uint64_t id;
+        variant.GetString().ToULongLong(&id);
+
+        return id;
+    }
 };

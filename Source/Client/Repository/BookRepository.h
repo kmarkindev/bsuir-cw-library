@@ -7,7 +7,6 @@
 class BookRepository : public Repository<Book>
 {
 public:
-    explicit BookRepository(AppConfig config);
 
     Book CreateWithFile(const Book& book, const File& file);
     Book UpdateFile(std::uint64_t bookId, const File& file);

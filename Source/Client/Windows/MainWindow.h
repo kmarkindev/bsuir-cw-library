@@ -22,6 +22,8 @@ public:
     void AddWelcomePanel();
     void AddHelpPanel();
 
+    void AddTab(wxWindow* panel, const wxString& title, bool select);
+
 protected:
     void OnLogoutLinkClicked(wxHyperlinkEvent& event) override;
     void OnLoginLinkClicked(wxHyperlinkEvent& event) override;
@@ -32,4 +34,5 @@ private:
     std::uint32_t _loginEventId;
     std::uint32_t _logoutEventId;
     std::uint32_t _apiErrorEventId;
+    std::uint32_t _onTabAddEventId;
 };

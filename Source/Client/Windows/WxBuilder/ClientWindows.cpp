@@ -20,7 +20,7 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxVERTICAL );
 
-	notebook = new wxAuiNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_DEFAULT_STYLE );
+	notebook = new wxAuiNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_CLOSE_ON_ALL_TABS|wxAUI_NB_DEFAULT_STYLE );
 
 	bSizer6->Add( notebook, 1, wxEXPAND | wxALL, 5 );
 
@@ -362,21 +362,12 @@ EntityListPanel::EntityListPanel( wxWindow* parent, wxWindowID id, const wxPoint
 	wxBoxSizer* bSizer24;
 	bSizer24 = new wxBoxSizer( wxHORIZONTAL );
 
-	m_splitter1 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D|wxSP_3DBORDER|wxSP_3DSASH|wxSP_LIVE_UPDATE );
+	m_splitter1 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D|wxSP_3DBORDER|wxSP_3DSASH|wxSP_LIVE_UPDATE|wxSP_THIN_SASH );
+	m_splitter1->SetSashGravity( 0 );
+	m_splitter1->SetSashSize( 10 );
 	m_splitter1->Connect( wxEVT_IDLE, wxIdleEventHandler( EntityListPanel::m_splitter1OnIdle ), NULL, this );
-	m_splitter1->SetMinimumPaneSize( 50 );
+	m_splitter1->SetMinimumPaneSize( 100 );
 
-	m_panel9 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer33;
-	bSizer33 = new wxBoxSizer( wxVERTICAL );
-
-	dataList = new wxDataViewListCtrl( m_panel9, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_HORIZ_RULES|wxDV_SINGLE );
-	bSizer33->Add( dataList, 1, wxALL|wxEXPAND, 5 );
-
-
-	m_panel9->SetSizer( bSizer33 );
-	m_panel9->Layout();
-	bSizer33->Fit( m_panel9 );
 	m_panel10 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer25;
 	bSizer25 = new wxBoxSizer( wxVERTICAL );
@@ -390,7 +381,7 @@ EntityListPanel::EntityListPanel( wxWindow* parent, wxWindowID id, const wxPoint
 	filterPanel->SetSizer( filterSizer );
 	filterPanel->Layout();
 	filterSizer->Fit( filterPanel );
-	bSizer25->Add( filterPanel, 1, wxEXPAND, 5 );
+	bSizer25->Add( filterPanel, 1, wxALL|wxEXPAND, 5 );
 
 	filterApply = new wxButton( m_panel10, wxID_ANY, wxT("Фильтр"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer25->Add( filterApply, 0, wxALL|wxEXPAND, 5 );
@@ -402,7 +393,18 @@ EntityListPanel::EntityListPanel( wxWindow* parent, wxWindowID id, const wxPoint
 	m_panel10->SetSizer( bSizer25 );
 	m_panel10->Layout();
 	bSizer25->Fit( m_panel10 );
-	m_splitter1->SplitVertically( m_panel9, m_panel10, 0 );
+	m_panel9 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer33;
+	bSizer33 = new wxBoxSizer( wxVERTICAL );
+
+	dataList = new wxDataViewListCtrl( m_panel9, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_HORIZ_RULES|wxDV_SINGLE );
+	bSizer33->Add( dataList, 1, wxALL|wxEXPAND, 5 );
+
+
+	m_panel9->SetSizer( bSizer33 );
+	m_panel9->Layout();
+	bSizer33->Fit( m_panel9 );
+	m_splitter1->SplitVertically( m_panel10, m_panel9, 1 );
 	bSizer24->Add( m_splitter1, 1, wxEXPAND, 5 );
 
 
@@ -414,6 +416,7 @@ EntityListPanel::EntityListPanel( wxWindow* parent, wxWindowID id, const wxPoint
 
 	// Connect Events
 	refreshButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnRefreshButtonClicked ), NULL, this );
+	openButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnOpenButtonClicked ), NULL, this );
 	createButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnCreateButtonClicked ), NULL, this );
 	deleteButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnDeleteButtonClicked ), NULL, this );
 	filterApply->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnFilterApplyClicked ), NULL, this );
@@ -424,6 +427,7 @@ EntityListPanel::~EntityListPanel()
 {
 	// Disconnect Events
 	refreshButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnRefreshButtonClicked ), NULL, this );
+	openButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnOpenButtonClicked ), NULL, this );
 	createButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnCreateButtonClicked ), NULL, this );
 	deleteButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnDeleteButtonClicked ), NULL, this );
 	filterApply->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityListPanel::OnFilterApplyClicked ), NULL, this );
@@ -451,4 +455,130 @@ AuthorsListFilter::AuthorsListFilter( wxWindow* parent, wxWindowID id, const wxP
 
 AuthorsListFilter::~AuthorsListFilter()
 {
+}
+
+EntityCreationPanel::EntityCreationPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer38;
+	bSizer38 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer39;
+	bSizer39 = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bSizer40;
+	bSizer40 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer40->SetMinSize( wxSize( 200,-1 ) );
+	wxBoxSizer* bSizer41;
+	bSizer41 = new wxBoxSizer( wxVERTICAL );
+
+	fieldsPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	fieldsSizer = new wxBoxSizer( wxVERTICAL );
+
+
+	fieldsPanel->SetSizer( fieldsSizer );
+	fieldsPanel->Layout();
+	fieldsSizer->Fit( fieldsPanel );
+	bSizer41->Add( fieldsPanel, 1, wxEXPAND | wxALL, 5 );
+
+
+	bSizer40->Add( bSizer41, 1, wxEXPAND, 5 );
+
+	saveButton = new wxButton( this, wxID_ANY, wxT("Создать"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer40->Add( saveButton, 0, wxALL|wxEXPAND, 5 );
+
+
+	bSizer39->Add( bSizer40, 1, wxALIGN_CENTER, 5 );
+
+
+	bSizer38->Add( bSizer39, 1, wxALIGN_CENTER, 5 );
+
+
+	this->SetSizer( bSizer38 );
+	this->Layout();
+
+	// Connect Events
+	saveButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityCreationPanel::SaveButtonClicked ), NULL, this );
+}
+
+EntityCreationPanel::~EntityCreationPanel()
+{
+	// Disconnect Events
+	saveButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityCreationPanel::SaveButtonClicked ), NULL, this );
+
+}
+
+AuthorCreationFields::AuthorCreationFields( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer42;
+	bSizer42 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer42->SetMinSize( wxSize( 250,-1 ) );
+	m_staticText18 = new wxStaticText( this, wxID_ANY, wxT("Имя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText18->Wrap( -1 );
+	bSizer42->Add( m_staticText18, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	authorName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer42->Add( authorName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+
+	this->SetSizer( bSizer42 );
+	this->Layout();
+	bSizer42->Fit( this );
+}
+
+AuthorCreationFields::~AuthorCreationFields()
+{
+}
+
+AuthorViewPanel::AuthorViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer44;
+	bSizer44 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer46;
+	bSizer46 = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bSizer47;
+	bSizer47 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer47->SetMinSize( wxSize( 250,-1 ) );
+	m_staticText19 = new wxStaticText( this, wxID_ANY, wxT("Id автора"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText19->Wrap( -1 );
+	bSizer47->Add( m_staticText19, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	authorId = new wxSpinCtrl( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, 0, 1, 9999999999, 1 );
+	authorId->Enable( false );
+
+	bSizer47->Add( authorId, 0, wxALL|wxEXPAND, 5 );
+
+	m_staticText20 = new wxStaticText( this, wxID_ANY, wxT("Имя автора"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText20->Wrap( -1 );
+	bSizer47->Add( m_staticText20, 0, wxALL|wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	authorName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer47->Add( authorName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	saveAuthor = new wxButton( this, wxID_ANY, wxT("Сохранить"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer47->Add( saveAuthor, 0, wxALL|wxEXPAND, 5 );
+
+
+	bSizer46->Add( bSizer47, 1, wxALIGN_CENTER, 5 );
+
+
+	bSizer44->Add( bSizer46, 1, wxALIGN_CENTER, 5 );
+
+
+	this->SetSizer( bSizer44 );
+	this->Layout();
+
+	// Connect Events
+	saveAuthor->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AuthorViewPanel::OnSaveButtonClicked ), NULL, this );
+}
+
+AuthorViewPanel::~AuthorViewPanel()
+{
+	// Disconnect Events
+	saveAuthor->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AuthorViewPanel::OnSaveButtonClicked ), NULL, this );
+
 }

@@ -5,6 +5,4 @@
 
 class PublishersRepository : public Repository<Publisher>
 {
-public:
-    explicit PublishersRepository(AppConfig config);
 };

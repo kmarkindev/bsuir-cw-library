@@ -14,10 +14,9 @@ class Repository
 {
 public:
 
-    explicit Repository(AppConfig config)
-        : _config(std::move(config))
+    explicit Repository()
+        : _config(AppState::GetAppState().GetConfig())
     {
-
     }
 
     virtual ModelType GetById(std::uint64_t id)
@@ -25,7 +24,7 @@ public:
         auto response = FetchApi("GET", _config.apiUrl, ModelType::GetPath() + "/" + std::to_string(id));
         auto json = nlohmann::json::parse(response.GetBody());
 
-        return ModelType(json);
+        return ModelType(json["data"]);
     }
 
     virtual std::vector<ModelType> GetAll()
@@ -44,19 +43,22 @@ public:
         auto response = FetchApi("POST", _config.apiUrl, ModelType::GetPath(), to_string(model.ToJson()));
         auto json = nlohmann::json::parse(response.GetBody());
 
-        return ModelType(json);
+        return ModelType(json["data"]);
     }
 
     virtual ModelType Update(const ModelType& model)
     {
-        auto body = model.ToJson();
-        if(!body["id"].empty())
-            body["id"].clear();
+        if(!model.id.has_value())
+            throw std::invalid_argument("Can't update entity without id");
 
-        auto response = FetchApi("PUT", _config.apiUrl, ModelType::GetPath(), to_string(body));
+        auto body = model.ToJson();
+        body.erase("id");
+
+        auto response = FetchApi("PUT", _config.apiUrl,
+            ModelType::GetPath() + "/" + std::to_string(model.id.value()), to_string(body));
         auto json = nlohmann::json::parse(response.GetBody());
 
-        return ModelType(json);
+        return ModelType(json["data"]);
     }
 
     virtual ModelType Delete(std::uint64_t id)
@@ -64,7 +66,7 @@ public:
         auto response = FetchApi("DELETE", _config.apiUrl, ModelType::GetPath() + "/" + std::to_string(id));
         auto json = nlohmann::json::parse(response.GetBody());
 
-        return ModelType(json);
+        return ModelType(json["data"]);
     }
 
 protected:

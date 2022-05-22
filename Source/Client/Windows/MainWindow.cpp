@@ -23,7 +23,11 @@ MainWindow::MainWindow()
     });
     _apiErrorEventId = appState.GetApiErrorEvent().Subscribe([this](auto exception)
     {
-        AddPageAndSelect(notebook, new ErrorsPanel(notebook, exception), wxString::FromUTF8("Ошибка"));
+        AddTab(new ErrorsPanel(notebook, exception), wxString::FromUTF8("Ошибка"), true);
+    });
+    _onTabAddEventId = appState.GetOpenPageEvent().Subscribe([this](auto* window, auto str, auto select)
+    {
+        AddTab(window, str, select);
     });
 }
 
@@ -43,7 +47,7 @@ void MainWindow::ShowLogoutPanel()
 
 void MainWindow::OnLoginLinkClicked(wxHyperlinkEvent& event)
 {
-    AddPageAndSelect(notebook, new LoginPanel(notebook), wxString::FromUTF8("Вход"));
+    AddTab(new LoginPanel(notebook), wxString::FromUTF8("Вход"), true);
 }
 
 void MainWindow::OnLogoutLinkClicked(wxHyperlinkEvent& event)
@@ -57,6 +61,7 @@ MainWindow::~MainWindow()
     appState.GetLoginEvent().Unsubscribe(_loginEventId);
     appState.GetLogoutEvent().Unsubscribe(_logoutEventId);
     appState.GetApiErrorEvent().Unsubscribe(_apiErrorEventId);
+    appState.GetOpenPageEvent().Unsubscribe(_onTabAddEventId);
 }
 
 void MainWindow::OnHelpButtonClicked(wxCommandEvent& event)
@@ -66,12 +71,12 @@ void MainWindow::OnHelpButtonClicked(wxCommandEvent& event)
 
 void MainWindow::AddHelpPanel()
 {
-    AddPageAndSelect(notebook, new HelpPanel(notebook), wxString::FromUTF8("Помощь"));
+    AddTab(new HelpPanel(notebook), wxString::FromUTF8("Помощь"), true);
 }
 
 void MainWindow::AddWelcomePanel()
 {
-    AddPageAndSelect(notebook,new wxFormBuilder::WelcomePanel(notebook), wxString::FromUTF8("Приветствие"));
+    AddTab(new wxFormBuilder::WelcomePanel(notebook), wxString::FromUTF8("Приветствие"), true);
 }
 
 void MainWindow::ShowLoggedInState()
@@ -92,5 +97,15 @@ void MainWindow::OnAuthorsButtonClicked(wxCommandEvent& event)
 {
     auto panel = new AuthorsListPanel(notebook);
     panel->LoadList();
-    AddPageAndSelect(notebook, panel, wxString::FromUTF8("Авторы"));
+    AddTab(panel, wxString::FromUTF8("Авторы"), true);
+}
+
+void MainWindow::AddTab(wxWindow* panel, const wxString& title, bool select)
+{
+    panel->Reparent(notebook);
+
+    if(select)
+        AddPageAndSelect(notebook, panel, title);
+    else
+        notebook->AddPage(panel, title);
 }

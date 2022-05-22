@@ -3,9 +3,11 @@
 #include "Windows/EntityList.h"
 #include "Windows/WxBuilder/WxBuilder.h"
 #include "Repository/AuthorsRepository.h"
+#include "AuthorCreationPanel.h"
 #include "AuthorsFilter.h"
+#include "AuthorViewPanel.h"
 
-class AuthorsListPanel : public EntityList<AuthorsFilter, void>
+class AuthorsListPanel : public EntityList<AuthorsFilter, AuthorCreationPanel, AuthorViewPanel>
 {
 public:
     explicit AuthorsListPanel(wxWindow* parent);
