@@ -108,6 +108,7 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 
 	// Connect Events
 	authorsButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnAuthorsButtonClicked ), NULL, this );
+	publishersButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnPublishersButtonClicked ), NULL, this );
 	helpButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnHelpButtonClicked ), NULL, this );
 	m_hyperlink11->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
 	m_hyperlink1->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
@@ -117,6 +118,7 @@ MainWindow::~MainWindow()
 {
 	// Disconnect Events
 	authorsButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnAuthorsButtonClicked ), NULL, this );
+	publishersButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnPublishersButtonClicked ), NULL, this );
 	helpButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnHelpButtonClicked ), NULL, this );
 	m_hyperlink11->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
 	m_hyperlink1->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
@@ -435,28 +437,6 @@ EntityListPanel::~EntityListPanel()
 
 }
 
-AuthorsListFilter::AuthorsListFilter( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
-{
-	wxBoxSizer* bSizer26;
-	bSizer26 = new wxBoxSizer( wxVERTICAL );
-
-	m_staticText15 = new wxStaticText( this, wxID_ANY, wxT("Имя"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText15->Wrap( -1 );
-	bSizer26->Add( m_staticText15, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
-
-	authorName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer26->Add( authorName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
-
-
-	this->SetSizer( bSizer26 );
-	this->Layout();
-	bSizer26->Fit( this );
-}
-
-AuthorsListFilter::~AuthorsListFilter()
-{
-}
-
 EntityCreationPanel::EntityCreationPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
 	wxBoxSizer* bSizer38;
@@ -509,13 +489,35 @@ EntityCreationPanel::~EntityCreationPanel()
 
 }
 
+AuthorsListFilter::AuthorsListFilter( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer26;
+	bSizer26 = new wxBoxSizer( wxVERTICAL );
+
+	m_staticText15 = new wxStaticText( this, wxID_ANY, wxT("Имя автора"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText15->Wrap( -1 );
+	bSizer26->Add( m_staticText15, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	authorName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer26->Add( authorName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+
+	this->SetSizer( bSizer26 );
+	this->Layout();
+	bSizer26->Fit( this );
+}
+
+AuthorsListFilter::~AuthorsListFilter()
+{
+}
+
 AuthorCreationFields::AuthorCreationFields( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
 	wxBoxSizer* bSizer42;
 	bSizer42 = new wxBoxSizer( wxVERTICAL );
 
 	bSizer42->SetMinSize( wxSize( 250,-1 ) );
-	m_staticText18 = new wxStaticText( this, wxID_ANY, wxT("Имя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText18 = new wxStaticText( this, wxID_ANY, wxT("Имя автора"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText18->Wrap( -1 );
 	bSizer42->Add( m_staticText18, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 
@@ -582,5 +584,103 @@ AuthorViewPanel::~AuthorViewPanel()
 {
 	// Disconnect Events
 	saveAuthor->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AuthorViewPanel::OnSaveButtonClicked ), NULL, this );
+
+}
+
+PublishersListFilter::PublishersListFilter( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer26;
+	bSizer26 = new wxBoxSizer( wxVERTICAL );
+
+	m_staticText15 = new wxStaticText( this, wxID_ANY, wxT("Имя издателя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText15->Wrap( -1 );
+	bSizer26->Add( m_staticText15, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	publisherName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer26->Add( publisherName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+
+	this->SetSizer( bSizer26 );
+	this->Layout();
+	bSizer26->Fit( this );
+}
+
+PublishersListFilter::~PublishersListFilter()
+{
+}
+
+PublisherCreationFields::PublisherCreationFields( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer42;
+	bSizer42 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer42->SetMinSize( wxSize( 250,-1 ) );
+	m_staticText18 = new wxStaticText( this, wxID_ANY, wxT("Имя издателя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText18->Wrap( -1 );
+	bSizer42->Add( m_staticText18, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	publisherName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer42->Add( publisherName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+
+	this->SetSizer( bSizer42 );
+	this->Layout();
+	bSizer42->Fit( this );
+}
+
+PublisherCreationFields::~PublisherCreationFields()
+{
+}
+
+PublisherViewPanel::PublisherViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer44;
+	bSizer44 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer46;
+	bSizer46 = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bSizer47;
+	bSizer47 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer47->SetMinSize( wxSize( 250,-1 ) );
+	m_staticText19 = new wxStaticText( this, wxID_ANY, wxT("Id издателя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText19->Wrap( -1 );
+	bSizer47->Add( m_staticText19, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	publisherId = new wxSpinCtrl( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, 0, 1, 9999999999, 1 );
+	publisherId->Enable( false );
+
+	bSizer47->Add( publisherId, 0, wxALL|wxEXPAND, 5 );
+
+	m_staticText20 = new wxStaticText( this, wxID_ANY, wxT("Имя издателя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText20->Wrap( -1 );
+	bSizer47->Add( m_staticText20, 0, wxALL|wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	publisherName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer47->Add( publisherName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	savePublisher = new wxButton( this, wxID_ANY, wxT("Сохранить"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer47->Add( savePublisher, 0, wxALL|wxEXPAND, 5 );
+
+
+	bSizer46->Add( bSizer47, 1, wxALIGN_CENTER, 5 );
+
+
+	bSizer44->Add( bSizer46, 1, wxALIGN_CENTER, 5 );
+
+
+	this->SetSizer( bSizer44 );
+	this->Layout();
+	bSizer44->Fit( this );
+
+	// Connect Events
+	savePublisher->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PublisherViewPanel::OnSaveButtonClicked ), NULL, this );
+}
+
+PublisherViewPanel::~PublisherViewPanel()
+{
+	// Disconnect Events
+	savePublisher->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PublisherViewPanel::OnSaveButtonClicked ), NULL, this );
 
 }

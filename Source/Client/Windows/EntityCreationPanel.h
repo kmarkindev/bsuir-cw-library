@@ -56,7 +56,6 @@ protected:
     void SaveButtonClicked(wxCommandEvent& event) override
     {
         CreateModel();
-        Close();
     }
 
 private:

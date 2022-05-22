@@ -60,6 +60,7 @@ namespace wxFormBuilder
 
 			// Virtual event handlers, override them in your derived class
 			virtual void OnAuthorsButtonClicked( wxCommandEvent& event ) = 0;
+			virtual void OnPublishersButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnHelpButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnLoginLinkClicked( wxHyperlinkEvent& event ) = 0;
 			virtual void OnLogoutLinkClicked( wxHyperlinkEvent& event ) = 0;
@@ -210,25 +211,6 @@ namespace wxFormBuilder
 	};
 
 	///////////////////////////////////////////////////////////////////////////////
-	/// Class AuthorsListFilter
-	///////////////////////////////////////////////////////////////////////////////
-	class AuthorsListFilter : public wxPanel
-	{
-		private:
-
-		protected:
-			wxStaticText* m_staticText15;
-
-		public:
-			wxTextCtrl* authorName;
-
-			AuthorsListFilter( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
-
-			~AuthorsListFilter();
-
-	};
-
-	///////////////////////////////////////////////////////////////////////////////
 	/// Class EntityCreationPanel
 	///////////////////////////////////////////////////////////////////////////////
 	class EntityCreationPanel : public wxPanel
@@ -249,6 +231,25 @@ namespace wxFormBuilder
 			EntityCreationPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 			~EntityCreationPanel();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class AuthorsListFilter
+	///////////////////////////////////////////////////////////////////////////////
+	class AuthorsListFilter : public wxPanel
+	{
+		private:
+
+		protected:
+			wxStaticText* m_staticText15;
+
+		public:
+			wxTextCtrl* authorName;
+
+			AuthorsListFilter( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~AuthorsListFilter();
 
 	};
 
@@ -294,6 +295,70 @@ namespace wxFormBuilder
 			AuthorViewPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 			~AuthorViewPanel();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class PublishersListFilter
+	///////////////////////////////////////////////////////////////////////////////
+	class PublishersListFilter : public wxPanel
+	{
+		private:
+
+		protected:
+			wxStaticText* m_staticText15;
+
+		public:
+			wxTextCtrl* publisherName;
+
+			PublishersListFilter( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~PublishersListFilter();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class PublisherCreationFields
+	///////////////////////////////////////////////////////////////////////////////
+	class PublisherCreationFields : public wxPanel
+	{
+		private:
+
+		protected:
+			wxStaticText* m_staticText18;
+
+		public:
+			wxTextCtrl* publisherName;
+
+			PublisherCreationFields( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~PublisherCreationFields();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class PublisherViewPanel
+	///////////////////////////////////////////////////////////////////////////////
+	class PublisherViewPanel : public wxPanel
+	{
+		private:
+
+		protected:
+			wxStaticText* m_staticText19;
+			wxSpinCtrl* publisherId;
+			wxStaticText* m_staticText20;
+			wxTextCtrl* publisherName;
+			wxButton* savePublisher;
+
+			// Virtual event handlers, override them in your derived class
+			virtual void OnSaveButtonClicked( wxCommandEvent& event ) = 0;
+
+
+		public:
+
+			PublisherViewPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~PublisherViewPanel();
 
 	};
 

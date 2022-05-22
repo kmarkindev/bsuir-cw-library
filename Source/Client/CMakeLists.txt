@@ -40,6 +40,7 @@ aux_source_directory(Services/HttpClient HTTPCLIENT_SRC)
 aux_source_directory(Exceptions EXCEPTIONS_SRC)
 aux_source_directory(Windows WINDOWS_SRC)
 aux_source_directory(Windows/Authors WINDOWS_AUTHORS_SRC)
+aux_source_directory(Windows/Publishers WINDOWS_PUBLISHERS_SRC)
 aux_source_directory(Utils UTILS_SRC)
 
 target_sources(Client PRIVATE
@@ -55,6 +56,7 @@ target_sources(Client PRIVATE
 	${MODELS_SRC}
 	${APTSERVICES_SRC}
 	${WINDOWS_AUTHORS_SRC}
+	${WINDOWS_PUBLISHERS_SRC}
 	${HELPERS_SRC}
 	${HTTPCLIENT_SRC}
 	${DTO_SRC}

@@ -109,3 +109,10 @@ void MainWindow::AddTab(wxWindow* panel, const wxString& title, bool select)
     else
         notebook->AddPage(panel, title);
 }
+
+void MainWindow::OnPublishersButtonClicked(wxCommandEvent& event)
+{
+    auto panel = new PublishersListPanel(notebook);
+    panel->LoadList();
+    AddTab(panel, wxString::FromUTF8("Издатели"), true);
+}
