@@ -496,6 +496,7 @@ EntityCreationPanel::EntityCreationPanel( wxWindow* parent, wxWindowID id, const
 
 	this->SetSizer( bSizer38 );
 	this->Layout();
+	bSizer38->Fit( this );
 
 	// Connect Events
 	saveButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityCreationPanel::SaveButtonClicked ), NULL, this );
@@ -571,6 +572,7 @@ AuthorViewPanel::AuthorViewPanel( wxWindow* parent, wxWindowID id, const wxPoint
 
 	this->SetSizer( bSizer44 );
 	this->Layout();
+	bSizer44->Fit( this );
 
 	// Connect Events
 	saveAuthor->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AuthorViewPanel::OnSaveButtonClicked ), NULL, this );

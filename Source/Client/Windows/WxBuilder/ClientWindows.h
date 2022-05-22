@@ -246,7 +246,7 @@ namespace wxFormBuilder
 
 		public:
 
-			EntityCreationPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 518,360 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+			EntityCreationPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 			~EntityCreationPanel();
 
@@ -291,7 +291,7 @@ namespace wxFormBuilder
 
 		public:
 
-			AuthorViewPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 491,374 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+			AuthorViewPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 			~AuthorViewPanel();
 
