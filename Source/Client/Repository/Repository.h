@@ -94,10 +94,11 @@ protected:
     HttpResponse FetchApi(std::string_view method, std::string_view host, std::string_view path, std::string_view body = {})
     {
         HttpRequest request(method, host, path);
+        request.GetHeaders().SetHeader({"Content-Type", "application/json"});
+        request.SetBody(body);
         AppendTokenHeaderIfPossible(request);
 
         auto response = HttpClient::Send(request);
-        response.SetBody(body);
 
         if(response.GetCode() != 200)
             throw ApiErrorException(nlohmann::json::parse(response.GetBody()));

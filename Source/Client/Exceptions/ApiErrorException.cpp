@@ -2,7 +2,7 @@
 
 ApiErrorException::ApiErrorException(nlohmann::json body)
 {
-    if(!body.contains("error") || !body["error"].is_string())\
+    if(!body.contains("error") || !body["error"].is_string())
         throw std::invalid_argument("Нельзя создать исключение без текста ошибки");
 
     _json = std::move(body);

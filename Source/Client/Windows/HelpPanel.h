@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Windows/WxBuilder/ClientWindows.h>
+#include "WxBuilder/WxBuilder.h"
 #include <AppState.h>
 
 class HelpPanel : public wxFormBuilder::HelpPanel

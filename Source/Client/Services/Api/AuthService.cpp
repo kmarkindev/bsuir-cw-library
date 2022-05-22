@@ -12,13 +12,14 @@ std::string AuthService::LogIn(std::string_view password) const
     requestBody["password"] = password;
 
     HttpRequest request("POST", _config.apiUrl, "/api/v1/auth");
+    request.GetHeaders().SetHeader({"Content-Type", "application/json"});
     request.SetBody(to_string(requestBody));
 
     auto response = HttpClient::Send(request);
+    auto json = nlohmann::json::parse(response.GetBody());
 
     if(response.GetCode() != 200)
-        throw ApiErrorException(response.GetBody());
+        throw ApiErrorException(json);
 
-    nlohmann::json responseJson = nlohmann::json::parse(response.GetBody());
-    return to_string(responseJson["token"]);
+    return to_string(json["token"]);
 }

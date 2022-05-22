@@ -55,6 +55,11 @@ namespace wxFormBuilder
 			wxStaticText* logoutdesc;
 			wxHyperlinkCtrl* m_hyperlink1;
 
+			// Virtual event handlers, override them in your derived class
+			virtual void OnLoginLinkClicked( wxHyperlinkEvent& event ) = 0;
+			virtual void OnLogoutLinkClicked( wxHyperlinkEvent& event ) = 0;
+
+
 		public:
 
 			MainWindow( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Библиотека | Kirill Markin 2022"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 685,540 ), long style = wxCAPTION|wxCLOSE_BOX|wxMAXIMIZE_BOX|wxMINIMIZE_BOX|wxRESIZE_BORDER|wxSYSTEM_MENU|wxTAB_TRAVERSAL );
@@ -90,13 +95,22 @@ namespace wxFormBuilder
 		private:
 
 		protected:
+			wxPanel* loginPanel;
 			wxStaticText* m_staticText26;
-			wxTextCtrl* m_textCtrl1;
+			wxTextCtrl* passwordCtrl;
 			wxButton* m_button10;
+			wxPanel* logoutPanel;
+			wxStaticText* m_staticText13;
+			wxHyperlinkCtrl* logoutLing;
+
+			// Virtual event handlers, override them in your derived class
+			virtual void OnLoginClicked( wxCommandEvent& event ) = 0;
+			virtual void OnLogoutClicked( wxHyperlinkEvent& event ) = 0;
+
 
 		public:
 
-			LoginPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+			LoginPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 			~LoginPanel();
 

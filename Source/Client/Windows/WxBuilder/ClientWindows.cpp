@@ -105,10 +105,18 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 	this->Layout();
 
 	this->Centre( wxBOTH );
+
+	// Connect Events
+	m_hyperlink11->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
+	m_hyperlink1->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
 }
 
 MainWindow::~MainWindow()
 {
+	// Disconnect Events
+	m_hyperlink11->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
+	m_hyperlink1->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
+
 }
 
 WelcomePanel::WelcomePanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
@@ -154,41 +162,81 @@ LoginPanel::LoginPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	wxBoxSizer* bSizer17;
 	bSizer17 = new wxBoxSizer( wxVERTICAL );
 
-	wxBoxSizer* bSizer18;
-	bSizer18 = new wxBoxSizer( wxHORIZONTAL );
+	wxBoxSizer* loginpanelsizer;
+	loginpanelsizer = new wxBoxSizer( wxHORIZONTAL );
 
 	wxBoxSizer* bSizer19;
 	bSizer19 = new wxBoxSizer( wxVERTICAL );
 
-	m_staticText26 = new wxStaticText( this, wxID_ANY, wxT("Чтобы войти, введите пароль администратора:"), wxDefaultPosition, wxDefaultSize, 0 );
+	loginPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer191;
+	bSizer191 = new wxBoxSizer( wxVERTICAL );
+
+	m_staticText26 = new wxStaticText( loginPanel, wxID_ANY, wxT("Чтобы войти, введите пароль администратора:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText26->Wrap( -1 );
 	m_staticText26->SetFont( wxFont( 12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
-	bSizer19->Add( m_staticText26, 0, wxALL, 5 );
+	bSizer191->Add( m_staticText26, 0, wxALL, 5 );
 
-	m_textCtrl1 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 300,-1 ), wxTE_PASSWORD );
-	m_textCtrl1->SetFont( wxFont( 13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+	passwordCtrl = new wxTextCtrl( loginPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 300,-1 ), wxTE_PASSWORD );
+	passwordCtrl->SetFont( wxFont( 13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
-	bSizer19->Add( m_textCtrl1, 0, wxALL|wxEXPAND, 5 );
+	bSizer191->Add( passwordCtrl, 0, wxALL|wxEXPAND, 5 );
 
-	m_button10 = new wxButton( this, wxID_ANY, wxT("Войти"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_button10 = new wxButton( loginPanel, wxID_ANY, wxT("Войти"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_button10->SetFont( wxFont( 12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
-	bSizer19->Add( m_button10, 0, wxALL|wxEXPAND, 5 );
+	bSizer191->Add( m_button10, 0, wxALL|wxEXPAND, 5 );
 
 
-	bSizer18->Add( bSizer19, 1, wxALIGN_CENTER, 5 );
+	loginPanel->SetSizer( bSizer191 );
+	loginPanel->Layout();
+	bSizer191->Fit( loginPanel );
+	bSizer19->Add( loginPanel, 1, wxALL, 5 );
+
+	logoutPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer20;
+	bSizer20 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_staticText13 = new wxStaticText( logoutPanel, wxID_ANY, wxT("Вы уже вошли как администратор, "), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText13->Wrap( -1 );
+	m_staticText13->SetFont( wxFont( 12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+
+	bSizer20->Add( m_staticText13, 0, wxBOTTOM|wxLEFT|wxTOP, 5 );
+
+	logoutLing = new wxHyperlinkCtrl( logoutPanel, wxID_ANY, wxT("выйти"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	logoutLing->SetFont( wxFont( 12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+
+	bSizer20->Add( logoutLing, 0, wxBOTTOM|wxRIGHT|wxTOP, 5 );
 
 
-	bSizer17->Add( bSizer18, 1, wxALIGN_CENTER, 5 );
+	logoutPanel->SetSizer( bSizer20 );
+	logoutPanel->Layout();
+	bSizer20->Fit( logoutPanel );
+	bSizer19->Add( logoutPanel, 1, wxALIGN_CENTER|wxALL, 5 );
+
+
+	loginpanelsizer->Add( bSizer19, 1, wxALIGN_CENTER, 5 );
+
+
+	bSizer17->Add( loginpanelsizer, 1, wxALIGN_CENTER, 5 );
 
 
 	this->SetSizer( bSizer17 );
 	this->Layout();
+	bSizer17->Fit( this );
+
+	// Connect Events
+	m_button10->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LoginPanel::OnLoginClicked ), NULL, this );
+	logoutLing->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( LoginPanel::OnLogoutClicked ), NULL, this );
 }
 
 LoginPanel::~LoginPanel()
 {
+	// Disconnect Events
+	m_button10->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LoginPanel::OnLoginClicked ), NULL, this );
+	logoutLing->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( LoginPanel::OnLogoutClicked ), NULL, this );
+
 }
 
 ErrorsPanel::ErrorsPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
@@ -203,13 +251,13 @@ ErrorsPanel::ErrorsPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_staticText27->Wrap( -1 );
 	m_staticText27->SetFont( wxFont( 14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
 
-	bSizer40->Add( m_staticText27, 0, wxALIGN_CENTER|wxALL, 5 );
+	bSizer40->Add( m_staticText27, 0, wxALIGN_CENTER|wxBOTTOM|wxLEFT|wxTOP, 5 );
 
 	errorText = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	errorText->Wrap( -1 );
 	errorText->SetFont( wxFont( 14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
 
-	bSizer40->Add( errorText, 0, wxALL, 5 );
+	bSizer40->Add( errorText, 0, wxBOTTOM|wxRIGHT|wxTOP, 5 );
 
 
 	bSizer39->Add( bSizer40, 0, wxEXPAND, 5 );

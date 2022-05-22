@@ -1,15 +1,26 @@
 #pragma once
 
-#include "WxBuilder/ClientWindows.h"
+#include "WxBuilder/WxBuilder.h"
 #include <Windows/ErrorsPanel.h>
 #include <Windows/HelpPanel.h>
+#include <Windows/LoginPanel.h>
+#include <Helpers/NotebookHelper.h>
 
 class MainWindow : public wxFormBuilder::MainWindow
 {
 public:
     explicit MainWindow();
+    ~MainWindow() override;
 
-public:
     void ShowLoginPanel();
     void ShowLogoutPanel();
+
+protected:
+    void OnLogoutLinkClicked(wxHyperlinkEvent& event) override;
+    void OnLoginLinkClicked(wxHyperlinkEvent& event) override;
+
+private:
+    std::uint32_t _loginEventId;
+    std::uint32_t _logoutEventId;
+    std::uint32_t _apiErrorEventId;
 };

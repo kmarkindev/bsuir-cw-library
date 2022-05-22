@@ -39,6 +39,7 @@ aux_source_directory(Services/Api APTSERVICES_SRC)
 aux_source_directory(Services/HttpClient HTTPCLIENT_SRC)
 aux_source_directory(Exceptions EXCEPTIONS_SRC)
 aux_source_directory(Windows WINDOWS_SRC)
+aux_source_directory(Utils UTILS_SRC)
 
 target_sources(Client PRIVATE
 	main.cpp
@@ -56,4 +57,5 @@ target_sources(Client PRIVATE
 	${HTTPCLIENT_SRC}
 	${DTO_SRC}
 	${WINDOWS_SRC}
+	${UTILS_SRC}
 )

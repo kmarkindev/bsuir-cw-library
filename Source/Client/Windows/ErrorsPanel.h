@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WxBuilder/ClientWindows.h"
+#include "WxBuilder/WxBuilder.h"
 #include <Exceptions/ApiErrorException.h>
 
 class ErrorsPanel : public wxFormBuilder::ErrorsPanel

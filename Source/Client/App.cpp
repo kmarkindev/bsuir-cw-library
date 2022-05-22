@@ -8,7 +8,7 @@
 bool App::OnInit()
 {
     AppConfig config;
-    config.apiUrl = "http://lib.kmarkin.com/";
+    config.apiUrl = "http://lib.kmarkin.com";
 
     std::fstream stream("override.json");
     if(stream.is_open())
