@@ -47,7 +47,7 @@ void LoginPanel::OnLoginClicked(wxCommandEvent& event)
 
     try
     {
-        std::string password = passwordCtrl->GetValue().ToStdString();
+        std::string password = passwordCtrl->GetValue().utf8_string();
         passwordCtrl->Clear();
         auto token = _authService.LogIn(password);
         appState.SetAuthorization(token);

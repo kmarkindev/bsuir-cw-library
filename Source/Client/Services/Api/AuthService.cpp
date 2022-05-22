@@ -13,7 +13,8 @@ std::string AuthService::LogIn(std::string_view password) const
 
     HttpRequest request("POST", _config.apiUrl, "/api/v1/auth");
     request.GetHeaders().SetHeader({"Content-Type", "application/json"});
-    request.SetBody(to_string(requestBody));
+    auto body = to_string(requestBody);
+    request.SetBody(body);
 
     auto response = HttpClient::Send(request);
     auto json = nlohmann::json::parse(response.GetBody());
