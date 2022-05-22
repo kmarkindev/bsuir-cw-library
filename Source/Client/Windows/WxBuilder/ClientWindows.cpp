@@ -107,6 +107,7 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 	this->Centre( wxBOTH );
 
 	// Connect Events
+	helpButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnHelpButtonClicked ), NULL, this );
 	m_hyperlink11->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
 	m_hyperlink1->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
 }
@@ -114,6 +115,7 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 MainWindow::~MainWindow()
 {
 	// Disconnect Events
+	helpButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnHelpButtonClicked ), NULL, this );
 	m_hyperlink11->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
 	m_hyperlink1->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
 
@@ -204,7 +206,7 @@ LoginPanel::LoginPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 
 	bSizer20->Add( m_staticText13, 0, wxBOTTOM|wxLEFT|wxTOP, 5 );
 
-	logoutLing = new wxHyperlinkCtrl( logoutPanel, wxID_ANY, wxT("выйти"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	logoutLing = new wxHyperlinkCtrl( logoutPanel, wxID_ANY, wxT("выйти"), wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	logoutLing->SetFont( wxFont( 12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer20->Add( logoutLing, 0, wxBOTTOM|wxRIGHT|wxTOP, 5 );

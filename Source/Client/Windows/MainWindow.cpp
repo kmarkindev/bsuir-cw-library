@@ -4,8 +4,8 @@ MainWindow::MainWindow()
     : wxFormBuilder::MainWindow(nullptr)
 {
     ShowLoginPanel();
-    notebook->AddPage(new wxFormBuilder::WelcomePanel(notebook), wxString::FromUTF8("Приветствие"));
-    notebook->AddPage(new HelpPanel(notebook), wxString::FromUTF8("Помощь"));
+    AddHelpPanel();
+    AddWelcomePanel();
 
     auto& appState = AppState::GetAppState();
 
@@ -58,4 +58,19 @@ MainWindow::~MainWindow()
     appState.GetLoginEvent().Unsubscribe(_loginEventId);
     appState.GetLogoutEvent().Unsubscribe(_logoutEventId);
     appState.GetApiErrorEvent().Unsubscribe(_apiErrorEventId);
+}
+
+void MainWindow::OnHelpButtonClicked(wxCommandEvent& event)
+{
+    AddHelpPanel();
+}
+
+void MainWindow::AddHelpPanel()
+{
+    AddPageAndSelect(notebook, new HelpPanel(notebook), wxString::FromUTF8("Помощь"));
+}
+
+void MainWindow::AddWelcomePanel()
+{
+    AddPageAndSelect(notebook,new wxFormBuilder::WelcomePanel(notebook), wxString::FromUTF8("Приветствие"));
 }

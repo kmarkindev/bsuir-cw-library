@@ -15,9 +15,13 @@ public:
     void ShowLoginPanel();
     void ShowLogoutPanel();
 
+    void AddWelcomePanel();
+    void AddHelpPanel();
+
 protected:
     void OnLogoutLinkClicked(wxHyperlinkEvent& event) override;
     void OnLoginLinkClicked(wxHyperlinkEvent& event) override;
+    void OnHelpButtonClicked(wxCommandEvent& event) override;
 
 private:
     std::uint32_t _loginEventId;

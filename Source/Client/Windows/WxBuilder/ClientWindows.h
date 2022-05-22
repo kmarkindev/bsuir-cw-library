@@ -56,6 +56,7 @@ namespace wxFormBuilder
 			wxHyperlinkCtrl* m_hyperlink1;
 
 			// Virtual event handlers, override them in your derived class
+			virtual void OnHelpButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnLoginLinkClicked( wxHyperlinkEvent& event ) = 0;
 			virtual void OnLogoutLinkClicked( wxHyperlinkEvent& event ) = 0;
 
