@@ -18,7 +18,8 @@ bool App::OnInit()
         auto json = nlohmann::json::parse(content);
         config.apiUrl = json["api_url"];
 
-        appState.SetAuthorization(json["token"]);
+        std::string token = json["token"];
+        appState.SetAuthorization(token);
     }
 
     appState.SetConfig(config);
