@@ -9838,11 +9838,11 @@
                                     <event name="OnButtonClick">OnSaveButtonClicked</event>
                                 </object>
                             </object>
-                            <object class="sizeritem" expanded="1">
+                            <object class="sizeritem" expanded="0">
                                 <property name="border">5</property>
                                 <property name="flag">wxBOTTOM|wxEXPAND|wxTOP</property>
                                 <property name="proportion">0</property>
-                                <object class="wxStaticBoxSizer" expanded="1">
+                                <object class="wxStaticBoxSizer" expanded="0">
                                     <property name="id">wxID_ANY</property>
                                     <property name="label">Электронная версия</property>
                                     <property name="minimum_size"></property>
@@ -10004,7 +10004,7 @@
                                 <property name="border">5</property>
                                 <property name="flag">wxBOTTOM|wxEXPAND|wxTOP</property>
                                 <property name="proportion">1</property>
-                                <object class="wxStaticBoxSizer" expanded="0">
+                                <object class="wxStaticBoxSizer" expanded="1">
                                     <property name="id">wxID_ANY</property>
                                     <property name="label">Экземпляры</property>
                                     <property name="minimum_size"></property>
@@ -10012,11 +10012,11 @@
                                     <property name="orient">wxVERTICAL</property>
                                     <property name="parent">1</property>
                                     <property name="permission">none</property>
-                                    <object class="sizeritem" expanded="0">
+                                    <object class="sizeritem" expanded="1">
                                         <property name="border">5</property>
-                                        <property name="flag">wxEXPAND</property>
+                                        <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">0</property>
-                                        <object class="wxDataViewCtrl" expanded="0">
+                                        <object class="wxDataViewListCtrl" expanded="1">
                                             <property name="bg"></property>
                                             <property name="context_help"></property>
                                             <property name="context_menu">1</property>
@@ -10823,6 +10823,30 @@
                     </object>
                 </object>
             </object>
+        </object>
+        <object class="Panel" expanded="1">
+            <property name="aui_managed">0</property>
+            <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
+            <property name="bg"></property>
+            <property name="context_help"></property>
+            <property name="context_menu">1</property>
+            <property name="enabled">1</property>
+            <property name="event_handler">impl_virtual</property>
+            <property name="fg"></property>
+            <property name="font"></property>
+            <property name="hidden">0</property>
+            <property name="id">wxID_ANY</property>
+            <property name="maximum_size"></property>
+            <property name="minimum_size"></property>
+            <property name="name">DebtorsListPanel</property>
+            <property name="pos"></property>
+            <property name="size">500,300</property>
+            <property name="subclass">; ; forward_declare</property>
+            <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
+            <property name="window_extra_style"></property>
+            <property name="window_name"></property>
+            <property name="window_style">wxTAB_TRAVERSAL</property>
         </object>
     </object>
 </wxFormBuilder_Project>

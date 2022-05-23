@@ -552,7 +552,7 @@ namespace wxFormBuilder
 			wxButton* saveBook;
 			wxButton* downloadFile;
 			wxButton* uploadFile;
-			wxDataViewCtrl* instancesList;
+			wxDataViewListCtrl* instancesList;
 			wxButton* addInstance;
 			wxButton* withdrawInstance;
 			wxButton* returnInstance;
@@ -598,6 +598,23 @@ namespace wxFormBuilder
 			InstanceWithdrawPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 222,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 			~InstanceWithdrawPanel();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class DebtorsListPanel
+	///////////////////////////////////////////////////////////////////////////////
+	class DebtorsListPanel : public wxPanel
+	{
+		private:
+
+		protected:
+
+		public:
+
+			DebtorsListPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~DebtorsListPanel();
 
 	};
 

@@ -1133,8 +1133,8 @@ BookViewPanel::BookViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	wxStaticBoxSizer* sbSizer3;
 	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( m_scrolledWindow1, wxID_ANY, wxT("Экземпляры") ), wxVERTICAL );
 
-	instancesList = new wxDataViewCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	sbSizer3->Add( instancesList, 0, wxEXPAND, 5 );
+	instancesList = new wxDataViewListCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer3->Add( instancesList, 0, wxALL|wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer68;
 	bSizer68 = new wxBoxSizer( wxHORIZONTAL );
@@ -1229,4 +1229,12 @@ InstanceWithdrawPanel::~InstanceWithdrawPanel()
 	// Disconnect Events
 	m_button27->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( InstanceWithdrawPanel::OnWithdrawClicked ), NULL, this );
 
+}
+
+DebtorsListPanel::DebtorsListPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+}
+
+DebtorsListPanel::~DebtorsListPanel()
+{
 }

@@ -13,6 +13,22 @@ BookViewPanel::BookViewPanel(wxWindow* parent, std::uint64_t id)
 
         auto authors = _authorsRepo.GetAll();
         auto publishers = _publishersRepo.GetAll();
+        auto instances = _repo.GetInstances();
+
+        instancesList->AppendTextColumn(wxString::FromUTF8("# экземпляра"), wxDATAVIEW_CELL_INERT);
+        instancesList->AppendTextColumn(wxString::FromUTF8("# читателя, если выдана"), wxDATAVIEW_CELL_INERT);
+
+        for(auto& inst : instances)
+        {
+            wxVector<wxVariant> row;
+            row.push_back(std::to_string(inst.id.value()));
+            if(inst.withdraw.has_value())
+                row.push_back(std::to_string(inst.withdraw->readerId.value()));
+            else
+                row.push_back("");
+
+            instancesList->AppendItem(row);
+        }
 
         auto authorIndex = 0;
         for(auto& author : authors)
