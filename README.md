@@ -20,3 +20,5 @@ Tested compilers:
 - MSVC
 - GCC
 - Mingw-w64 GCC POSIX
+
+*Note: Make sure you've specified RC compiler when building client app on Windows since it uses .rc files.*
