@@ -2,7 +2,7 @@
 
 #include <Windows/EntityCreationPanel.h>
 #include <Repository/ReadersRepository.h>
-#include <Windows/Publishers/PublisherViewPanel.h>
+#include <Windows/Readers/ReaderViewPanel.h>
 
 class ReaderCreationPanel : public EntityCreationPanel<wxFormBuilder::ReaderCreationFields>
 {

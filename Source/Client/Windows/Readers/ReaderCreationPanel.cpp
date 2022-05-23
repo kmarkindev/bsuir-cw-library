@@ -21,7 +21,7 @@ void ReaderCreationPanel::CreateModel()
     {
         reader = _repo.Create(reader);
 
-        auto panel = new PublisherViewPanel(this, reader.id.value());
+        auto panel = new ReaderViewPanel(this, reader.id.value());
         panel->Init();
         AppState::GetAppState().GetOpenPageEvent().Notify(panel, wxString::FromUTF8("Читатель"), true);
     }

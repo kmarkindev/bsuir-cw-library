@@ -60,7 +60,7 @@ public:
         if(phone.has_value())
             json["phone"] = phone.value();
         if(email.has_value())
-            json["email"] = email.has_value();
+            json["email"] = email.value();
         return json;
     }
 

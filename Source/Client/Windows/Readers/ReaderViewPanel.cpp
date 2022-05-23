@@ -6,10 +6,16 @@ ReaderViewPanel::ReaderViewPanel(wxWindow* parent, std::uint64_t id)
     try
     {
         auto reader = _repo.GetById(id);
-        //todo: fill
-//        publisherId->Disable();
-//        publisherName->SetValue(wxString::FromUTF8(reader.name.value()));
-//        publisherId->SetValue(reader.id.value());
+        readerId->SetValue(reader.id.value());
+        readerName->SetValue(wxString::FromUTF8(reader.name.value()));
+        readerAddress->SetValue(wxString::FromUTF8(reader.address.value()));
+        if(reader.sex.value())
+            readerMale->SetValue(true);
+        else
+            readerFemale->SetValue(true);
+        readerBirthday->SetValue(wxDateTime(std::chrono::system_clock::to_time_t(reader.birthday.value())));
+        readerPhone->SetValue(wxString::FromUTF8(reader.phone.value()));
+        readerEmail->SetValue(wxString::FromUTF8(reader.email.value()));
     }
     catch(ApiErrorException& ex)
     {
@@ -45,9 +51,14 @@ void ReaderViewPanel::ShowLoggedOutState()
 void ReaderViewPanel::OnSaveButtonClicked(wxCommandEvent& event)
 {
     Reader reader;
-    //todo: fill
-//    reader.id = publisherId->GetValue();
-//    reader.name = publisherName->GetValue().utf8_string();
+    reader.id = readerId->GetValue();
+    reader.name = readerName->GetValue().utf8_string();
+    reader.address = readerAddress->GetValue().utf8_string();
+    if(readerBirthday->GetValue().IsValid())
+        reader.birthday = ParseTime(readerBirthday->GetValue().Format("%Y-%m-%d").utf8_string());
+    reader.sex = readerMale->GetValue();
+    reader.phone = readerPhone->GetValue().utf8_string();
+    reader.email = readerEmail->GetValue().utf8_string();
 
     try
     {
