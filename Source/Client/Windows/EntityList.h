@@ -74,6 +74,9 @@ public:
 
     void RemoveSelected()
     {
+        if(!HasSelectedId())
+            return;
+
         try
         {
             auto id = GetSelectedId();
@@ -130,6 +133,9 @@ protected:
 
     void OnOpenButtonClicked(wxCommandEvent& event) override
     {
+        if(!HasSelectedId())
+            return;
+
         auto panel = new ViewPanelType(this, GetSelectedId());
         panel->Init();
         AppState::GetAppState().GetOpenPageEvent().Notify(panel, ViewPanelType::GetPanelName(), true);
@@ -139,6 +145,11 @@ private:
     FilterPanelType* _filter;
     std::uint32_t _loginEventId;
     std::uint32_t _logoutEventId;
+
+    bool HasSelectedId()
+    {
+        return dataList->GetSelectedItemsCount() > 0;
+    }
 
     std::uint64_t GetSelectedId()
     {

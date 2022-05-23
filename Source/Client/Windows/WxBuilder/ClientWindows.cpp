@@ -65,10 +65,10 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 
 	bSizer41->Add( logindesc, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-	m_hyperlink11 = new wxHyperlinkCtrl( loginPanel, wxID_ANY, wxT("войти как администратор"), wxT("http://lib.kmarkin.com/"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_hyperlink11 = new wxHyperlinkCtrl( loginPanel, wxID_ANY, wxT("войти как администратор"), wxT("http://lib.kmarkin.com/"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
 	m_hyperlink11->SetFont( wxFont( 9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
-	bSizer41->Add( m_hyperlink11, 0, wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer41->Add( m_hyperlink11, 0, 0, 5 );
 
 
 	loginPanel->SetSizer( bSizer41 );
@@ -86,10 +86,10 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 
 	bSizer4->Add( logoutdesc, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-	m_hyperlink1 = new wxHyperlinkCtrl( logoutPanel, wxID_ANY, wxT("нажмите сюда"), wxT("http://lib.kmarkin.com/"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_hyperlink1 = new wxHyperlinkCtrl( logoutPanel, wxID_ANY, wxT("нажмите сюда"), wxT("http://lib.kmarkin.com/"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
 	m_hyperlink1->SetFont( wxFont( 9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
-	bSizer4->Add( m_hyperlink1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer4->Add( m_hyperlink1, 0, 0, 5 );
 
 
 	logoutPanel->SetSizer( bSizer4 );
@@ -210,7 +210,7 @@ LoginPanel::LoginPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 
 	bSizer20->Add( m_staticText13, 0, wxBOTTOM|wxLEFT|wxTOP, 5 );
 
-	logoutLing = new wxHyperlinkCtrl( logoutPanel, wxID_ANY, wxT("выйти"), wxT("http://lib.kmarkin.com/"), wxDefaultPosition, wxDefaultSize, 0 );
+	logoutLing = new wxHyperlinkCtrl( logoutPanel, wxID_ANY, wxT("выйти"), wxT("http://lib.kmarkin.com/"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
 	logoutLing->SetFont( wxFont( 12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer20->Add( logoutLing, 0, wxBOTTOM|wxRIGHT|wxTOP, 5 );
