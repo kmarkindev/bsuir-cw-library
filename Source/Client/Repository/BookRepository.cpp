@@ -2,7 +2,7 @@
 
 std::vector<BookInstance> BookRepository::GetInstances(std::uint64_t bookId)
 {
-    auto response = FetchApi("POST", _config.apiUrl,
+    auto response = FetchApi("GET", _config.apiUrl,
         Book::GetPath() + "/" + std::to_string(bookId) + "/instances");
     auto json = nlohmann::json::parse(response.GetBody());
 
@@ -73,4 +73,18 @@ File BookRepository::GetFile(std::uint64_t id)
 std::string BookRepository::EncodeToBase64(const std::string& file)
 {
     return wxBase64Encode(file.data(), file.size()).ToStdString();
+}
+
+std::vector<BookInstance> BookRepository::GetInstances()
+{
+    auto response = FetchApi("GET", _config.apiUrl, Book::GetPath() + "/instances");
+    auto json = nlohmann::json::parse(response.GetBody());
+
+    std::vector<BookInstance> instances;
+    for(const auto& item : json["data"])
+    {
+        BookInstance instance(item["instance"]);
+        instance.withdraw = BookWithdraw(item["withdraw"]);
+    }
+    return instances;
 }
