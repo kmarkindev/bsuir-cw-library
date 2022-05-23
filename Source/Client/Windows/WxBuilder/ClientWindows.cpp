@@ -1178,3 +1178,51 @@ BookViewPanel::~BookViewPanel()
 	saveBook->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnSaveButtonClicked ), NULL, this );
 
 }
+
+InstanceWithdrawPanel::InstanceWithdrawPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer69;
+	bSizer69 = new wxBoxSizer( wxVERTICAL );
+
+	m_staticText146 = new wxStaticText( this, wxID_ANY, wxT("Читатель"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText146->Wrap( -1 );
+	bSizer69->Add( m_staticText146, 0, wxBOTTOM|wxLEFT|wxRIGHT, 5 );
+
+	wxArrayString readerChoiceChoices;
+	readerChoice = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, readerChoiceChoices, 0 );
+	readerChoice->SetSelection( 0 );
+	bSizer69->Add( readerChoice, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText147 = new wxStaticText( this, wxID_ANY, wxT("Номер экземпляра"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText147->Wrap( -1 );
+	bSizer69->Add( m_staticText147, 0, wxLEFT|wxRIGHT, 5 );
+
+	instanceId = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 9999999, 1 );
+	instanceId->Enable( false );
+
+	bSizer69->Add( instanceId, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText148 = new wxStaticText( this, wxID_ANY, wxT("Дата возврата"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText148->Wrap( -1 );
+	bSizer69->Add( m_staticText148, 0, wxLEFT|wxRIGHT, 5 );
+
+	returnAt = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+	bSizer69->Add( returnAt, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_button27 = new wxButton( this, wxID_ANY, wxT("Выдать экземпляр"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer69->Add( m_button27, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+
+
+	this->SetSizer( bSizer69 );
+	this->Layout();
+
+	// Connect Events
+	m_button27->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( InstanceWithdrawPanel::OnWithdrawClicked ), NULL, this );
+}
+
+InstanceWithdrawPanel::~InstanceWithdrawPanel()
+{
+	// Disconnect Events
+	m_button27->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( InstanceWithdrawPanel::OnWithdrawClicked ), NULL, this );
+
+}

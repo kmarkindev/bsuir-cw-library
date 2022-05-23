@@ -20,6 +20,8 @@ private:
 
     std::string _storagePath;
 
+    std::string DecodeBase64(const std::string& file);
+
 };
 
 

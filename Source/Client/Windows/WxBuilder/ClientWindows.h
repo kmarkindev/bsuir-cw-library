@@ -571,5 +571,33 @@ namespace wxFormBuilder
 
 	};
 
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class InstanceWithdrawPanel
+	///////////////////////////////////////////////////////////////////////////////
+	class InstanceWithdrawPanel : public wxPanel
+	{
+		private:
+
+		protected:
+			wxStaticText* m_staticText146;
+			wxChoice* readerChoice;
+			wxStaticText* m_staticText147;
+			wxSpinCtrl* instanceId;
+			wxStaticText* m_staticText148;
+			wxDatePickerCtrl* returnAt;
+			wxButton* m_button27;
+
+			// Virtual event handlers, override them in your derived class
+			virtual void OnWithdrawClicked( wxCommandEvent& event ) = 0;
+
+
+		public:
+
+			InstanceWithdrawPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 222,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~InstanceWithdrawPanel();
+
+	};
+
 } // namespace wxFormBuilder
 
