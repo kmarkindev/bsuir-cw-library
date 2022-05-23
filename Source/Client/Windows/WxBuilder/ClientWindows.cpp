@@ -1170,12 +1170,16 @@ BookViewPanel::BookViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 
 	// Connect Events
 	saveBook->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnSaveButtonClicked ), NULL, this );
+	downloadFile->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnFileDownloadClicked ), NULL, this );
+	uploadFile->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnUploadClicked ), NULL, this );
 }
 
 BookViewPanel::~BookViewPanel()
 {
 	// Disconnect Events
 	saveBook->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnSaveButtonClicked ), NULL, this );
+	downloadFile->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnFileDownloadClicked ), NULL, this );
+	uploadFile->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnUploadClicked ), NULL, this );
 
 }
 

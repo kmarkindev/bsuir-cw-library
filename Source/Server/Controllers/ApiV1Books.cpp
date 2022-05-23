@@ -133,7 +133,14 @@ void api::v1::Books::GetBookFile(const HttpRequestPtr &req, std::function<void(c
         }
 
         auto fileName = model.getValueOfName() + "." + model.getValueOfFileExtension();
-        auto response = HttpResponse::newFileResponse(_fileStorageService.GetFilePathFromStorage(model.getValueOfFileStoragePath()), fileName);
+
+        std::ifstream is(_fileStorageService.GetFilePathFromStorage(model.getValueOfFileStoragePath()), std::ios::beg);
+        std::string fileContent(std::istreambuf_iterator<char>(is), {});
+
+        fileContent = drogon::utils::base64Decode(fileContent);
+
+        auto response = HttpResponse::newFileResponse(reinterpret_cast<const unsigned char*>(fileContent.c_str()),
+            fileContent.size(), fileName);
         response->addHeader("file-ext", model.getValueOfFileExtension());
         callback(response);
     }, [callback](const drogon::orm::DrogonDbException& ex)

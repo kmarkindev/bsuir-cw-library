@@ -560,6 +560,8 @@ namespace wxFormBuilder
 
 			// Virtual event handlers, override them in your derived class
 			virtual void OnSaveButtonClicked( wxCommandEvent& event ) = 0;
+			virtual void OnFileDownloadClicked( wxCommandEvent& event ) = 0;
+			virtual void OnUploadClicked( wxCommandEvent& event ) = 0;
 
 
 		public:

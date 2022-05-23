@@ -5,6 +5,7 @@ BookViewPanel::BookViewPanel(wxWindow* parent, std::uint64_t id)
 {
     try
     {
+        _bookId = id;
         auto book = _repo.GetById(id);
         bookId->SetValue(book.id.value());
         bookName->SetValue(wxString::FromUTF8(book.name.value()));
@@ -95,4 +96,41 @@ void BookViewPanel::OnSaveButtonClicked(wxCommandEvent& event)
 wxString BookViewPanel::GetPanelName()
 {
     return wxString::FromUTF8("Книга");
+}
+
+void BookViewPanel::OnFileDownloadClicked(wxCommandEvent& event)
+{
+    std::string url = AppState::GetAppState().GetConfig().apiUrl;
+    url += "/api/v1/books/";
+    url += std::to_string(_bookId);
+    url += "/file";
+
+    wxLaunchDefaultBrowser(url, wxBROWSER_NEW_WINDOW);
+}
+
+void BookViewPanel::OnUploadClicked(wxCommandEvent& event)
+{
+    wxFileDialog openFileDialog(this, wxString::FromUTF8("Выберите файл для загрузки"),
+        "", "", "*.pdf|*.txt|*.doc|*.docx", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+
+    if(openFileDialog.ShowModal() == wxID_CANCEL)
+        return;
+
+    std::ifstream is(openFileDialog.GetPath().utf8_string(), std::ios::beg);
+    std::string content(std::istreambuf_iterator<char>(is), {});
+
+    wxFileName filename(openFileDialog.GetPath());
+
+    try
+    {
+        File file;
+        file.content = content;
+        file.extension = filename.GetExt().utf8_string();
+
+        _repo.UpdateFile(_bookId, file);
+    }
+    catch (ApiErrorException& ex)
+    {
+        AppState::GetAppState().GetApiErrorEvent().Notify(ex);
+    }
 }
