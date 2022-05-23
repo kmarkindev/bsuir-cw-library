@@ -3,6 +3,8 @@
 MainWindow::MainWindow()
     : wxFormBuilder::MainWindow(nullptr)
 {
+    SetIcon(wxICON(IDI_ICON1));
+
     auto& appState = AppState::GetAppState();
 
     if(appState.IsAuthorized())
