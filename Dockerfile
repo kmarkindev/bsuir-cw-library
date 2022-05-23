@@ -18,7 +18,7 @@ RUN git clone https://github.com/Microsoft/vcpkg.git . && \
 
 # Finally configure and build
 WORKDIR /Workdir/BuildResult
-RUN export CC=/usr/bin/gcc && export CXX=/usr/bin/g++ && export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
+RUN export CC=gcc CXX=g++ CMAKE_MAKE_PROGRAM=make && \
 	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux -DVCPKG_BUILD_TYPE=release && \
     cmake --build . --target ApiServer --config Release
 
@@ -50,12 +50,12 @@ RUN ln -s /usr/x86_64-w64-mingw32/include/windows.h /usr/x86_64-w64-mingw32/incl
     ln -s /usr/x86_64-w64-mingw32/include/rpc.h /usr/x86_64-w64-mingw32/include/Rpc.h && \
 # Set compiler symlink to posix since we need to support std threading library
 	echo '1' | update-alternatives --config x86_64-w64-mingw32-g++ && \
-    echo '1' | update-alternatives --config x86_64-w64-mingw32-gcc
+    echo '1' | update-alternatives --config x86_64-w64-mingw32-gcc \
 
 # Finally run configuration and build
 WORKDIR /Workdir/BuildResult
-RUN export CC=/usr/bin/x86_64-w64-mingw32-gcc && export CXX=/usr/bin/x86_64-w64-mingw32-g++ && \
-     export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
+RUN export CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ && \
+     CMAKE_MAKE_PROGRAM=make RC=x86_64-w64-mingw32-windres && \
 	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-static \
      -DCMAKE_SYSTEM_NAME=Windows -DVCPKG_BUILD_TYPE=release && \
     cmake --build . --target Client --config Release
