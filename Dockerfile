@@ -34,6 +34,8 @@ RUN apt-get update -y && \
     apt-get install cmake make pkg-config git curl zip unzip tar libssl1.1 powershell \
     	gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 binutils-mingw-w64-x86-64 mingw-w64-x86-64-dev -y
 
+RUN echo "MARKETHEREARARA" && ls /usr/bin/
+
 # Copy sources into work dir
 WORKDIR /Workdir
 COPY . .
