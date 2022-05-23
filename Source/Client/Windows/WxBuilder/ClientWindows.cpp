@@ -1141,6 +1141,9 @@ BookViewPanel::BookViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	wxBoxSizer* bSizer68;
 	bSizer68 = new wxBoxSizer( wxHORIZONTAL );
 
+	m_button30 = new wxButton( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Обновить"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer68->Add( m_button30, 0, wxALL, 5 );
+
 	addInstance = new wxButton( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Добавить"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer68->Add( addInstance, 0, wxBOTTOM|wxEXPAND|wxRIGHT|wxTOP, 5 );
 
@@ -1174,6 +1177,11 @@ BookViewPanel::BookViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	saveBook->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnSaveButtonClicked ), NULL, this );
 	downloadFile->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnFileDownloadClicked ), NULL, this );
 	uploadFile->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnUploadClicked ), NULL, this );
+	m_button30->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnInstancesUpdateClicked ), NULL, this );
+	addInstance->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnAddInstanceClicked ), NULL, this );
+	withdrawInstance->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnWithdrawInstanceClicked ), NULL, this );
+	returnInstance->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnReturnInstanceClicked ), NULL, this );
+	removeInstance->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnRemoveInstanceClicked ), NULL, this );
 }
 
 BookViewPanel::~BookViewPanel()
@@ -1182,6 +1190,11 @@ BookViewPanel::~BookViewPanel()
 	saveBook->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnSaveButtonClicked ), NULL, this );
 	downloadFile->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnFileDownloadClicked ), NULL, this );
 	uploadFile->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnUploadClicked ), NULL, this );
+	m_button30->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnInstancesUpdateClicked ), NULL, this );
+	addInstance->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnAddInstanceClicked ), NULL, this );
+	withdrawInstance->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnWithdrawInstanceClicked ), NULL, this );
+	returnInstance->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnReturnInstanceClicked ), NULL, this );
+	removeInstance->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnRemoveInstanceClicked ), NULL, this );
 
 }
 

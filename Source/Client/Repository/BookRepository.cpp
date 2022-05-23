@@ -88,3 +88,13 @@ std::vector<BookInstance> BookRepository::GetInstances()
     }
     return instances;
 }
+
+void BookRepository::CreateInstance()
+{
+    FetchApi("POST", _config.apiUrl, Book::GetPath() + "/instances");
+}
+
+void BookRepository::RemoveInstance(std::uint64_t id)
+{
+    FetchApi("POST", _config.apiUrl, Book::GetPath() + "/instances/" + std::to_string(id));
+}

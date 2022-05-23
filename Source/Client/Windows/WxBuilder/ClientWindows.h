@@ -554,6 +554,7 @@ namespace wxFormBuilder
 			wxButton* downloadFile;
 			wxButton* uploadFile;
 			wxDataViewListCtrl* instancesList;
+			wxButton* m_button30;
 			wxButton* addInstance;
 			wxButton* withdrawInstance;
 			wxButton* returnInstance;
@@ -563,6 +564,11 @@ namespace wxFormBuilder
 			virtual void OnSaveButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnFileDownloadClicked( wxCommandEvent& event ) = 0;
 			virtual void OnUploadClicked( wxCommandEvent& event ) = 0;
+			virtual void OnInstancesUpdateClicked( wxCommandEvent& event ) = 0;
+			virtual void OnAddInstanceClicked( wxCommandEvent& event ) = 0;
+			virtual void OnWithdrawInstanceClicked( wxCommandEvent& event ) = 0;
+			virtual void OnReturnInstanceClicked( wxCommandEvent& event ) = 0;
+			virtual void OnRemoveInstanceClicked( wxCommandEvent& event ) = 0;
 
 
 		public:
