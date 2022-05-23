@@ -54,7 +54,8 @@ RUN ln -s /usr/x86_64-w64-mingw32/include/windows.h /usr/x86_64-w64-mingw32/incl
 
 # Finally run configuration and build
 WORKDIR /Workdir/BuildResult
-RUN export CC=/usr/bin/x86_64-w64-mingw32-gcc && export CXX=/usr/bin/x86_64-w64-mingw32-g++ && export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
+RUN export CC=/usr/bin/x86_64-w64-mingw32-gcc && export CXX=/usr/bin/x86_64-w64-mingw32-g++ && \
+    export CMAKE_RC_COMPILER=/usr/bin/x86_64-w64-mingw32-rc && export CMAKE_MAKE_PROGRAM=/usr/bin/make && \
 	cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-static -DCMAKE_SYSTEM_NAME=Windows -DVCPKG_BUILD_TYPE=release && \
     cmake --build . --target Client --config Release
 
