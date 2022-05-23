@@ -110,6 +110,7 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 	authorsButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnAuthorsButtonClicked ), NULL, this );
 	publishersButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnPublishersButtonClicked ), NULL, this );
 	readersButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnReadersButtonClicked ), NULL, this );
+	booksButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnBooksButtonClicked ), NULL, this );
 	helpButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnHelpButtonClicked ), NULL, this );
 	m_hyperlink11->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
 	m_hyperlink1->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
@@ -121,6 +122,7 @@ MainWindow::~MainWindow()
 	authorsButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnAuthorsButtonClicked ), NULL, this );
 	publishersButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnPublishersButtonClicked ), NULL, this );
 	readersButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnReadersButtonClicked ), NULL, this );
+	booksButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnBooksButtonClicked ), NULL, this );
 	helpButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnHelpButtonClicked ), NULL, this );
 	m_hyperlink11->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
 	m_hyperlink1->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
@@ -926,5 +928,246 @@ ReaderViewPanel::~ReaderViewPanel()
 {
 	// Disconnect Events
 	saveReader->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ReaderViewPanel::OnSaveButtonClicked ), NULL, this );
+
+}
+
+BooksListFilter::BooksListFilter( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer26;
+	bSizer26 = new wxBoxSizer( wxVERTICAL );
+
+	m_staticText15 = new wxStaticText( this, wxID_ANY, wxT("Название"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText15->Wrap( -1 );
+	bSizer26->Add( m_staticText15, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	bookName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer26->Add( bookName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText113 = new wxStaticText( this, wxID_ANY, wxT("Автор"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText113->Wrap( -1 );
+	bSizer26->Add( m_staticText113, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	wxArrayString authorChoiceChoices;
+	authorChoice = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, authorChoiceChoices, 0 );
+	authorChoice->SetSelection( 0 );
+	bSizer26->Add( authorChoice, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText114 = new wxStaticText( this, wxID_ANY, wxT("Издатель"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText114->Wrap( -1 );
+	bSizer26->Add( m_staticText114, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	wxArrayString publisherChoiceChoices;
+	publisherChoice = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, publisherChoiceChoices, 0 );
+	publisherChoice->SetSelection( 0 );
+	bSizer26->Add( publisherChoice, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText115 = new wxStaticText( this, wxID_ANY, wxT("Дата публикации"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText115->Wrap( -1 );
+	bSizer26->Add( m_staticText115, 0, wxALL, 5 );
+
+	bookPublishedAt = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_ALLOWNONE|wxDP_DEFAULT|wxDP_DROPDOWN );
+	bSizer26->Add( bookPublishedAt, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText144 = new wxStaticText( this, wxID_ANY, wxT("Электронная версия"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText144->Wrap( -1 );
+	bSizer26->Add( m_staticText144, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	wxString bookFileChoices[] = { wxEmptyString, wxT("Есть"), wxT("Нет") };
+	int bookFileNChoices = sizeof( bookFileChoices ) / sizeof( wxString );
+	bookFile = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, bookFileNChoices, bookFileChoices, 0 );
+	bookFile->SetSelection( 0 );
+	bSizer26->Add( bookFile, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_toggleBtn1 = new wxToggleButton( this, wxID_ANY, wxT("Обновить списки"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_toggleBtn1->SetValue( true );
+	bSizer26->Add( m_toggleBtn1, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+
+	this->SetSizer( bSizer26 );
+	this->Layout();
+	bSizer26->Fit( this );
+
+	// Connect Events
+	m_toggleBtn1->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( BooksListFilter::OnListsRefreshClicked ), NULL, this );
+}
+
+BooksListFilter::~BooksListFilter()
+{
+	// Disconnect Events
+	m_toggleBtn1->Disconnect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( BooksListFilter::OnListsRefreshClicked ), NULL, this );
+
+}
+
+BookCreationFields::BookCreationFields( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer42;
+	bSizer42 = new wxBoxSizer( wxVERTICAL );
+
+	m_scrolledWindow2 = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	m_scrolledWindow2->SetScrollRate( 5, 5 );
+	wxBoxSizer* bSizer53;
+	bSizer53 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer53->SetMinSize( wxSize( 250,-1 ) );
+	m_staticText15 = new wxStaticText( m_scrolledWindow2, wxID_ANY, wxT("Название"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText15->Wrap( -1 );
+	bSizer53->Add( m_staticText15, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	bookName = new wxTextCtrl( m_scrolledWindow2, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer53->Add( bookName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText113 = new wxStaticText( m_scrolledWindow2, wxID_ANY, wxT("Автор"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText113->Wrap( -1 );
+	bSizer53->Add( m_staticText113, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	wxArrayString authorChoiceChoices;
+	authorChoice = new wxChoice( m_scrolledWindow2, wxID_ANY, wxDefaultPosition, wxDefaultSize, authorChoiceChoices, 0 );
+	authorChoice->SetSelection( 0 );
+	bSizer53->Add( authorChoice, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText114 = new wxStaticText( m_scrolledWindow2, wxID_ANY, wxT("Издатель"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText114->Wrap( -1 );
+	bSizer53->Add( m_staticText114, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	wxArrayString publisherChoiceChoices;
+	publisherChoice = new wxChoice( m_scrolledWindow2, wxID_ANY, wxDefaultPosition, wxDefaultSize, publisherChoiceChoices, 0 );
+	publisherChoice->SetSelection( 0 );
+	bSizer53->Add( publisherChoice, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText115 = new wxStaticText( m_scrolledWindow2, wxID_ANY, wxT("Дата публикации"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText115->Wrap( -1 );
+	bSizer53->Add( m_staticText115, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	bookPublishedAt = new wxDatePickerCtrl( m_scrolledWindow2, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_DROPDOWN );
+	bSizer53->Add( bookPublishedAt, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+
+	m_scrolledWindow2->SetSizer( bSizer53 );
+	m_scrolledWindow2->Layout();
+	bSizer53->Fit( m_scrolledWindow2 );
+	bSizer42->Add( m_scrolledWindow2, 1, wxEXPAND, 5 );
+
+
+	this->SetSizer( bSizer42 );
+	this->Layout();
+	bSizer42->Fit( this );
+}
+
+BookCreationFields::~BookCreationFields()
+{
+}
+
+BookViewPanel::BookViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer44;
+	bSizer44 = new wxBoxSizer( wxVERTICAL );
+
+	m_scrolledWindow1 = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	m_scrolledWindow1->SetScrollRate( 5, 5 );
+	wxBoxSizer* bSizer46;
+	bSizer46 = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bSizer47;
+	bSizer47 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer47->SetMinSize( wxSize( 250,-1 ) );
+	m_staticText145 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Id книги"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText145->Wrap( -1 );
+	bSizer47->Add( m_staticText145, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	bookId = new wxSpinCtrl( m_scrolledWindow1, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, 0, 1, 9999999999, 1 );
+	bookId->Enable( false );
+
+	bSizer47->Add( bookId, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText15 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Название"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText15->Wrap( -1 );
+	bSizer47->Add( m_staticText15, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	bookName = new wxTextCtrl( m_scrolledWindow1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer47->Add( bookName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText113 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Автор"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText113->Wrap( -1 );
+	bSizer47->Add( m_staticText113, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	wxArrayString authorChoiceChoices;
+	authorChoice = new wxChoice( m_scrolledWindow1, wxID_ANY, wxDefaultPosition, wxDefaultSize, authorChoiceChoices, 0 );
+	authorChoice->SetSelection( 0 );
+	bSizer47->Add( authorChoice, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText114 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Издатель"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText114->Wrap( -1 );
+	bSizer47->Add( m_staticText114, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	wxArrayString publisherChoiceChoices;
+	publisherChoice = new wxChoice( m_scrolledWindow1, wxID_ANY, wxDefaultPosition, wxDefaultSize, publisherChoiceChoices, 0 );
+	publisherChoice->SetSelection( 0 );
+	bSizer47->Add( publisherChoice, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText115 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Дата публикации"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText115->Wrap( -1 );
+	bSizer47->Add( m_staticText115, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	bookPublishedAt = new wxDatePickerCtrl( m_scrolledWindow1, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_DROPDOWN );
+	bSizer47->Add( bookPublishedAt, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+
+	bSizer46->Add( bSizer47, 1, wxEXPAND, 5 );
+
+	saveBook = new wxButton( m_scrolledWindow1, wxID_ANY, wxT("Сохранить"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer46->Add( saveBook, 0, wxALL|wxEXPAND, 5 );
+
+	m_collapsiblePane1 = new wxCollapsiblePane( m_scrolledWindow1, wxID_ANY, wxT("Цифровая версия"), wxDefaultPosition, wxDefaultSize, wxCP_DEFAULT_STYLE );
+	m_collapsiblePane1->Collapse( true );
+
+	wxBoxSizer* bSizer66;
+	bSizer66 = new wxBoxSizer( wxVERTICAL );
+
+	m_staticText140 = new wxStaticText( m_collapsiblePane1->GetPane(), wxID_ANY, wxT("TODO:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText140->Wrap( -1 );
+	bSizer66->Add( m_staticText140, 0, wxALL, 5 );
+
+
+	m_collapsiblePane1->GetPane()->SetSizer( bSizer66 );
+	m_collapsiblePane1->GetPane()->Layout();
+	bSizer66->Fit( m_collapsiblePane1->GetPane() );
+	bSizer46->Add( m_collapsiblePane1, 1, wxEXPAND | wxALL, 5 );
+
+	m_collapsiblePane2 = new wxCollapsiblePane( m_scrolledWindow1, wxID_ANY, wxT("Экземпляры"), wxDefaultPosition, wxDefaultSize, wxCP_DEFAULT_STYLE );
+	m_collapsiblePane2->Collapse( true );
+
+	wxBoxSizer* bSizer67;
+	bSizer67 = new wxBoxSizer( wxVERTICAL );
+
+	m_staticText1401 = new wxStaticText( m_collapsiblePane2->GetPane(), wxID_ANY, wxT("TODO:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1401->Wrap( -1 );
+	bSizer67->Add( m_staticText1401, 0, wxALL, 5 );
+
+
+	m_collapsiblePane2->GetPane()->SetSizer( bSizer67 );
+	m_collapsiblePane2->GetPane()->Layout();
+	bSizer67->Fit( m_collapsiblePane2->GetPane() );
+	bSizer46->Add( m_collapsiblePane2, 1, wxALL|wxEXPAND, 5 );
+
+
+	m_scrolledWindow1->SetSizer( bSizer46 );
+	m_scrolledWindow1->Layout();
+	bSizer46->Fit( m_scrolledWindow1 );
+	bSizer44->Add( m_scrolledWindow1, 1, wxEXPAND, 5 );
+
+
+	this->SetSizer( bSizer44 );
+	this->Layout();
+	bSizer44->Fit( this );
+
+	// Connect Events
+	saveBook->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnSaveButtonClicked ), NULL, this );
+}
+
+BookViewPanel::~BookViewPanel()
+{
+	// Disconnect Events
+	saveBook->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnSaveButtonClicked ), NULL, this );
 
 }

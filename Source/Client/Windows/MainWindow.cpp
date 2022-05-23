@@ -123,3 +123,10 @@ void MainWindow::OnReadersButtonClicked(wxCommandEvent& event)
     panel->LoadList();
     AddTab(panel, wxString::FromUTF8("Читатели"), true);
 }
+
+void MainWindow::OnBooksButtonClicked(wxCommandEvent& event)
+{
+    auto panel = new BooksListPanel(notebook);
+    panel->LoadList();
+    AddTab(panel, wxString::FromUTF8("Книги"), true);
+}

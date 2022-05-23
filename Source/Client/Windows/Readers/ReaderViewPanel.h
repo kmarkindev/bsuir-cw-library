@@ -3,6 +3,7 @@
 #include <Windows/WxBuilder/WxBuilder.h>
 #include <Repository/ReadersRepository.h>
 #include <Windows/EntityViewPanel.h>
+#include <Windows/Books/BookViewPanel.h>
 
 class ReaderViewPanel : public EntityViewPanel<wxFormBuilder::ReaderViewPanel>
 {

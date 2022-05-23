@@ -33,6 +33,9 @@
 #include <wx/dateevt.h>
 #include <wx/radiobut.h>
 #include <wx/scrolwin.h>
+#include <wx/choice.h>
+#include <wx/tglbtn.h>
+#include <wx/collpane.h>
 
 #include "Header.h"
 
@@ -66,6 +69,7 @@ namespace wxFormBuilder
 			virtual void OnAuthorsButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnPublishersButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnReadersButtonClicked( wxCommandEvent& event ) = 0;
+			virtual void OnBooksButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnHelpButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnLoginLinkClicked( wxHyperlinkEvent& event ) = 0;
 			virtual void OnLogoutLinkClicked( wxHyperlinkEvent& event ) = 0;
@@ -466,6 +470,101 @@ namespace wxFormBuilder
 			ReaderViewPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 			~ReaderViewPanel();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class BooksListFilter
+	///////////////////////////////////////////////////////////////////////////////
+	class BooksListFilter : public wxPanel
+	{
+		private:
+
+		protected:
+			wxStaticText* m_staticText15;
+			wxStaticText* m_staticText113;
+			wxStaticText* m_staticText114;
+			wxStaticText* m_staticText115;
+			wxStaticText* m_staticText144;
+			wxToggleButton* m_toggleBtn1;
+
+			// Virtual event handlers, override them in your derived class
+			virtual void OnListsRefreshClicked( wxCommandEvent& event ) = 0;
+
+
+		public:
+			wxTextCtrl* bookName;
+			wxChoice* authorChoice;
+			wxChoice* publisherChoice;
+			wxDatePickerCtrl* bookPublishedAt;
+			wxChoice* bookFile;
+
+			BooksListFilter( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~BooksListFilter();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class BookCreationFields
+	///////////////////////////////////////////////////////////////////////////////
+	class BookCreationFields : public wxPanel
+	{
+		private:
+
+		protected:
+			wxScrolledWindow* m_scrolledWindow2;
+			wxStaticText* m_staticText15;
+			wxStaticText* m_staticText113;
+			wxStaticText* m_staticText114;
+			wxStaticText* m_staticText115;
+
+		public:
+			wxTextCtrl* bookName;
+			wxChoice* authorChoice;
+			wxChoice* publisherChoice;
+			wxDatePickerCtrl* bookPublishedAt;
+
+			BookCreationFields( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~BookCreationFields();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class BookViewPanel
+	///////////////////////////////////////////////////////////////////////////////
+	class BookViewPanel : public wxPanel
+	{
+		private:
+
+		protected:
+			wxScrolledWindow* m_scrolledWindow1;
+			wxStaticText* m_staticText145;
+			wxSpinCtrl* bookId;
+			wxStaticText* m_staticText15;
+			wxStaticText* m_staticText113;
+			wxChoice* authorChoice;
+			wxStaticText* m_staticText114;
+			wxChoice* publisherChoice;
+			wxStaticText* m_staticText115;
+			wxDatePickerCtrl* bookPublishedAt;
+			wxButton* saveBook;
+			wxCollapsiblePane* m_collapsiblePane1;
+			wxStaticText* m_staticText140;
+			wxCollapsiblePane* m_collapsiblePane2;
+			wxStaticText* m_staticText1401;
+
+			// Virtual event handlers, override them in your derived class
+			virtual void OnSaveButtonClicked( wxCommandEvent& event ) = 0;
+
+
+		public:
+			wxTextCtrl* bookName;
+
+			BookViewPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~BookViewPanel();
 
 	};
 

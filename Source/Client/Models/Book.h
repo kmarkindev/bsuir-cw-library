@@ -33,7 +33,10 @@ public:
         if(json.contains("publisher_id") && json["publisher_id"].is_number())
             publisherId = json["publisher_id"];
         if(json.contains("published_at") && json["published_at"].is_string())
-            publishedAt = ParseTime(to_string(json["published_at"]));
+        {
+            std::string str = json["published_at"];
+            publishedAt = ParseTime(str);
+        }
         if(json.contains("file_storage_path") && json["file_storage_path"].is_string())
             fileStoragePath = json["file_storage_path"];
         if(json.contains("file_extension") && json["file_extension"].is_string())
