@@ -9,7 +9,7 @@ set(VCPKG_CRT_LINKAGE "static")
 
 message(STATUS "Setting ${VCPKG_TARGET_TRIPLET} triplet")
 
-project(bsuir-cw-library LANGUAGES CXX)
+project(bsuir-cw-library LANGUAGES CXX RC)
 
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows" AND NOT CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	message(FATAL_ERROR "Trying to compile for unsupported OS '${CMAKE_SYSTEM_NAME}'")
