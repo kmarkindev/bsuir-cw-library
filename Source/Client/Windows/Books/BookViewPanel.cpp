@@ -49,6 +49,7 @@ void BookViewPanel::ShowLoggedInState()
     authorChoice->Enable(true);
     publisherChoice->Enable(true);
     publisherChoice->Enable(true);
+    bookPublishedAt->Enable(true);
 }
 
 void BookViewPanel::ShowLoggedOutState()
@@ -58,6 +59,7 @@ void BookViewPanel::ShowLoggedOutState()
     authorChoice->Enable(false);
     publisherChoice->Enable(false);
     publisherChoice->Enable(false);
+    bookPublishedAt->Enable(false);
 }
 
 void BookViewPanel::OnSaveButtonClicked(wxCommandEvent& event)
