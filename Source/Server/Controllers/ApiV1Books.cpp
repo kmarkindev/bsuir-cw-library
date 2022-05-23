@@ -135,7 +135,7 @@ void api::v1::Books::GetBookFile(const HttpRequestPtr &req, std::function<void(c
         auto fileName = model.getValueOfName() + "." + model.getValueOfFileExtension();
 
         std::string filePath = _fileStorageService.GetFilePathFromStorage(model.getValueOfFileStoragePath());
-        std::ifstream is(filePath, std::ios::beg);
+        std::ifstream is(filePath);
         std::string fileContent(std::istreambuf_iterator<char>(is), {});
         fileContent = drogon::utils::base64Decode(fileContent);
 
