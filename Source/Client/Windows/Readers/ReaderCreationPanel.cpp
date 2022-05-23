@@ -9,10 +9,13 @@ ReaderCreationPanel::ReaderCreationPanel(wxWindow* parent)
 void ReaderCreationPanel::CreateModel()
 {
     Reader reader;
-    //todo: fill
-//    reader.name = _fields->publisherName
-//        ->GetValue()
-//        .utf8_string();
+    reader.name = _fields->readerName->GetValue().utf8_string();
+    reader.address = _fields->readerAddress->GetValue().utf8_string();
+    if(_fields->readerBirthday->GetValue().IsValid())
+        reader.birthday = ParseTime(_fields->readerBirthday->GetValue().Format("%Y-%m-%d").utf8_string());
+    reader.sex = _fields->readerMale->GetValue();
+    reader.phone = _fields->readerPhone->GetValue().utf8_string();
+    reader.email = _fields->readerEmail->GetValue().utf8_string();
 
     try
     {

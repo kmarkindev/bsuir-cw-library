@@ -470,15 +470,14 @@ EntityCreationPanel::EntityCreationPanel( wxWindow* parent, wxWindowID id, const
 	bSizer40->Add( saveButton, 0, wxALL|wxEXPAND, 5 );
 
 
-	bSizer39->Add( bSizer40, 1, wxALIGN_CENTER, 5 );
+	bSizer39->Add( bSizer40, 1, wxEXPAND, 5 );
 
 
-	bSizer38->Add( bSizer39, 1, wxALIGN_CENTER, 5 );
+	bSizer38->Add( bSizer39, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( bSizer38 );
 	this->Layout();
-	bSizer38->Fit( this );
 
 	// Connect Events
 	saveButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EntityCreationPanel::SaveButtonClicked ), NULL, this );
@@ -564,14 +563,14 @@ AuthorViewPanel::AuthorViewPanel( wxWindow* parent, wxWindowID id, const wxPoint
 	authorName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer47->Add( authorName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
+
+	bSizer46->Add( bSizer47, 1, wxEXPAND, 5 );
+
 	saveAuthor = new wxButton( this, wxID_ANY, wxT("Сохранить"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer47->Add( saveAuthor, 0, wxALL|wxEXPAND, 5 );
+	bSizer46->Add( saveAuthor, 0, wxALL|wxEXPAND, 5 );
 
 
-	bSizer46->Add( bSizer47, 1, wxALIGN_CENTER, 5 );
-
-
-	bSizer44->Add( bSizer46, 1, wxALIGN_CENTER, 5 );
+	bSizer44->Add( bSizer46, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( bSizer44 );
@@ -662,14 +661,14 @@ PublisherViewPanel::PublisherViewPanel( wxWindow* parent, wxWindowID id, const w
 	publisherName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer47->Add( publisherName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
+
+	bSizer46->Add( bSizer47, 1, wxEXPAND, 5 );
+
 	savePublisher = new wxButton( this, wxID_ANY, wxT("Сохранить"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer47->Add( savePublisher, 0, wxALL|wxEXPAND, 5 );
+	bSizer46->Add( savePublisher, 0, wxALL|wxEXPAND, 5 );
 
 
-	bSizer46->Add( bSizer47, 1, wxALIGN_CENTER, 5 );
-
-
-	bSizer44->Add( bSizer46, 1, wxALIGN_CENTER, 5 );
+	bSizer44->Add( bSizer46, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( bSizer44 );
@@ -755,7 +754,6 @@ ReaderCreationFields::ReaderCreationFields( wxWindow* parent, wxWindowID id, con
 	wxBoxSizer* bSizer42;
 	bSizer42 = new wxBoxSizer( wxVERTICAL );
 
-	bSizer42->SetMinSize( wxSize( 250,-1 ) );
 	m_scrolledWindow2 = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
 	m_scrolledWindow2->SetScrollRate( 5, 5 );
 	wxBoxSizer* bSizer53;
@@ -832,7 +830,7 @@ ReaderCreationFields::~ReaderCreationFields()
 ReaderViewPanel::ReaderViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
 	wxBoxSizer* bSizer44;
-	bSizer44 = new wxBoxSizer( wxHORIZONTAL );
+	bSizer44 = new wxBoxSizer( wxVERTICAL );
 
 	m_scrolledWindow1 = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
 	m_scrolledWindow1->SetScrollRate( 5, 5 );
@@ -903,11 +901,11 @@ ReaderViewPanel::ReaderViewPanel( wxWindow* parent, wxWindowID id, const wxPoint
 	readerEmail = new wxTextCtrl( m_scrolledWindow1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer47->Add( readerEmail, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
+
+	bSizer46->Add( bSizer47, 1, wxEXPAND, 5 );
+
 	saveReader = new wxButton( m_scrolledWindow1, wxID_ANY, wxT("Сохранить"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer47->Add( saveReader, 0, wxALL|wxEXPAND, 5 );
-
-
-	bSizer46->Add( bSizer47, 1, wxALIGN_CENTER, 5 );
+	bSizer46->Add( saveReader, 0, wxALL|wxEXPAND, 5 );
 
 
 	m_scrolledWindow1->SetSizer( bSizer46 );
