@@ -111,6 +111,7 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 	publishersButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnPublishersButtonClicked ), NULL, this );
 	readersButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnReadersButtonClicked ), NULL, this );
 	booksButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnBooksButtonClicked ), NULL, this );
+	debtorsButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnDebtorsButtonClicked ), NULL, this );
 	helpButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnHelpButtonClicked ), NULL, this );
 	m_hyperlink11->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
 	m_hyperlink1->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
@@ -123,6 +124,7 @@ MainWindow::~MainWindow()
 	publishersButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnPublishersButtonClicked ), NULL, this );
 	readersButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnReadersButtonClicked ), NULL, this );
 	booksButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnBooksButtonClicked ), NULL, this );
+	debtorsButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnDebtorsButtonClicked ), NULL, this );
 	helpButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnHelpButtonClicked ), NULL, this );
 	m_hyperlink11->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
 	m_hyperlink1->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
@@ -1233,8 +1235,43 @@ InstanceWithdrawPanel::~InstanceWithdrawPanel()
 
 DebtorsListPanel::DebtorsListPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
+	wxBoxSizer* bSizer70;
+	bSizer70 = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bSizer71;
+	bSizer71 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_button28 = new wxButton( this, wxID_ANY, wxT("Обновить"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer71->Add( m_button28, 0, wxALL, 5 );
+
+	m_button29 = new wxButton( this, wxID_ANY, wxT("Закрыть долг"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer71->Add( m_button29, 0, wxALL, 5 );
+
+	m_staticText150 = new wxStaticText( this, wxID_ANY, wxT("Список должников"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText150->Wrap( -1 );
+	m_staticText150->SetFont( wxFont( 12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+
+	bSizer71->Add( m_staticText150, 0, wxALL, 5 );
+
+
+	bSizer70->Add( bSizer71, 0, wxEXPAND, 5 );
+
+	list = new wxDataViewListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer70->Add( list, 1, wxALL|wxEXPAND, 5 );
+
+
+	this->SetSizer( bSizer70 );
+	this->Layout();
+
+	// Connect Events
+	m_button28->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DebtorsListPanel::RefreshButtonClicked ), NULL, this );
+	m_button29->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DebtorsListPanel::ReturnButtonClicked ), NULL, this );
 }
 
 DebtorsListPanel::~DebtorsListPanel()
 {
+	// Disconnect Events
+	m_button28->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DebtorsListPanel::RefreshButtonClicked ), NULL, this );
+	m_button29->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DebtorsListPanel::ReturnButtonClicked ), NULL, this );
+
 }

@@ -24,9 +24,9 @@ namespace api::v1
             METHOD_ADD(Books::CreateBook, "", HttpMethod::Post, "AuthFilter");
             METHOD_ADD(Books::UpdateBook, "/{id}", HttpMethod::Put, "AuthFilter");
             METHOD_ADD(Books::DeleteBook, "/{id}", HttpMethod::Delete, "AuthFilter");
-            METHOD_ADD(Books::GetAllInstances, "/instances", HttpMethod::Get);
             METHOD_ADD(Books::GetInstances, "/{id}/instances", HttpMethod::Get);
             METHOD_ADD(Books::CreateInstance, "/{id}/instances", HttpMethod::Post, "AuthFilter");
+            METHOD_ADD(Books::GetAllInstances, "/instances", HttpMethod::Get);
             METHOD_ADD(Books::DeleteInstance, "instances/{id}", HttpMethod::Delete, "AuthFilter");
             METHOD_ADD(Books::WithdrawInstance, "/instances/{id}/withdraw", HttpMethod::Post, "AuthFilter");
             METHOD_ADD(Books::ReturnInstance, "/instances/{id}/return", HttpMethod::Post, "AuthFilter");

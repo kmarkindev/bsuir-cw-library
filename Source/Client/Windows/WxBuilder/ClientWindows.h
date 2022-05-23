@@ -70,6 +70,7 @@ namespace wxFormBuilder
 			virtual void OnPublishersButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnReadersButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnBooksButtonClicked( wxCommandEvent& event ) = 0;
+			virtual void OnDebtorsButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnHelpButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnLoginLinkClicked( wxHyperlinkEvent& event ) = 0;
 			virtual void OnLogoutLinkClicked( wxHyperlinkEvent& event ) = 0;
@@ -609,6 +610,15 @@ namespace wxFormBuilder
 		private:
 
 		protected:
+			wxButton* m_button28;
+			wxButton* m_button29;
+			wxStaticText* m_staticText150;
+			wxDataViewListCtrl* list;
+
+			// Virtual event handlers, override them in your derived class
+			virtual void RefreshButtonClicked( wxCommandEvent& event ) = 0;
+			virtual void ReturnButtonClicked( wxCommandEvent& event ) = 0;
+
 
 		public:
 

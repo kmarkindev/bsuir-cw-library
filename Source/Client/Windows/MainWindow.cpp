@@ -130,3 +130,9 @@ void MainWindow::OnBooksButtonClicked(wxCommandEvent& event)
     panel->LoadList();
     AddTab(panel, wxString::FromUTF8("Книги"), true);
 }
+
+void MainWindow::OnDebtorsButtonClicked(wxCommandEvent& event)
+{
+    auto panel = new DebtorsListPanel(notebook);
+    AddTab(panel, wxString::FromUTF8("Задолженности"), true);
+}

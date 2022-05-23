@@ -8,6 +8,7 @@
 #include "Windows/Authors/AuthorsListPanel.h"
 #include "Windows/Publishers/PublishersListPanel.h"
 #include <Windows/Readers/ReadersListPanel.h>
+#include <Windows/DebtorsListPanel.h>
 #include <Windows/Books/BooksListPanel.h>
 
 class MainWindow : public wxFormBuilder::MainWindow
@@ -35,6 +36,7 @@ protected:
     void OnPublishersButtonClicked(wxCommandEvent& event) override;
     void OnReadersButtonClicked(wxCommandEvent& event) override;
     void OnBooksButtonClicked(wxCommandEvent& event) override;
+    void OnDebtorsButtonClicked(wxCommandEvent& event) override;
 
 private:
     std::uint32_t _loginEventId;
