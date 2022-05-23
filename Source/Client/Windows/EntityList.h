@@ -19,7 +19,7 @@ public:
         filterSizer->Add(_filter, 1, wxEXPAND);
 
         for(const auto& col : columns)
-            dataList->AppendTextColumn(col);
+            dataList->AppendTextColumn(col, wxDATAVIEW_CELL_INERT, FromDIP(200));
 
         auto& appState = AppState::GetAppState();
         if(appState.IsAuthorized())

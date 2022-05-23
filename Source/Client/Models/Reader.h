@@ -29,9 +29,15 @@ public:
         if(json.contains("address") && json["address"].is_string())
             address = json["address"];
         if(json.contains("birthday") && json["birthday"].is_string())
-            birthday = ParseTime(to_string(json["birthday"]));
+        {
+            std::string date = json["birthday"];
+            birthday = ParseTime(date);
+        }
         if(json.contains("sex") && json["sex"].is_number() || json["sex"].is_boolean())
-            sex = json["sex"];
+        {
+            int test = json["sex"];
+            sex = static_cast<bool>(test);
+        }
         if(json.contains("phone") && json["phone"].is_string())
             phone = json["phone"];
         if(json.contains("email") && json["email"].is_string())

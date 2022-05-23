@@ -7,6 +7,7 @@
 #include <Helpers/NotebookHelper.h>
 #include "Windows/Authors/AuthorsListPanel.h"
 #include "Windows/Publishers/PublishersListPanel.h"
+#include <Windows/Readers/ReadersListPanel.h>
 
 class MainWindow : public wxFormBuilder::MainWindow
 {
@@ -31,6 +32,7 @@ protected:
     void OnHelpButtonClicked(wxCommandEvent& event) override;
     void OnAuthorsButtonClicked(wxCommandEvent& event) override;
     void OnPublishersButtonClicked(wxCommandEvent& event) override;
+    void OnReadersButtonClicked(wxCommandEvent& event) override;
 
 private:
     std::uint32_t _loginEventId;

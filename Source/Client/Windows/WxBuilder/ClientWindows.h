@@ -29,6 +29,9 @@
 #include <wx/dataview.h>
 #include <wx/splitter.h>
 #include <wx/spinctrl.h>
+#include <wx/datectrl.h>
+#include <wx/dateevt.h>
+#include <wx/radiobut.h>
 
 #include "Header.h"
 
@@ -61,6 +64,7 @@ namespace wxFormBuilder
 			// Virtual event handlers, override them in your derived class
 			virtual void OnAuthorsButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnPublishersButtonClicked( wxCommandEvent& event ) = 0;
+			virtual void OnReadersButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnHelpButtonClicked( wxCommandEvent& event ) = 0;
 			virtual void OnLoginLinkClicked( wxHyperlinkEvent& event ) = 0;
 			virtual void OnLogoutLinkClicked( wxHyperlinkEvent& event ) = 0;
@@ -359,6 +363,106 @@ namespace wxFormBuilder
 			PublisherViewPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 			~PublisherViewPanel();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class ReadersListFilter
+	///////////////////////////////////////////////////////////////////////////////
+	class ReadersListFilter : public wxPanel
+	{
+		private:
+
+		protected:
+			wxStaticText* m_staticText15;
+			wxStaticText* m_staticText31;
+			wxStaticText* m_staticText32;
+			wxStaticText* m_staticText34;
+			wxStaticText* m_staticText35;
+			wxStaticText* m_staticText36;
+
+		public:
+			wxTextCtrl* readerName;
+			wxTextCtrl* readerAddress;
+			wxDatePickerCtrl* readerBirthday;
+			wxRadioButton* readerAnySex;
+			wxRadioButton* readerMale;
+			wxRadioButton* readerFemale;
+			wxTextCtrl* readerPhone;
+			wxTextCtrl* readerEmail;
+
+			ReadersListFilter( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~ReadersListFilter();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class ReaderCreationFields
+	///////////////////////////////////////////////////////////////////////////////
+	class ReaderCreationFields : public wxPanel
+	{
+		private:
+
+		protected:
+			wxStaticText* m_staticText18;
+			wxStaticText* m_staticText31;
+			wxStaticText* m_staticText32;
+			wxStaticText* m_staticText34;
+			wxStaticText* m_staticText52;
+			wxStaticText* m_staticText35;
+			wxStaticText* m_staticText36;
+
+		public:
+			wxTextCtrl* readerName;
+			wxTextCtrl* readerAddress;
+			wxDatePickerCtrl* readerBirthday;
+			wxRadioButton* readerMale;
+			wxRadioButton* readerFemale;
+			wxTextCtrl* readerPhone;
+			wxTextCtrl* readerEmail;
+
+			ReaderCreationFields( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~ReaderCreationFields();
+
+	};
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// Class ReaderViewPanel
+	///////////////////////////////////////////////////////////////////////////////
+	class ReaderViewPanel : public wxPanel
+	{
+		private:
+
+		protected:
+			wxStaticText* m_staticText19;
+			wxSpinCtrl* readerId;
+			wxStaticText* m_staticText20;
+			wxTextCtrl* readerName;
+			wxStaticText* m_staticText31;
+			wxTextCtrl* readerAddress;
+			wxStaticText* m_staticText32;
+			wxDatePickerCtrl* readerBirthday;
+			wxStaticText* m_staticText34;
+			wxRadioButton* readerMale;
+			wxRadioButton* readerFemale;
+			wxStaticText* m_staticText52;
+			wxStaticText* m_staticText35;
+			wxTextCtrl* readerPhone;
+			wxStaticText* m_staticText36;
+			wxTextCtrl* readerEmail;
+			wxButton* saveReader;
+
+			// Virtual event handlers, override them in your derived class
+			virtual void OnSaveButtonClicked( wxCommandEvent& event ) = 0;
+
+
+		public:
+
+			ReaderViewPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+			~ReaderViewPanel();
 
 	};
 

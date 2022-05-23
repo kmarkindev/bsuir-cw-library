@@ -116,3 +116,10 @@ void MainWindow::OnPublishersButtonClicked(wxCommandEvent& event)
     panel->LoadList();
     AddTab(panel, wxString::FromUTF8("Издатели"), true);
 }
+
+void MainWindow::OnReadersButtonClicked(wxCommandEvent& event)
+{
+    auto panel = new ReadersListPanel(notebook);
+    panel->LoadList();
+    AddTab(panel, wxString::FromUTF8("Читатели"), true);
+}

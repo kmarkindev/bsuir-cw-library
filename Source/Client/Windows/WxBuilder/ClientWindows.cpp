@@ -109,6 +109,7 @@ MainWindow::MainWindow( wxWindow* parent, wxWindowID id, const wxString& title, 
 	// Connect Events
 	authorsButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnAuthorsButtonClicked ), NULL, this );
 	publishersButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnPublishersButtonClicked ), NULL, this );
+	readersButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnReadersButtonClicked ), NULL, this );
 	helpButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnHelpButtonClicked ), NULL, this );
 	m_hyperlink11->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
 	m_hyperlink1->Connect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
@@ -119,6 +120,7 @@ MainWindow::~MainWindow()
 	// Disconnect Events
 	authorsButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnAuthorsButtonClicked ), NULL, this );
 	publishersButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnPublishersButtonClicked ), NULL, this );
+	readersButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnReadersButtonClicked ), NULL, this );
 	helpButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainWindow::OnHelpButtonClicked ), NULL, this );
 	m_hyperlink11->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLoginLinkClicked ), NULL, this );
 	m_hyperlink1->Disconnect( wxEVT_COMMAND_HYPERLINK, wxHyperlinkEventHandler( MainWindow::OnLogoutLinkClicked ), NULL, this );
@@ -682,5 +684,232 @@ PublisherViewPanel::~PublisherViewPanel()
 {
 	// Disconnect Events
 	savePublisher->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PublisherViewPanel::OnSaveButtonClicked ), NULL, this );
+
+}
+
+ReadersListFilter::ReadersListFilter( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer26;
+	bSizer26 = new wxBoxSizer( wxVERTICAL );
+
+	m_staticText15 = new wxStaticText( this, wxID_ANY, wxT("Имя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText15->Wrap( -1 );
+	bSizer26->Add( m_staticText15, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer26->Add( readerName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText31 = new wxStaticText( this, wxID_ANY, wxT("Адрес"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText31->Wrap( -1 );
+	bSizer26->Add( m_staticText31, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerAddress = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer26->Add( readerAddress, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText32 = new wxStaticText( this, wxID_ANY, wxT("Дата рождения"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText32->Wrap( -1 );
+	bSizer26->Add( m_staticText32, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerBirthday = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_ALLOWNONE|wxDP_DEFAULT|wxDP_DROPDOWN );
+	bSizer26->Add( readerBirthday, 0, wxALL, 5 );
+
+	m_staticText34 = new wxStaticText( this, wxID_ANY, wxT("Пол"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText34->Wrap( -1 );
+	bSizer26->Add( m_staticText34, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerAnySex = new wxRadioButton( this, wxID_ANY, wxT("любой"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+	bSizer26->Add( readerAnySex, 0, wxLEFT|wxRIGHT, 5 );
+
+	readerMale = new wxRadioButton( this, wxID_ANY, wxT("муж."), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer26->Add( readerMale, 0, wxLEFT|wxRIGHT, 5 );
+
+	readerFemale = new wxRadioButton( this, wxID_ANY, wxT("жен."), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer26->Add( readerFemale, 0, wxBOTTOM|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText35 = new wxStaticText( this, wxID_ANY, wxT("Телефон"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText35->Wrap( -1 );
+	bSizer26->Add( m_staticText35, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerPhone = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer26->Add( readerPhone, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText36 = new wxStaticText( this, wxID_ANY, wxT("Почта (Email)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText36->Wrap( -1 );
+	bSizer26->Add( m_staticText36, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerEmail = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer26->Add( readerEmail, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+
+	this->SetSizer( bSizer26 );
+	this->Layout();
+	bSizer26->Fit( this );
+}
+
+ReadersListFilter::~ReadersListFilter()
+{
+}
+
+ReaderCreationFields::ReaderCreationFields( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer42;
+	bSizer42 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer42->SetMinSize( wxSize( 250,-1 ) );
+	m_staticText18 = new wxStaticText( this, wxID_ANY, wxT("Имя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText18->Wrap( -1 );
+	bSizer42->Add( m_staticText18, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer42->Add( readerName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText31 = new wxStaticText( this, wxID_ANY, wxT("Адрес"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText31->Wrap( -1 );
+	bSizer42->Add( m_staticText31, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerAddress = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer42->Add( readerAddress, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText32 = new wxStaticText( this, wxID_ANY, wxT("Дата рождения"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText32->Wrap( -1 );
+	bSizer42->Add( m_staticText32, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerBirthday = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_ALLOWNONE|wxDP_DEFAULT|wxDP_DROPDOWN );
+	bSizer42->Add( readerBirthday, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText34 = new wxStaticText( this, wxID_ANY, wxT("Пол"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText34->Wrap( -1 );
+	bSizer42->Add( m_staticText34, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerMale = new wxRadioButton( this, wxID_ANY, wxT("муж."), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+	bSizer42->Add( readerMale, 0, wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	readerFemale = new wxRadioButton( this, wxID_ANY, wxT("жен."), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer42->Add( readerFemale, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText52 = new wxStaticText( this, wxID_ANY, wxT("Минимум одно из следующих полей\nобязательно для заполнения"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText52->Wrap( -1 );
+	m_staticText52->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+
+	bSizer42->Add( m_staticText52, 0, wxALL, 5 );
+
+	m_staticText35 = new wxStaticText( this, wxID_ANY, wxT("Телефон"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText35->Wrap( -1 );
+	bSizer42->Add( m_staticText35, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerPhone = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer42->Add( readerPhone, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText36 = new wxStaticText( this, wxID_ANY, wxT("Почта (Email)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText36->Wrap( -1 );
+	bSizer42->Add( m_staticText36, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerEmail = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer42->Add( readerEmail, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+
+	this->SetSizer( bSizer42 );
+	this->Layout();
+	bSizer42->Fit( this );
+}
+
+ReaderCreationFields::~ReaderCreationFields()
+{
+}
+
+ReaderViewPanel::ReaderViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer44;
+	bSizer44 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer46;
+	bSizer46 = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bSizer47;
+	bSizer47 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer47->SetMinSize( wxSize( 250,-1 ) );
+	m_staticText19 = new wxStaticText( this, wxID_ANY, wxT("Id читателя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText19->Wrap( -1 );
+	bSizer47->Add( m_staticText19, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerId = new wxSpinCtrl( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, 0, 1, 9999999999, 1 );
+	readerId->Enable( false );
+
+	bSizer47->Add( readerId, 0, wxALL|wxEXPAND, 5 );
+
+	m_staticText20 = new wxStaticText( this, wxID_ANY, wxT("Имя читателя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText20->Wrap( -1 );
+	bSizer47->Add( m_staticText20, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer47->Add( readerName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText31 = new wxStaticText( this, wxID_ANY, wxT("Адрес"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText31->Wrap( -1 );
+	bSizer47->Add( m_staticText31, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerAddress = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer47->Add( readerAddress, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText32 = new wxStaticText( this, wxID_ANY, wxT("Дата рождения"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText32->Wrap( -1 );
+	bSizer47->Add( m_staticText32, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerBirthday = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_ALLOWNONE|wxDP_DEFAULT|wxDP_DROPDOWN );
+	bSizer47->Add( readerBirthday, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText34 = new wxStaticText( this, wxID_ANY, wxT("Пол"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText34->Wrap( -1 );
+	bSizer47->Add( m_staticText34, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerMale = new wxRadioButton( this, wxID_ANY, wxT("муж."), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+	bSizer47->Add( readerMale, 0, wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	readerFemale = new wxRadioButton( this, wxID_ANY, wxT("жен."), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer47->Add( readerFemale, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText52 = new wxStaticText( this, wxID_ANY, wxT("Минимум одно из следующих полей\nобязательно для заполнения"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText52->Wrap( -1 );
+	m_staticText52->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+
+	bSizer47->Add( m_staticText52, 0, wxALL, 5 );
+
+	m_staticText35 = new wxStaticText( this, wxID_ANY, wxT("Телефон"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText35->Wrap( -1 );
+	bSizer47->Add( m_staticText35, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerPhone = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer47->Add( readerPhone, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	m_staticText36 = new wxStaticText( this, wxID_ANY, wxT("Почта (Email)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText36->Wrap( -1 );
+	bSizer47->Add( m_staticText36, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
+
+	readerEmail = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer47->Add( readerEmail, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+	saveReader = new wxButton( this, wxID_ANY, wxT("Сохранить"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer47->Add( saveReader, 0, wxALL|wxEXPAND, 5 );
+
+
+	bSizer46->Add( bSizer47, 1, wxALIGN_CENTER, 5 );
+
+
+	bSizer44->Add( bSizer46, 1, wxALIGN_CENTER, 5 );
+
+
+	this->SetSizer( bSizer44 );
+	this->Layout();
+	bSizer44->Fit( this );
+
+	// Connect Events
+	saveReader->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ReaderViewPanel::OnSaveButtonClicked ), NULL, this );
+}
+
+ReaderViewPanel::~ReaderViewPanel()
+{
+	// Disconnect Events
+	saveReader->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ReaderViewPanel::OnSaveButtonClicked ), NULL, this );
 
 }
