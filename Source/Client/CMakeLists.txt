@@ -45,10 +45,7 @@ aux_source_directory(Windows/Readers WINDOWS_READERS_SRC)
 aux_source_directory(Windows/Books WINDOWS_BOOKS_SRC)
 aux_source_directory(Utils UTILS_SRC)
 
-set_source_files_properties(client.ico client.rc PROPERTIES LANGUAGE RC)
-
 target_sources(Client PRIVATE
-	client.rc
 	main.cpp
 	App.cpp
 	App.h
@@ -70,3 +67,8 @@ target_sources(Client PRIVATE
 	${WINDOWS_SRC}
 	${UTILS_SRC}
 )
+
+if(MSVC)
+	set_source_files_properties(client.ico client.rc PROPERTIES LANGUAGE RC)
+	target_sources(Client PRIVATE client.rc)
+endif()
