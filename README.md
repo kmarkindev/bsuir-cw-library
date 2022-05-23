@@ -15,7 +15,3 @@ You can find all API requests
 
 Client GUI is generated using [wxFormBuilder v3.10.1](https://github.com/wxFormBuilder/wxFormBuilder).
 You can find it's project file in *Sources/Client/Windows/WxBuilder* folder.
-
-
-*Note: one of the main requirement in this coursework is not to use SQL for data filtering, searching etc. 
-So, please don't be confused when you see lots of places which can be replaced by a couple of SQL lines.*
