@@ -756,56 +756,68 @@ ReaderCreationFields::ReaderCreationFields( wxWindow* parent, wxWindowID id, con
 	bSizer42 = new wxBoxSizer( wxVERTICAL );
 
 	bSizer42->SetMinSize( wxSize( 250,-1 ) );
-	m_staticText18 = new wxStaticText( this, wxID_ANY, wxT("Имя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_scrolledWindow2 = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	m_scrolledWindow2->SetScrollRate( 5, 5 );
+	wxBoxSizer* bSizer53;
+	bSizer53 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer53->SetMinSize( wxSize( 250,-1 ) );
+	m_staticText18 = new wxStaticText( m_scrolledWindow2, wxID_ANY, wxT("Имя"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText18->Wrap( -1 );
-	bSizer42->Add( m_staticText18, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer53->Add( m_staticText18, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer42->Add( readerName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+	readerName = new wxTextCtrl( m_scrolledWindow2, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer53->Add( readerName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	m_staticText31 = new wxStaticText( this, wxID_ANY, wxT("Адрес"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText31 = new wxStaticText( m_scrolledWindow2, wxID_ANY, wxT("Адрес"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText31->Wrap( -1 );
-	bSizer42->Add( m_staticText31, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer53->Add( m_staticText31, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerAddress = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer42->Add( readerAddress, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+	readerAddress = new wxTextCtrl( m_scrolledWindow2, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer53->Add( readerAddress, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	m_staticText32 = new wxStaticText( this, wxID_ANY, wxT("Дата рождения"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText32 = new wxStaticText( m_scrolledWindow2, wxID_ANY, wxT("Дата рождения"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText32->Wrap( -1 );
-	bSizer42->Add( m_staticText32, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer53->Add( m_staticText32, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerBirthday = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_ALLOWNONE|wxDP_DEFAULT|wxDP_DROPDOWN );
-	bSizer42->Add( readerBirthday, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+	readerBirthday = new wxDatePickerCtrl( m_scrolledWindow2, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_ALLOWNONE|wxDP_DEFAULT|wxDP_DROPDOWN );
+	bSizer53->Add( readerBirthday, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	m_staticText34 = new wxStaticText( this, wxID_ANY, wxT("Пол"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText34 = new wxStaticText( m_scrolledWindow2, wxID_ANY, wxT("Пол"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText34->Wrap( -1 );
-	bSizer42->Add( m_staticText34, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer53->Add( m_staticText34, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerMale = new wxRadioButton( this, wxID_ANY, wxT("муж."), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-	bSizer42->Add( readerMale, 0, wxEXPAND|wxLEFT|wxRIGHT, 5 );
+	readerMale = new wxRadioButton( m_scrolledWindow2, wxID_ANY, wxT("муж."), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+	bSizer53->Add( readerMale, 0, wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	readerFemale = new wxRadioButton( this, wxID_ANY, wxT("жен."), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer42->Add( readerFemale, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+	readerFemale = new wxRadioButton( m_scrolledWindow2, wxID_ANY, wxT("жен."), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer53->Add( readerFemale, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	m_staticText52 = new wxStaticText( this, wxID_ANY, wxT("Минимум одно из следующих полей\nобязательно для заполнения"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText52 = new wxStaticText( m_scrolledWindow2, wxID_ANY, wxT("Минимум одно из следующих полей\nобязательно для заполнения"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText52->Wrap( -1 );
 	m_staticText52->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
-	bSizer42->Add( m_staticText52, 0, wxALL, 5 );
+	bSizer53->Add( m_staticText52, 0, wxALL, 5 );
 
-	m_staticText35 = new wxStaticText( this, wxID_ANY, wxT("Телефон"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText35 = new wxStaticText( m_scrolledWindow2, wxID_ANY, wxT("Телефон"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText35->Wrap( -1 );
-	bSizer42->Add( m_staticText35, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer53->Add( m_staticText35, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerPhone = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer42->Add( readerPhone, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+	readerPhone = new wxTextCtrl( m_scrolledWindow2, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer53->Add( readerPhone, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	m_staticText36 = new wxStaticText( this, wxID_ANY, wxT("Почта (Email)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText36 = new wxStaticText( m_scrolledWindow2, wxID_ANY, wxT("Почта (Email)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText36->Wrap( -1 );
-	bSizer42->Add( m_staticText36, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
+	bSizer53->Add( m_staticText36, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerEmail = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer42->Add( readerEmail, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+	readerEmail = new wxTextCtrl( m_scrolledWindow2, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer53->Add( readerEmail, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+
+
+	m_scrolledWindow2->SetSizer( bSizer53 );
+	m_scrolledWindow2->Layout();
+	bSizer53->Fit( m_scrolledWindow2 );
+	bSizer42->Add( m_scrolledWindow2, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( bSizer42 );
@@ -822,6 +834,8 @@ ReaderViewPanel::ReaderViewPanel( wxWindow* parent, wxWindowID id, const wxPoint
 	wxBoxSizer* bSizer44;
 	bSizer44 = new wxBoxSizer( wxHORIZONTAL );
 
+	m_scrolledWindow1 = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	m_scrolledWindow1->SetScrollRate( 5, 5 );
 	wxBoxSizer* bSizer46;
 	bSizer46 = new wxBoxSizer( wxVERTICAL );
 
@@ -829,74 +843,77 @@ ReaderViewPanel::ReaderViewPanel( wxWindow* parent, wxWindowID id, const wxPoint
 	bSizer47 = new wxBoxSizer( wxVERTICAL );
 
 	bSizer47->SetMinSize( wxSize( 250,-1 ) );
-	m_staticText19 = new wxStaticText( this, wxID_ANY, wxT("Id читателя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText19 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Id читателя"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText19->Wrap( -1 );
 	bSizer47->Add( m_staticText19, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerId = new wxSpinCtrl( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, 0, 1, 9999999999, 1 );
+	readerId = new wxSpinCtrl( m_scrolledWindow1, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, 0, 1, 9999999999, 1 );
 	readerId->Enable( false );
 
 	bSizer47->Add( readerId, 0, wxALL|wxEXPAND, 5 );
 
-	m_staticText20 = new wxStaticText( this, wxID_ANY, wxT("Имя читателя"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText20 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Имя читателя"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText20->Wrap( -1 );
 	bSizer47->Add( m_staticText20, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	readerName = new wxTextCtrl( m_scrolledWindow1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer47->Add( readerName, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	m_staticText31 = new wxStaticText( this, wxID_ANY, wxT("Адрес"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText31 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Адрес"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText31->Wrap( -1 );
 	bSizer47->Add( m_staticText31, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerAddress = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	readerAddress = new wxTextCtrl( m_scrolledWindow1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer47->Add( readerAddress, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	m_staticText32 = new wxStaticText( this, wxID_ANY, wxT("Дата рождения"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText32 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Дата рождения"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText32->Wrap( -1 );
 	bSizer47->Add( m_staticText32, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerBirthday = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_ALLOWNONE|wxDP_DEFAULT|wxDP_DROPDOWN );
+	readerBirthday = new wxDatePickerCtrl( m_scrolledWindow1, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_ALLOWNONE|wxDP_DEFAULT|wxDP_DROPDOWN );
 	bSizer47->Add( readerBirthday, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	m_staticText34 = new wxStaticText( this, wxID_ANY, wxT("Пол"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText34 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Пол"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText34->Wrap( -1 );
 	bSizer47->Add( m_staticText34, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerMale = new wxRadioButton( this, wxID_ANY, wxT("муж."), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+	readerMale = new wxRadioButton( m_scrolledWindow1, wxID_ANY, wxT("муж."), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
 	bSizer47->Add( readerMale, 0, wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	readerFemale = new wxRadioButton( this, wxID_ANY, wxT("жен."), wxDefaultPosition, wxDefaultSize, 0 );
+	readerFemale = new wxRadioButton( m_scrolledWindow1, wxID_ANY, wxT("жен."), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer47->Add( readerFemale, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	m_staticText52 = new wxStaticText( this, wxID_ANY, wxT("Минимум одно из следующих полей\nобязательно для заполнения"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText52 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Минимум одно из следующих полей\nобязательно для заполнения"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText52->Wrap( -1 );
 	m_staticText52->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	bSizer47->Add( m_staticText52, 0, wxALL, 5 );
 
-	m_staticText35 = new wxStaticText( this, wxID_ANY, wxT("Телефон"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText35 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Телефон"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText35->Wrap( -1 );
 	bSizer47->Add( m_staticText35, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerPhone = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	readerPhone = new wxTextCtrl( m_scrolledWindow1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer47->Add( readerPhone, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	m_staticText36 = new wxStaticText( this, wxID_ANY, wxT("Почта (Email)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText36 = new wxStaticText( m_scrolledWindow1, wxID_ANY, wxT("Почта (Email)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText36->Wrap( -1 );
 	bSizer47->Add( m_staticText36, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	readerEmail = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	readerEmail = new wxTextCtrl( m_scrolledWindow1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer47->Add( readerEmail, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
-	saveReader = new wxButton( this, wxID_ANY, wxT("Сохранить"), wxDefaultPosition, wxDefaultSize, 0 );
+	saveReader = new wxButton( m_scrolledWindow1, wxID_ANY, wxT("Сохранить"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer47->Add( saveReader, 0, wxALL|wxEXPAND, 5 );
 
 
 	bSizer46->Add( bSizer47, 1, wxALIGN_CENTER, 5 );
 
 
-	bSizer44->Add( bSizer46, 1, wxALIGN_CENTER, 5 );
+	m_scrolledWindow1->SetSizer( bSizer46 );
+	m_scrolledWindow1->Layout();
+	bSizer46->Fit( m_scrolledWindow1 );
+	bSizer44->Add( m_scrolledWindow1, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( bSizer44 );

@@ -32,6 +32,7 @@
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
 #include <wx/radiobut.h>
+#include <wx/scrolwin.h>
 
 #include "Header.h"
 
@@ -405,6 +406,7 @@ namespace wxFormBuilder
 		private:
 
 		protected:
+			wxScrolledWindow* m_scrolledWindow2;
 			wxStaticText* m_staticText18;
 			wxStaticText* m_staticText31;
 			wxStaticText* m_staticText32;
@@ -436,6 +438,7 @@ namespace wxFormBuilder
 		private:
 
 		protected:
+			wxScrolledWindow* m_scrolledWindow1;
 			wxStaticText* m_staticText19;
 			wxSpinCtrl* readerId;
 			wxStaticText* m_staticText20;

@@ -13,8 +13,7 @@ void ReadersFilter::Reset()
     readerAnySex->SetValue(true);
     readerMale->SetValue(false);
     readerFemale->SetValue(false);
-    //todo: clear
-    //readerBirthday->
+    readerBirthday->SetValue(wxInvalidDateTime);
     readerPhone->Clear();
     readerEmail->Clear();
 }
