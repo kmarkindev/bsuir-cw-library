@@ -35,7 +35,7 @@
 #include <wx/scrolwin.h>
 #include <wx/choice.h>
 #include <wx/tglbtn.h>
-#include <wx/collpane.h>
+#include <wx/statbox.h>
 
 #include "Header.h"
 
@@ -550,10 +550,13 @@ namespace wxFormBuilder
 			wxStaticText* m_staticText115;
 			wxDatePickerCtrl* bookPublishedAt;
 			wxButton* saveBook;
-			wxCollapsiblePane* m_collapsiblePane1;
-			wxStaticText* m_staticText140;
-			wxCollapsiblePane* m_collapsiblePane2;
-			wxStaticText* m_staticText1401;
+			wxButton* downloadFile;
+			wxButton* uploadFile;
+			wxDataViewCtrl* instancesList;
+			wxButton* addInstance;
+			wxButton* withdrawInstance;
+			wxButton* returnInstance;
+			wxButton* removeInstance;
 
 			// Virtual event handlers, override them in your derived class
 			virtual void OnSaveButtonClicked( wxCommandEvent& event ) = 0;

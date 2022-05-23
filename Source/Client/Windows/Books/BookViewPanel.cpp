@@ -50,6 +50,11 @@ void BookViewPanel::ShowLoggedInState()
     publisherChoice->Enable(true);
     publisherChoice->Enable(true);
     bookPublishedAt->Enable(true);
+    uploadFile->Enable(true);
+    addInstance->Enable(true);
+    withdrawInstance->Enable(true);
+    returnInstance->Enable(true);
+    removeInstance->Enable(true);
 }
 
 void BookViewPanel::ShowLoggedOutState()
@@ -60,6 +65,11 @@ void BookViewPanel::ShowLoggedOutState()
     publisherChoice->Enable(false);
     publisherChoice->Enable(false);
     bookPublishedAt->Enable(false);
+    uploadFile->Enable(false);
+    addInstance->Enable(false);
+    withdrawInstance->Enable(false);
+    returnInstance->Enable(false);
+    removeInstance->Enable(false);
 }
 
 void BookViewPanel::OnSaveButtonClicked(wxCommandEvent& event)

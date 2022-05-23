@@ -1113,42 +1113,49 @@ BookViewPanel::BookViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	bSizer47->Add( bookPublishedAt, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
 
-	bSizer46->Add( bSizer47, 1, wxEXPAND, 5 );
+	bSizer46->Add( bSizer47, 0, wxEXPAND, 5 );
 
 	saveBook = new wxButton( m_scrolledWindow1, wxID_ANY, wxT("Сохранить"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer46->Add( saveBook, 0, wxALL|wxEXPAND, 5 );
 
-	m_collapsiblePane1 = new wxCollapsiblePane( m_scrolledWindow1, wxID_ANY, wxT("Цифровая версия"), wxDefaultPosition, wxDefaultSize, wxCP_DEFAULT_STYLE );
-	m_collapsiblePane1->Collapse( true );
+	wxStaticBoxSizer* sbSizer1;
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( m_scrolledWindow1, wxID_ANY, wxT("Электронная версия") ), wxHORIZONTAL );
 
-	wxBoxSizer* bSizer66;
-	bSizer66 = new wxBoxSizer( wxVERTICAL );
+	downloadFile = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, wxT("Скачать"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer1->Add( downloadFile, 0, wxALL, 5 );
 
-	m_staticText140 = new wxStaticText( m_collapsiblePane1->GetPane(), wxID_ANY, wxT("TODO:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText140->Wrap( -1 );
-	bSizer66->Add( m_staticText140, 0, wxALL, 5 );
-
-
-	m_collapsiblePane1->GetPane()->SetSizer( bSizer66 );
-	m_collapsiblePane1->GetPane()->Layout();
-	bSizer66->Fit( m_collapsiblePane1->GetPane() );
-	bSizer46->Add( m_collapsiblePane1, 1, wxEXPAND | wxALL, 5 );
-
-	m_collapsiblePane2 = new wxCollapsiblePane( m_scrolledWindow1, wxID_ANY, wxT("Экземпляры"), wxDefaultPosition, wxDefaultSize, wxCP_DEFAULT_STYLE );
-	m_collapsiblePane2->Collapse( true );
-
-	wxBoxSizer* bSizer67;
-	bSizer67 = new wxBoxSizer( wxVERTICAL );
-
-	m_staticText1401 = new wxStaticText( m_collapsiblePane2->GetPane(), wxID_ANY, wxT("TODO:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText1401->Wrap( -1 );
-	bSizer67->Add( m_staticText1401, 0, wxALL, 5 );
+	uploadFile = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, wxT("Загрузить"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer1->Add( uploadFile, 0, wxALL, 5 );
 
 
-	m_collapsiblePane2->GetPane()->SetSizer( bSizer67 );
-	m_collapsiblePane2->GetPane()->Layout();
-	bSizer67->Fit( m_collapsiblePane2->GetPane() );
-	bSizer46->Add( m_collapsiblePane2, 1, wxALL|wxEXPAND, 5 );
+	bSizer46->Add( sbSizer1, 0, wxBOTTOM|wxEXPAND|wxTOP, 5 );
+
+	wxStaticBoxSizer* sbSizer3;
+	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( m_scrolledWindow1, wxID_ANY, wxT("Экземпляры") ), wxVERTICAL );
+
+	instancesList = new wxDataViewCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer3->Add( instancesList, 0, wxEXPAND, 5 );
+
+	wxBoxSizer* bSizer68;
+	bSizer68 = new wxBoxSizer( wxHORIZONTAL );
+
+	addInstance = new wxButton( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Добавить"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer68->Add( addInstance, 0, wxBOTTOM|wxEXPAND|wxRIGHT|wxTOP, 5 );
+
+	withdrawInstance = new wxButton( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Выдать"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer68->Add( withdrawInstance, 0, wxALL, 5 );
+
+	returnInstance = new wxButton( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Вернуть"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer68->Add( returnInstance, 0, wxALL, 5 );
+
+	removeInstance = new wxButton( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Удалить"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer68->Add( removeInstance, 0, wxALL|wxBOTTOM|wxLEFT|wxTOP, 5 );
+
+
+	sbSizer3->Add( bSizer68, 0, wxEXPAND, 5 );
+
+
+	bSizer46->Add( sbSizer3, 1, wxBOTTOM|wxEXPAND|wxTOP, 5 );
 
 
 	m_scrolledWindow1->SetSizer( bSizer46 );
