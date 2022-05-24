@@ -66,6 +66,9 @@ try
         if(!inst.withdraw.has_value())
             continue;
 
+        if(showOnlyRealDebtors->GetValue() && std::chrono::system_clock::now() < inst.withdraw->returnAt.value())
+            continue;
+
         Reader* foundReader;
         for(auto& reader : readers)
         {
@@ -94,4 +97,9 @@ try
 catch(ApiErrorException& ex)
 {
     AppState::GetAppState().GetApiErrorEvent().Notify(ex);
+}
+
+void DebtorsListPanel::OnCheckboxChanged(wxCommandEvent& event)
+{
+    LoadList();
 }

@@ -13,6 +13,7 @@ public:
 protected:
     void RefreshButtonClicked(wxCommandEvent& event) override;
     void ReturnButtonClicked(wxCommandEvent& event) override;
+    void OnCheckboxChanged(wxCommandEvent& event) override;
 
 private:
     BookRepository _bookRepo;

@@ -1297,6 +1297,9 @@ DebtorsListPanel::DebtorsListPanel( wxWindow* parent, wxWindowID id, const wxPoi
 	m_button29 = new wxButton( this, wxID_ANY, wxT("Закрыть долг"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer71->Add( m_button29, 0, wxALL, 5 );
 
+	showOnlyRealDebtors = new wxCheckBox( this, wxID_ANY, wxT("Только просрочки"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer71->Add( showOnlyRealDebtors, 0, wxALL|wxEXPAND, 5 );
+
 	m_staticText150 = new wxStaticText( this, wxID_ANY, wxT("Список должников"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText150->Wrap( -1 );
 	m_staticText150->SetFont( wxFont( 12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
@@ -1316,6 +1319,7 @@ DebtorsListPanel::DebtorsListPanel( wxWindow* parent, wxWindowID id, const wxPoi
 	// Connect Events
 	m_button28->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DebtorsListPanel::RefreshButtonClicked ), NULL, this );
 	m_button29->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DebtorsListPanel::ReturnButtonClicked ), NULL, this );
+	showOnlyRealDebtors->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( DebtorsListPanel::OnCheckboxChanged ), NULL, this );
 }
 
 DebtorsListPanel::~DebtorsListPanel()
@@ -1323,5 +1327,6 @@ DebtorsListPanel::~DebtorsListPanel()
 	// Disconnect Events
 	m_button28->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DebtorsListPanel::RefreshButtonClicked ), NULL, this );
 	m_button29->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DebtorsListPanel::ReturnButtonClicked ), NULL, this );
+	showOnlyRealDebtors->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( DebtorsListPanel::OnCheckboxChanged ), NULL, this );
 
 }
