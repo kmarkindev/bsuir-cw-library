@@ -20,8 +20,8 @@ namespace api::v1
         METHOD_LIST_BEGIN
             METHOD_ADD(Books::GetOne, "/{id}", HttpMethod::Get);
             METHOD_ADD(Books::GetBookFile, "/{id}/file", HttpMethod::Get);
-            METHOD_ADD(Books::UploadBookFile, "/{id}/file", HttpMethod::Post);
-            METHOD_ADD(Books::RemoveBookFile, "/{id}/file", HttpMethod::Delete);
+            METHOD_ADD(Books::UploadBookFile, "/{id}/file", HttpMethod::Post, "AuthFilter");
+            METHOD_ADD(Books::RemoveBookFile, "/{id}/file", HttpMethod::Delete, "AuthFilter");
             METHOD_ADD(Books::GetAll, "", HttpMethod::Get);
             METHOD_ADD(Books::CreateBook, "", HttpMethod::Post, "AuthFilter");
             METHOD_ADD(Books::UpdateBook, "/{id}", HttpMethod::Put, "AuthFilter");
