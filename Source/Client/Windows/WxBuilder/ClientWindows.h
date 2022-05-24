@@ -554,6 +554,12 @@ namespace wxFormBuilder
 			wxButton* downloadFile;
 			wxButton* uploadFile;
 			wxButton* deleteFile;
+			wxStaticText* m_staticText62;
+			wxStaticText* totalCount;
+			wxStaticText* m_staticText65;
+			wxStaticText* withdrawnCount;
+			wxStaticText* m_staticText67;
+			wxStaticText* availableCount;
 			wxDataViewListCtrl* instancesList;
 			wxButton* m_button30;
 			wxButton* addInstance;

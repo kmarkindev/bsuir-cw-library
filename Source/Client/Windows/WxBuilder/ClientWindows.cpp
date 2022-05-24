@@ -1138,6 +1138,36 @@ BookViewPanel::BookViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	wxStaticBoxSizer* sbSizer3;
 	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( m_scrolledWindow1, wxID_ANY, wxT("Экземпляры") ), wxVERTICAL );
 
+	wxBoxSizer* bSizer55;
+	bSizer55 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_staticText62 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Всего:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText62->Wrap( -1 );
+	bSizer55->Add( m_staticText62, 0, wxALL, 5 );
+
+	totalCount = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("MyLabel"), wxDefaultPosition, wxDefaultSize, 0 );
+	totalCount->Wrap( -1 );
+	bSizer55->Add( totalCount, 0, wxALL, 5 );
+
+	m_staticText65 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Выдано:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText65->Wrap( -1 );
+	bSizer55->Add( m_staticText65, 0, wxALL, 5 );
+
+	withdrawnCount = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("MyLabel"), wxDefaultPosition, wxDefaultSize, 0 );
+	withdrawnCount->Wrap( -1 );
+	bSizer55->Add( withdrawnCount, 0, wxALL, 5 );
+
+	m_staticText67 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Доступно:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText67->Wrap( -1 );
+	bSizer55->Add( m_staticText67, 0, wxALL, 5 );
+
+	availableCount = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("MyLabel"), wxDefaultPosition, wxDefaultSize, 0 );
+	availableCount->Wrap( -1 );
+	bSizer55->Add( availableCount, 0, wxALL, 5 );
+
+
+	sbSizer3->Add( bSizer55, 0, wxEXPAND, 5 );
+
 	instancesList = new wxDataViewListCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	instancesList->SetMinSize( wxSize( -1,100 ) );
 

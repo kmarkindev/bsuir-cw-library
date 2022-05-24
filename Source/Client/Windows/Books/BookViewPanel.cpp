@@ -224,17 +224,31 @@ try
 
     instancesList->DeleteAllItems();
 
+    std::uint32_t total = instances.size();
+    std::uint32_t withdrawn = 0;
+    std::uint32_t available = 0;
+
     for(auto& inst : instances)
     {
         wxVector<wxVariant> row;
         row.push_back(std::to_string(inst.id.value()));
         if(inst.withdraw.has_value())
+        {
             row.push_back(std::to_string(inst.withdraw->readerId.value()));
+            withdrawn++;
+        }
         else
+        {
             row.push_back("");
+            available++;
+        }
 
         instancesList->AppendItem(row);
     }
+
+    totalCount->SetLabel(std::to_string(total));
+    withdrawnCount->SetLabel(std::to_string(withdrawn));
+    availableCount->SetLabel(std::to_string(available));
 }
 catch(ApiErrorException& ex)
 {
