@@ -31,11 +31,11 @@ void DebtorsListPanel::ReturnButtonClicked(wxCommandEvent& event)
 DebtorsListPanel::DebtorsListPanel(wxWindow* parent)
     : wxFormBuilder::DebtorsListPanel(parent)
 {
-    list->AppendTextColumn(wxString("# экземпляра"));
-    list->AppendTextColumn(wxString("# читателя"));
-    list->AppendTextColumn(wxString("Имя читателя"));
-    list->AppendTextColumn(wxString("Телефон читателя"));
-    list->AppendTextColumn(wxString("Почта (email) читателя"));
+    list->AppendTextColumn(wxString::FromUTF8("# экземпляра"));
+    list->AppendTextColumn(wxString::FromUTF8("# читателя"));
+    list->AppendTextColumn(wxString::FromUTF8("Имя читателя"));
+    list->AppendTextColumn(wxString::FromUTF8("Телефон читателя"));
+    list->AppendTextColumn(wxString::FromUTF8("Почта (email) читателя"));
 
     LoadList();
 }

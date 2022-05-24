@@ -1129,6 +1129,9 @@ BookViewPanel::BookViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	uploadFile = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, wxT("Загрузить"), wxDefaultPosition, wxDefaultSize, 0 );
 	sbSizer1->Add( uploadFile, 0, wxALL, 5 );
 
+	deleteFile = new wxButton( sbSizer1->GetStaticBox(), wxID_ANY, wxT("Удалить"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer1->Add( deleteFile, 0, wxALL, 5 );
+
 
 	bSizer46->Add( sbSizer1, 0, wxBOTTOM|wxEXPAND|wxTOP, 5 );
 
@@ -1136,7 +1139,9 @@ BookViewPanel::BookViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( m_scrolledWindow1, wxID_ANY, wxT("Экземпляры") ), wxVERTICAL );
 
 	instancesList = new wxDataViewListCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	sbSizer3->Add( instancesList, 0, wxALL|wxEXPAND, 5 );
+	instancesList->SetMinSize( wxSize( -1,100 ) );
+
+	sbSizer3->Add( instancesList, 1, wxALL|wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer68;
 	bSizer68 = new wxBoxSizer( wxHORIZONTAL );
@@ -1177,6 +1182,7 @@ BookViewPanel::BookViewPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	saveBook->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnSaveButtonClicked ), NULL, this );
 	downloadFile->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnFileDownloadClicked ), NULL, this );
 	uploadFile->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnUploadClicked ), NULL, this );
+	deleteFile->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnFileDeleteClicked ), NULL, this );
 	m_button30->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnInstancesUpdateClicked ), NULL, this );
 	addInstance->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnAddInstanceClicked ), NULL, this );
 	withdrawInstance->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnWithdrawInstanceClicked ), NULL, this );
@@ -1190,6 +1196,7 @@ BookViewPanel::~BookViewPanel()
 	saveBook->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnSaveButtonClicked ), NULL, this );
 	downloadFile->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnFileDownloadClicked ), NULL, this );
 	uploadFile->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnUploadClicked ), NULL, this );
+	deleteFile->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnFileDeleteClicked ), NULL, this );
 	m_button30->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnInstancesUpdateClicked ), NULL, this );
 	addInstance->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnAddInstanceClicked ), NULL, this );
 	withdrawInstance->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BookViewPanel::OnWithdrawInstanceClicked ), NULL, this );
@@ -1225,7 +1232,7 @@ InstanceWithdrawPanel::InstanceWithdrawPanel( wxWindow* parent, wxWindowID id, c
 	m_staticText148->Wrap( -1 );
 	bSizer69->Add( m_staticText148, 0, wxLEFT|wxRIGHT, 5 );
 
-	returnAt = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+	returnAt = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_DROPDOWN );
 	bSizer69->Add( returnAt, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
 	m_button27 = new wxButton( this, wxID_ANY, wxT("Выдать экземпляр"), wxDefaultPosition, wxDefaultSize, 0 );

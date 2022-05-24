@@ -27,9 +27,11 @@ protected:
     void OnReturnInstanceClicked(wxCommandEvent& event) override;
     void OnRemoveInstanceClicked(wxCommandEvent& event) override;
     void OnInstancesUpdateClicked(wxCommandEvent& event) override;
+    void OnFileDeleteClicked(wxCommandEvent& event) override;
 
 private:
     std::uint64_t _bookId;
+    bool _hasFile;
     BookRepository _repo;
     AuthorsRepository _authorsRepo;
     PublishersRepository _publishersRepo;

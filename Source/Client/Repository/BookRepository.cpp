@@ -10,7 +10,9 @@ std::vector<BookInstance> BookRepository::GetInstances(std::uint64_t bookId)
     for(const auto& item : json["data"])
     {
         BookInstance instance(item["instance"]);
-        instance.withdraw = BookWithdraw(item["withdraw"]);
+        if(!item["withdraw"].is_null())
+            instance.withdraw = BookWithdraw(item["withdraw"]);
+        instances.push_back(instance);
     }
     return instances;
 }
@@ -89,12 +91,18 @@ std::vector<BookInstance> BookRepository::GetInstances()
     return instances;
 }
 
-void BookRepository::CreateInstance()
+void BookRepository::CreateInstance(std::uint64_t id)
 {
-    FetchApi("POST", _config.apiUrl, Book::GetPath() + "/instances");
+    FetchApi("POST", _config.apiUrl, Book::GetPath() + "/" + std::to_string(id) + "/instances");
 }
 
 void BookRepository::RemoveInstance(std::uint64_t id)
 {
-    FetchApi("POST", _config.apiUrl, Book::GetPath() + "/instances/" + std::to_string(id));
+    FetchApi("DELETE", _config.apiUrl, Book::GetPath() + "/instances/" + std::to_string(id));
+}
+
+void BookRepository::RemoveFile(std::uint64_t bookId)
+{
+    auto body = "{\"file\":null}";
+    FetchApi("PUT", _config.apiUrl, Book::GetPath() + "/" + std::to_string(bookId), body);
 }

@@ -1,8 +1,10 @@
 #include "InstanceWithdrawPanel.h"
 
-InstanceWithdrawPanel::InstanceWithdrawPanel(wxWindow* parent, std::uint64_t instanceId)
+InstanceWithdrawPanel::InstanceWithdrawPanel(wxWindow* parent, std::uint64_t instId)
     : wxFormBuilder::InstanceWithdrawPanel(parent)
 {
+    instanceId->SetValue(std::to_string(instId));
+
     auto readers = _repo.GetAll();
 
     for(auto& reader : readers)

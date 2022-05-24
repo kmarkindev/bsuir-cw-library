@@ -3,6 +3,9 @@
 BookViewPanel::BookViewPanel(wxWindow* parent, std::uint64_t id)
     : EntityViewPanel<wxFormBuilder::BookViewPanel>(parent, id)
 {
+    instancesList->AppendTextColumn(wxString::FromUTF8("# экземпляра"), wxDATAVIEW_CELL_INERT, FromDIP(200));
+    instancesList->AppendTextColumn(wxString::FromUTF8("# читателя, если выдана"), wxDATAVIEW_CELL_INERT, FromDIP(200));
+
     try
     {
         _bookId = id;
@@ -10,6 +13,10 @@ BookViewPanel::BookViewPanel(wxWindow* parent, std::uint64_t id)
         bookId->SetValue(book.id.value());
         bookName->SetValue(wxString::FromUTF8(book.name.value()));
         bookPublishedAt->SetValue(wxDateTime(std::chrono::system_clock::to_time_t(book.publishedAt.value())));
+
+        _hasFile = book.fileStoragePath.has_value();
+        downloadFile->Enable(_hasFile);
+        deleteFile->Enable(_hasFile);
 
         auto authors = _authorsRepo.GetAll();
         auto publishers = _publishersRepo.GetAll();
@@ -58,6 +65,7 @@ void BookViewPanel::ShowLoggedInState()
     withdrawInstance->Enable(true);
     returnInstance->Enable(true);
     removeInstance->Enable(true);
+    deleteFile->Enable(_hasFile);
 }
 
 void BookViewPanel::ShowLoggedOutState()
@@ -73,6 +81,7 @@ void BookViewPanel::ShowLoggedOutState()
     withdrawInstance->Enable(false);
     returnInstance->Enable(false);
     removeInstance->Enable(false);
+    deleteFile->Enable(false);
 }
 
 void BookViewPanel::OnSaveButtonClicked(wxCommandEvent& event)
@@ -107,13 +116,13 @@ void BookViewPanel::OnFileDownloadClicked(wxCommandEvent& event)
     url += std::to_string(_bookId);
     url += "/file";
 
-    wxLaunchDefaultBrowser(url, wxBROWSER_NEW_WINDOW);
+    wxLaunchDefaultBrowser(wxString::FromUTF8(url));
 }
 
 void BookViewPanel::OnUploadClicked(wxCommandEvent& event)
 {
     wxFileDialog openFileDialog(this, wxString::FromUTF8("Выберите файл для загрузки"),
-        "", "", "*.pdf|*.txt|*.doc|*.docx", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+        "", "", "*.pdf;*.txt;*.doc;*.docx", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
     if(openFileDialog.ShowModal() == wxID_CANCEL)
         return;
@@ -130,6 +139,10 @@ void BookViewPanel::OnUploadClicked(wxCommandEvent& event)
         file.extension = filename.GetExt().utf8_string();
 
         _repo.UpdateFile(_bookId, file);
+
+        _hasFile = true;
+        downloadFile->Enable(_hasFile);
+        deleteFile->Enable(_hasFile);
     }
     catch (ApiErrorException& ex)
     {
@@ -138,13 +151,15 @@ void BookViewPanel::OnUploadClicked(wxCommandEvent& event)
 }
 
 void BookViewPanel::OnAddInstanceClicked(wxCommandEvent& event)
+try
 {
-    if(instancesList->GetSelectedItemsCount() <= 0)
-        return;
-
-    _repo.CreateInstance();
+    _repo.CreateInstance(_bookId);
 
     ReloadInstances();
+}
+catch(ApiErrorException& ex)
+{
+    AppState::GetAppState().GetApiErrorEvent().Notify(ex);
 }
 
 void BookViewPanel::OnWithdrawInstanceClicked(wxCommandEvent& event)
@@ -157,6 +172,7 @@ void BookViewPanel::OnWithdrawInstanceClicked(wxCommandEvent& event)
 }
 
 void BookViewPanel::OnReturnInstanceClicked(wxCommandEvent& event)
+try
 {
     if(instancesList->GetSelectedItemsCount() <= 0)
         return;
@@ -173,8 +189,13 @@ void BookViewPanel::OnReturnInstanceClicked(wxCommandEvent& event)
 
     ReloadInstances();
 }
+catch(ApiErrorException& ex)
+{
+    AppState::GetAppState().GetApiErrorEvent().Notify(ex);
+}
 
 void BookViewPanel::OnRemoveInstanceClicked(wxCommandEvent& event)
+try
 {
     if(instancesList->GetSelectedItemsCount() <= 0)
         return;
@@ -191,14 +212,17 @@ void BookViewPanel::OnRemoveInstanceClicked(wxCommandEvent& event)
 
     ReloadInstances();
 }
+catch(ApiErrorException& ex)
+{
+    AppState::GetAppState().GetApiErrorEvent().Notify(ex);
+}
 
 void BookViewPanel::ReloadInstances()
 try
 {
-    auto instances = _repo.GetInstances();
+    auto instances = _repo.GetInstances(_bookId);
 
-    instancesList->AppendTextColumn(wxString::FromUTF8("# экземпляра"), wxDATAVIEW_CELL_INERT);
-    instancesList->AppendTextColumn(wxString::FromUTF8("# читателя, если выдана"), wxDATAVIEW_CELL_INERT);
+    instancesList->DeleteAllItems();
 
     for(auto& inst : instances)
     {
@@ -231,4 +255,20 @@ std::uint64_t BookViewPanel::GetSelectedInstanceId()
 void BookViewPanel::OnInstancesUpdateClicked(wxCommandEvent& event)
 {
     ReloadInstances();
+}
+
+void BookViewPanel::OnFileDeleteClicked(wxCommandEvent& event)
+{
+    try
+    {
+        _repo.RemoveFile(_bookId);
+
+        _hasFile = false;
+        downloadFile->Enable(_hasFile);
+        deleteFile->Enable(_hasFile);
+    }
+    catch (ApiErrorException& ex)
+    {
+        AppState::GetAppState().GetApiErrorEvent().Notify(ex);
+    }
 }
