@@ -7,7 +7,7 @@
 class DebtorsListPanel : public wxFormBuilder::DebtorsListPanel
 {
 public:
-    DebtorsListPanel(wxWindow* parent);
+    explicit DebtorsListPanel(wxWindow* parent);
     void LoadList();
 
 protected:

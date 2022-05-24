@@ -17,6 +17,13 @@ BookCreationPanel::BookCreationPanel(wxWindow* parent)
             _fields->publisherChoice
                 ->Append(wxString::FromUTF8(std::to_string(publisher.id.value()) + " - " + publisher.name.value()));
         _fields->publisherChoice->Select(0);
+
+        AppState::GetAppState().GetLogoutEvent().Subscribe([this]()
+        {
+            auto parent = static_cast<wxAuiNotebook*>(GetParent());
+            auto n = parent->FindPage(this);
+            parent->RemovePage(n);
+        });
     }
     catch(ApiErrorException& ex)
     {

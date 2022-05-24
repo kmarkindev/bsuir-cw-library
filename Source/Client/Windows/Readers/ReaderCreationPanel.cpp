@@ -3,7 +3,12 @@
 ReaderCreationPanel::ReaderCreationPanel(wxWindow* parent)
     : EntityCreationPanel(parent)
 {
-
+    AppState::GetAppState().GetLogoutEvent().Subscribe([this]()
+    {
+        auto parent = static_cast<wxAuiNotebook*>(GetParent());
+        auto n = parent->FindPage(this);
+        parent->RemovePage(n);
+    });
 }
 
 void ReaderCreationPanel::CreateModel()

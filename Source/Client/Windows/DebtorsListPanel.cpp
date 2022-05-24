@@ -40,6 +40,13 @@ DebtorsListPanel::DebtorsListPanel(wxWindow* parent)
     list->AppendTextColumn(wxString::FromUTF8("Почта (email) читателя"), wxDATAVIEW_CELL_INERT, FromDIP(200));
 
     LoadList();
+
+    AppState::GetAppState().GetLogoutEvent().Subscribe([this]()
+    {
+        auto parent = static_cast<wxAuiNotebook*>(GetParent());
+        auto n = parent->FindPage(this);
+        parent->RemovePage(n);
+    });
 }
 
 std::uint64_t DebtorsListPanel::GetSelectedId()

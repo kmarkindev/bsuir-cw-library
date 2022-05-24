@@ -72,7 +72,12 @@ ReadersListPanel::ReadersListPanel(wxWindow* parent)
         {wxString::FromUTF8("#"), wxString::FromUTF8("Имя"), wxString::FromUTF8("Адрес"), wxString::FromUTF8("Дата рождения"),
          wxString::FromUTF8("Пол"), wxString::FromUTF8("Телефон"), wxString::FromUTF8("Почта (Email)")})
 {
-
+    AppState::GetAppState().GetLogoutEvent().Subscribe([this]()
+    {
+        auto parent = static_cast<wxAuiNotebook*>(GetParent());
+        auto n = parent->FindPage(this);
+        parent->RemovePage(n);
+    });
 }
 
 void ReadersListPanel::RemoveRow(std::uint64_t id)

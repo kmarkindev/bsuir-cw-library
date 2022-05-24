@@ -16,6 +16,13 @@ ReaderViewPanel::ReaderViewPanel(wxWindow* parent, std::uint64_t id)
         readerBirthday->SetValue(wxDateTime(std::chrono::system_clock::to_time_t(reader.birthday.value())));
         readerPhone->SetValue(wxString::FromUTF8(reader.phone.value()));
         readerEmail->SetValue(wxString::FromUTF8(reader.email.value()));
+
+        AppState::GetAppState().GetLogoutEvent().Subscribe([this]()
+        {
+            auto parent = static_cast<wxAuiNotebook*>(GetParent());
+            auto n = parent->FindPage(this);
+            parent->RemovePage(n);
+        });
     }
     catch(ApiErrorException& ex)
     {
