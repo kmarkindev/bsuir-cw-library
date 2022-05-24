@@ -72,10 +72,19 @@ public:
 protected:
     AppConfig _config;
 
-    HttpResponse FetchApi(std::string_view method, std::string_view host, std::string_view path, std::string_view body = {})
+    HttpResponse FetchApi(std::string_view method, std::string_view host, std::string_view path,
+        std::string_view body = {}, std::optional<std::string> fileExt = std::nullopt)
     {
         HttpRequest request(method, host, path);
-        request.GetHeaders().SetHeader({"Content-Type", "application/json"});
+        if(!fileExt.has_value())
+        {
+            request.GetHeaders().SetHeader({"Content-Type", "application/json"});
+        }
+        else
+        {
+            request.GetHeaders().SetHeader({"Content-Type", "multipart/form-data"});
+            request.GetHeaders().SetHeader({"file-ext", fileExt.value()});
+        }
         request.SetBody(body);
         AppendTokenHeaderIfPossible(request);
 

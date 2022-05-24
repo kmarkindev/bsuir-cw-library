@@ -128,6 +128,7 @@ void BookViewPanel::OnUploadClicked(wxCommandEvent& event)
         return;
 
     std::ifstream is(openFileDialog.GetPath().utf8_string(), std::ios::binary);
+    is.seekg(0, std::ios::beg);
     std::string content(std::istreambuf_iterator<char>(is), {});
 
     wxFileName filename(openFileDialog.GetPath());
@@ -138,7 +139,7 @@ void BookViewPanel::OnUploadClicked(wxCommandEvent& event)
         file.content = content;
         file.extension = filename.GetExt().utf8_string();
 
-        _repo.UpdateFile(_bookId, file);
+        _repo.UploadFile(_bookId, file);
 
         _hasFile = true;
         downloadFile->Enable(_hasFile);

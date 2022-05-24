@@ -27,12 +27,6 @@ try
             return;
         }
 
-        if(json.isMember("file"))
-        {
-            book.setFileStoragePath(_fileStorageService.SaveFileToStorage(json["file"]["content"].as<std::string>()));
-            book.setFileExtension(json["file"]["extension"].as<std::string>());
-        }
-
         _modelMapper.insert(book, [callback](auto model) mutable
         {
             callback(GetJsonModelResponseFrom(model));
@@ -68,6 +62,8 @@ try
     // Do not allow setting path from request since we'll generate it ourselves
     if(json->isMember("file_storage_path"))
         json->removeMember("file_storage_path");
+    if(json->isMember("file_extension"))
+        json->removeMember("file_extension");
 
     _modelMapper.findByPrimaryKey(id, [callback, json = *json, this](auto book) mutable
     {
@@ -79,28 +75,6 @@ try
             {
                 callback(GetValidatonErrorResponse(errors));
                 return;
-            }
-
-            if(json.isMember("file"))
-            {
-                if(json["file"].isNull())
-                {
-                    if(book.getFileStoragePath())
-                    {
-                        _fileStorageService.RemoveFileFromStorage(book.getValueOfFileStoragePath());
-                        book.setFileStoragePathToNull();
-                        book.setFileExtensionToNull();
-                    }
-                }
-                else
-                {
-                    if(book.getFileStoragePath())
-                        _fileStorageService.ReplaceFileInStorage(json["file"]["content"].as<std::string>(), book.getValueOfFileStoragePath());
-                    else
-                        book.setFileStoragePath(_fileStorageService.SaveFileToStorage(json["file"]["content"].as<std::string>()));
-
-                    book.setFileExtension(json["file"]["extension"].as<std::string>());
-                }
             }
 
             _modelMapper.update(book, [callback, book](auto updatedCount) mutable
@@ -141,6 +115,61 @@ void api::v1::Books::GetBookFile(const HttpRequestPtr &req, std::function<void(c
     }, [callback](const drogon::orm::DrogonDbException& ex)
     {
          callback(GetErrorResponseFromException(ex));
+    });
+}
+
+void api::v1::Books::UploadBookFile(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id)
+{
+    _modelMapper.findByPrimaryKey(id, [callback, req, this](auto model)
+    {
+        auto body = req->getBody();
+
+        if(model.getFileStoragePath())
+        {
+            _fileStorageService.ReplaceFileInStorage(std::string(body), model.getValueOfFileStoragePath());
+        }
+        else
+        {
+            auto filePath = _fileStorageService.SaveFileToStorage(std::string(body));
+            model.setFileStoragePath(filePath);
+        }
+
+        model.setFileExtension(req->getHeader("file-ext"));
+        _modelMapper.update(model, [callback, model](auto n)
+        {
+            callback(GetJsonModelResponseFrom(model));
+        }, [callback](const drogon::orm::DrogonDbException& ex)
+        {
+            callback(GetErrorResponseFromException(ex));
+        });
+
+    }, [callback](const drogon::orm::DrogonDbException& ex)
+    {
+        callback(GetErrorResponseFromException(ex));
+    });
+}
+
+void api::v1::Books::RemoveBookFile(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr&)> &&callback, std::uint64_t id)
+{
+    _modelMapper.findByPrimaryKey(id, [callback, this](auto model)
+    {
+        if(model.getFileStoragePath())
+        {
+            _fileStorageService.RemoveFileFromStorage(model.getValueOfFileStoragePath());
+
+            model.setFileStoragePathToNull();
+            model.setFileExtensionToNull();
+            _modelMapper.update(model, [callback, model](auto n)
+            {
+                callback(GetJsonModelResponseFrom(model));
+            }, [callback](const drogon::orm::DrogonDbException& ex)
+            {
+                callback(GetErrorResponseFromException(ex));
+            });
+        }
+    }, [callback](const drogon::orm::DrogonDbException& ex)
+    {
+        callback(GetErrorResponseFromException(ex));
     });
 }
 

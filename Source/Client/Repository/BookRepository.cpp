@@ -35,46 +35,18 @@ void BookRepository::ReturnBook(std::uint64_t instanceId)
     FetchApi("POST", _config.apiUrl, Book::GetPath() + "/instances/" + std::to_string(instanceId) + "/return");
 }
 
-Book BookRepository::CreateWithFile(const Book& book, const File& file)
+Book BookRepository::UploadFile(std::uint64_t bookId, const File& file)
 {
-    auto body = book.ToJson();
-    body["file"]["content"] = EncodeToBase64(file.content);
-    body["file"]["extension"] = file.extension;
-
-    auto response = FetchApi("POST", _config.apiUrl, Book::GetPath(), to_string(body));
+    auto response = FetchApi("POST", _config.apiUrl,
+        Book::GetPath() + "/" + std::to_string(bookId) + "/file", file.content, file.extension);
     auto json = nlohmann::json::parse(response.GetBody());
 
     return Book(json);
 }
 
-Book BookRepository::UpdateFile(std::uint64_t bookId, const File& file)
+void BookRepository::RemoveFile(std::uint64_t bookId)
 {
-    auto body = nlohmann::json();
-    body["file"]["content"] = EncodeToBase64(file.content);
-    body["file"]["extension"] = file.extension;
-
-    auto response = FetchApi("PUT", _config.apiUrl, Book::GetPath() + "/" + std::to_string(bookId), to_string(body));
-    auto json = nlohmann::json::parse(response.GetBody());
-
-    return Book(json);
-}
-
-File BookRepository::GetFile(std::uint64_t id)
-{
-    throw std::runtime_error("It doesn't work");
-
-    auto response = FetchApi("GET", _config.apiUrl, Book::GetPath() + "/" + std::to_string(id) + "/file");
-
-    File file;
-    file.content = response.GetBody();
-    file.extension = response.GetHeaders().GetHeader("file-ext").GetValue();
-
-    return file;
-}
-
-std::string BookRepository::EncodeToBase64(const std::string& file)
-{
-    return wxBase64Encode(file.data(), file.size()).ToStdString();
+    FetchApi("DELETE", _config.apiUrl, Book::GetPath() + "/" + std::to_string(bookId) + "/file");
 }
 
 std::vector<BookInstance> BookRepository::GetInstances()
@@ -101,10 +73,4 @@ void BookRepository::CreateInstance(std::uint64_t id)
 void BookRepository::RemoveInstance(std::uint64_t id)
 {
     FetchApi("DELETE", _config.apiUrl, Book::GetPath() + "/instances/" + std::to_string(id));
-}
-
-void BookRepository::RemoveFile(std::uint64_t bookId)
-{
-    auto body = "{\"file\":null}";
-    FetchApi("PUT", _config.apiUrl, Book::GetPath() + "/" + std::to_string(bookId), body);
 }

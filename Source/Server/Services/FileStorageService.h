@@ -8,7 +8,6 @@
 class FileStorageService
 {
 public:
-
     explicit FileStorageService(std::string_view storagePath);
 
     std::string SaveFileToStorage(const std::string& fileData);
@@ -17,11 +16,7 @@ public:
     std::string GetFilePathFromStorage(std::string_view filePath);
 
 private:
-
     std::string _storagePath;
-
-    std::string DecodeBase64(const std::string& file);
-
 };
 
 
