@@ -27,6 +27,8 @@
 		}
 	],
 	"app": {
+		"client_max_body_size": "",
+		"client_max_memory_body_size": "",
 		"document_root": "./static/"
 	}
 }

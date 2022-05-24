@@ -4,6 +4,9 @@ HttpResponse HttpClient::Send(const HttpRequest& request)
 {
     httplib::Client client(request.GetHostname());
     client.set_follow_location(true);
+    client.set_read_timeout(60, 0);
+    client.set_connection_timeout(60, 0);
+    client.set_write_timeout(60, 0);
 
     httplib::Request libRequest;
 

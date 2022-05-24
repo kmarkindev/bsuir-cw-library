@@ -127,7 +127,7 @@ void BookViewPanel::OnUploadClicked(wxCommandEvent& event)
     if(openFileDialog.ShowModal() == wxID_CANCEL)
         return;
 
-    std::ifstream is(openFileDialog.GetPath().utf8_string());
+    std::ifstream is(openFileDialog.GetPath().utf8_string(), std::ios::binary);
     std::string content(std::istreambuf_iterator<char>(is), {});
 
     wxFileName filename(openFileDialog.GetPath());

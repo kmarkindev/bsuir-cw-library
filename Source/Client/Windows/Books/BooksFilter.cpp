@@ -12,7 +12,7 @@ void BooksFilter::Reset()
     authorChoice->SetSelection(wxNOT_FOUND);
     publisherChoice->SetSelection(wxNOT_FOUND);
     bookPublishedAt->SetValue(wxInvalidDateTime);
-    bookFile->Clear();
+    bookFile->SetSelection(wxNOT_FOUND);
 }
 
 void BooksFilter::OnListsRefreshClicked(wxCommandEvent& event)
