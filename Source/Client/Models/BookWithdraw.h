@@ -27,8 +27,8 @@ public:
         if(json.contains("reader_id") && json["reader_id"].is_number())
             readerId = json["reader_id"];
         if(json.contains("withdrawn_at") && json["withdrawn_at"].is_string())
-            withdrawnAt = ParseTime(to_string(json["withdrawn_at"]));
+            withdrawnAt = ParseTime(json["withdrawn_at"]);
         if(json.contains("return_at") && json["return_at"].is_string())
-            returnAt = ParseTime(to_string(json["return_at"]));
+            returnAt = ParseTime(json["return_at"]);
     }
 };

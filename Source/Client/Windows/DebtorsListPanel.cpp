@@ -31,11 +31,13 @@ void DebtorsListPanel::ReturnButtonClicked(wxCommandEvent& event)
 DebtorsListPanel::DebtorsListPanel(wxWindow* parent)
     : wxFormBuilder::DebtorsListPanel(parent)
 {
-    list->AppendTextColumn(wxString::FromUTF8("# экземпляра"));
-    list->AppendTextColumn(wxString::FromUTF8("# читателя"));
-    list->AppendTextColumn(wxString::FromUTF8("Имя читателя"));
-    list->AppendTextColumn(wxString::FromUTF8("Телефон читателя"));
-    list->AppendTextColumn(wxString::FromUTF8("Почта (email) читателя"));
+    list->AppendTextColumn(wxString::FromUTF8("# экземпляра"), wxDATAVIEW_CELL_INERT, FromDIP(100));
+    list->AppendTextColumn(wxString::FromUTF8("# читателя"), wxDATAVIEW_CELL_INERT, FromDIP(100));
+    list->AppendTextColumn(wxString::FromUTF8("Дата возврата"), wxDATAVIEW_CELL_INERT, FromDIP(100));
+    list->AppendTextColumn(wxString::FromUTF8("Просрочен"), wxDATAVIEW_CELL_INERT, FromDIP(100));
+    list->AppendTextColumn(wxString::FromUTF8("Имя читателя"), wxDATAVIEW_CELL_INERT, FromDIP(200));
+    list->AppendTextColumn(wxString::FromUTF8("Телефон читателя"), wxDATAVIEW_CELL_INERT, FromDIP(200));
+    list->AppendTextColumn(wxString::FromUTF8("Почта (email) читателя"), wxDATAVIEW_CELL_INERT, FromDIP(200));
 
     LoadList();
 }
@@ -54,6 +56,8 @@ std::uint64_t DebtorsListPanel::GetSelectedId()
 void DebtorsListPanel::LoadList()
 try
 {
+    list->DeleteAllItems();
+
     auto readers = _readersRepo.GetAll();
     auto instances = _bookRepo.GetInstances();
 
@@ -75,6 +79,11 @@ try
         wxVector<wxVariant> row;
         row.push_back(std::to_string(inst.id.value()));
         row.push_back(std::to_string(foundReader->id.value()));
+        row.push_back(wxString::FromUTF8(RenderTimeString(inst.withdraw->returnAt.value())));
+        row.push_back(wxString::FromUTF8(std::chrono::system_clock::now() > inst.withdraw->returnAt.value()
+            ? "Да"
+            : "Нет"
+        ));
         row.push_back(wxString::FromUTF8(foundReader->name.value()));
         row.push_back(wxString::FromUTF8(foundReader->phone.has_value() ? foundReader->phone.value() : ""));
         row.push_back(wxString::FromUTF8(foundReader->email.has_value() ? foundReader->email.value() : ""));

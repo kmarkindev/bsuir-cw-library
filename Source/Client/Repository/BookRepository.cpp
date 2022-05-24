@@ -86,7 +86,9 @@ std::vector<BookInstance> BookRepository::GetInstances()
     for(const auto& item : json["data"])
     {
         BookInstance instance(item["instance"]);
-        instance.withdraw = BookWithdraw(item["withdraw"]);
+        if(!item["withdraw"].is_null())
+            instance.withdraw = BookWithdraw(item["withdraw"]);
+        instances.push_back(instance);
     }
     return instances;
 }
