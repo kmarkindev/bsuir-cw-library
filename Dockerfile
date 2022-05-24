@@ -50,7 +50,7 @@ RUN ln -s /usr/x86_64-w64-mingw32/include/windows.h /usr/x86_64-w64-mingw32/incl
     ln -s /usr/x86_64-w64-mingw32/include/rpc.h /usr/x86_64-w64-mingw32/include/Rpc.h && \
 # Set compiler symlink to posix since we need to support std threading library
 	echo '1' | update-alternatives --config x86_64-w64-mingw32-g++ && \
-    echo '1' | update-alternatives --config x86_64-w64-mingw32-gcc \
+    echo '1' | update-alternatives --config x86_64-w64-mingw32-gcc
 
 # Finally run configuration and build
 WORKDIR /Workdir/BuildResult
